@@ -1,73 +1,94 @@
-# React + TypeScript + Vite
+# 🧠 AP MindMap Anki（応用情報技術者試験・脳内ハッキング暗記カード）
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+応用情報技術者試験（AP）の過去問対策を圧倒的に効率化する、**ニュー・ブルータリズムスタイル**を採用した超視覚的暗記学習Webアプリケーションです。
 
-Currently, two official plugins are available:
+間違えた過去問のスクリーンショットをドラッグ＆ドロップするだけで、裏側で動作する **Gemini API** が「問題の文字起こし」「選択肢の整理」「文系向けの超かみ砕いた日常生活の例え話解説」「引っ掛けの罠の分析」を自動生成。Google スプレッドシートをデータベースとして活用し、脳内の記憶状態を可視化する「弱点マインドマップ」を動的にマッピングします。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🌐 システム構成とデータの流れ
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+本システムの全体構成とデータの流れです。ユーザーの操作からデータの永続化、Geminiによる解析までの流れが1タップで繋がっています。
 
-## Expanding the ESLint configuration
+```mermaid
+graph TD
+    %% ノード定義
+    User([👤 ユーザー])
+    FE["💻 フロントエンド<br>(React + Vite + TypeScript)<br>※Vercelホスト"]
+    Proxy["⚡ Vercel Serverless Proxy<br>(CORS回避/トークン検証)"]
+    GAS["⚙️ Google Apps Script (GAS)<br>(APIコントローラー)"]
+    Gemini["🔮 Gemini 2.5 Flash API<br>(超高速・高耐久AI画像解析)"]
+    Sheet[("📊 Google スプレッドシート<br>(最強データベース)")]
+    Dojo[["🌐 応用情報過去問道場<br>(自動URL翻訳ポータル)"]]
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+    %% データの流れ
+    User -->|① スクショのアップロード| FE
+    FE -->|② POST通信 (Base64画像)| Proxy
+    Proxy -->|③ セキュア通信| GAS
+    GAS -->|④ 画像解析 ＆ 3つのルール解説生成| Gemini
+    Gemini -->|⑤ 解析結果 JSON 返却| GAS
+    GAS -->|⑥ 過去問道場URLの自動計算| GAS
+    GAS -->|⑦ データの追加・永続化| Sheet
+    GAS -->|⑧ 新規登録データを返却| Proxy
+    Proxy -->|⑨ カードデータ同期描画| FE
+    FE -->|⑩ 双方向ジャンプリンク| Dojo
+    User -->|⑪ ◯✕判定クイズ ＆ 3Dフリップ学習| FE
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 🔒 セキュリティとデータ保護について（文系向け解説）
+本システムは外部からアクセス可能な状態にありますが、**不正にトークン情報やスプレッドシートデータが盗み見られるリスクは極めて低く設計されています**。
+- **CORS回避用Vercelプロキシの設置**: ブラウザに直接スプレッドシートの鍵やGASの秘密のURLを書き込まず、Vercelの裏側のサーバー（プロキシ）を介して通信します。これにより、第三者がブラウザの「開発者ツール」を開いても、秘密の情報（トークン）を盗み出すことは不可能です。
+- **秘密トークン検証**: アプリからGASに送信するすべてのデータには、鍵となる `ACCESS_TOKEN` が埋め込まれており、GAS側で正しい鍵を持ったリクエストだけを処理する仕組みになっているため、外部からの不正アクセスや嫌がらせ投稿を強固に遮断しています。
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## ⚡ 主要機能
+
+### 1. 左右見開き「デュアルカード」復習（iPad横画面・PC最適化）
+- **左カード（問題とインタラクティブ選択肢）**: 問題を解きながら、ア・イ・ウ・エの選択肢を実際にタップ可能。タップした瞬間に、クイズゲームのように鮮烈な**緑丸（◯正解）**または**赤バツ（✕不正解）**の正誤判定エフェクトがソリッドに表示されます。
+- **右カード（3D反転・一括詳細解説）**: 左側で回答するか「解説をみる」ボタンを押すと、右カードが「くるっ」と3D反転してアンロックされ、以下の極上解説がスクロールなしで一挙に縦並び表示されます。
+
+### 📘 【3つの極上解説ルール】（Geminiプロンプトで徹底）
+1. **結論ファースト**: まず正解の記号とその理由をズバッと一言で答えます。
+2. **超絶かみ砕き解説**: 教科書的な専門用語を一切使わず、「レストランの注文」「お店の経営」「日常生活の防犯」などに置き換えた**直感的な例え話**で概念をハッキングします。
+3. **引っかかりやすい罠の指摘**: 「なぜ他の選択肢を選ぶと間違えるのか」「人間の心理や勘違いを利用したひっかけパターン」を分析し、回避策を叩き込みます。
+
+### 2. 過去問道場への「1タップ自動ジャンプリンク」
+- 画面に描画される `令和5年秋期 問36` などの道場検索キーから、過去問道場（応用情報技術者試験ドットコム）の正確な過去問詳細URLをアプリが自動で解析・組み立てを行います。
+- カード上や、全データ一覧表の検索キーをクリックするだけで、一瞬で道場のWebページへ直接遷移して詳細な周辺情報を確認できます。
+
+### 3. 脳内弱点マインドマップ（動的SVG）
+- スプレッドシートから読み込んだ「未定着」の弱点カードのキーワードを動的にマッピングします。
+- 赤く光る弱点ノードをクリックすると、その用語が登録されている過去問へ一発でジャンプできます。
+
+### 4. 螺旋（🌀）全画面ローディングオーバーレイ
+- 画像のアップロードおよびGeminiによる約15〜30秒間の解析中、ブルータリスト調の螺旋アイコンが激しく回転するダイナミックな全画面ローディング画面が出現し、バックグラウンドでの進行状況を一目で伝えます。
+
+---
+
+## ⚙️ 環境構築 ＆ デプロイ
+
+### 1. Google スプレッドシートの準備
+スプレッドシートを新規作成し、以下の順番でヘッダー行（1行目）を定義してください。
+
+| A列 (1) | B列 (2) | C列 (3) | D列 (4) | E列 (5) | F列 (6) | G列 (7) | H列 (8) | I列 (9) | J列 (10) | K列 (11) | L列 (12) | M列 (13) | N列 (14) | O列 (15) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| ID | 用語 | 大カテゴリ | 小カテゴリ | 問題文 | 選択肢ア | 選択肢イ | 選択肢ウ | 選択肢エ | 正解 | 解説 | 検索キー | 過去問URL | 状態 | レベル |
+
+### 2. GAS（Google Apps Script）の設置
+1. スプレッドシートの **「拡張機能」 ＞ 「Apps Script」** を開きます。
+2. 既存のコードをすべて削除し、最新の `gas.js`（リポジトリ内または下記スニペット）を貼り付けます。
+3. コードの先頭にある `GEMINI_API_KEY` にご自身のAPIキーを設定します。
+4. 右上の **「デプロイ」 ＞ 「新しいデプロイ」** をクリックし、種類の選択で「ウェブアプリ」を選択。次の設定でデプロイします。
+   - **次のユーザーとして実行**: 自分
+   - **アクセスできるユーザー**: 全員
+5. 生成された **「ウェブアプリのURL（Web App URL）」** をコピーします。
+
+### 3. Vercel の環境変数（Environment Variables）設定
+Vercelのプロジェクト設定画面にて、以下の3つの環境変数を登録します。
+
+- `VITE_GAS_URL`: コピーしたGASのウェブアプリURL
+- `VITE_GAS_TOKEN`: `apAnki-S3cr3t-2026`（セキュア認証用トークン）
+- `VITE_SPREADSHEET_URL`: あなたのGoogleスプレッドシートの直接のブラウザURL（アプリの4つ目のタブから直接開くために使用します）
+
+これらが設定されると、GitHubにプッシュするだけでVercelが全自動で最新ビルドを本番へリリースします！
