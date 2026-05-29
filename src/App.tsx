@@ -16,7 +16,9 @@ interface QuestionCard {
   choice_c: string;
   choice_d: string;
   correct_answer: string; // 'ア', 'イ', 'ウ', 'エ'
-  explanation: string;
+  explanation_conclusion: string; // ① 結論
+  explanation_analogy: string;    // ② 例え
+  explanation_trap: string;       // ③ 罠
   category: string;
   sub_category: string;
   key_word: string;
@@ -53,68 +55,6 @@ export function getPastQuestionUrl(searchKey?: string): string | null {
   return `https://www.ap-siken.com/kakomon/${yearStr}_${termStr}/q${qNum}.html`;
 }
 
-// ==========================================
-// 🧠 解説テキストを賢く3等分/セクション分割するパース関数
-// ==========================================
-function parseExplanation(explanation: string) {
-  let conclusion = "";
-  let analogy = "";
-  let trap = "";
-
-  const conclusionKeywords = ["正解は", "正解：", "正解:", "結論", "結論ファースト"];
-  const analogyKeywords = ["身近な例え", "例え話", "例え：", "例え:", "レストラン", "日常生活", "たとえるなら", "例え"];
-  const trapKeywords = ["罠の指摘", "罠：", "罠:", "解法のポイント", "ひっかけ", "着眼点", "なぜ他の選択肢", "回避方法", "ポイント"];
-
-  const paragraphs = explanation.split('\n').map(p => p.trim()).filter(Boolean);
-  let currentSec: 'conclusion' | 'analogy' | 'trap' = 'conclusion';
-
-  paragraphs.forEach(p => {
-    if (analogyKeywords.some(key => p.includes(key))) {
-      currentSec = 'analogy';
-    } else if (trapKeywords.some(key => p.includes(key))) {
-      currentSec = 'trap';
-    } else if (conclusionKeywords.some(key => p.includes(key)) && conclusion !== "") {
-      currentSec = 'conclusion';
-    }
-
-    const cleanedText = p
-      .replace(/^(身近な例え|例え話|例え：|例え:|たとえるなら|例え|罠の指摘|罠：|罠:|解法のポイント|ひっかけ|着眼点|結論ファースト|正解は|結論)/g, "")
-      .replace(/^[:：・\-－*⭐💡📢⚠️\s]+/g, "")
-      .trim();
-
-    if (currentSec === 'conclusion') {
-      conclusion += (conclusion ? '\n' : '') + cleanedText;
-    } else if (currentSec === 'analogy') {
-      analogy += (analogy ? '\n' : '') + cleanedText;
-    } else {
-      trap += (trap ? '\n' : '') + cleanedText;
-    }
-  });
-
-  // フォールバック（綺麗にセクションが分かれなかった場合）
-  if (!analogy || !trap) {
-    const totalLines = paragraphs.length;
-    if (totalLines >= 3) {
-      conclusion = paragraphs.slice(0, Math.ceil(totalLines / 3)).join('\n');
-      analogy = paragraphs.slice(Math.ceil(totalLines / 3), Math.ceil(totalLines * 2 / 3)).join('\n');
-      trap = paragraphs.slice(Math.ceil(totalLines * 2 / 3)).join('\n');
-    } else if (totalLines === 2) {
-      conclusion = paragraphs[0];
-      analogy = paragraphs[1];
-      trap = "【解法のポイント】着眼点を意識し、ひっかけパターンの回避方法を覚えておきましょう。";
-    } else {
-      conclusion = explanation;
-      analogy = "身近な日常生活にたとえてイメージを脳内にハッキングしましょう！";
-      trap = "【解法のポイント】引っ掛けパターンの回避方法を意識して知識を整理しましょう。";
-    }
-  }
-
-  return {
-    conclusion: conclusion.trim(),
-    analogy: analogy.trim(),
-    trap: trap.trim()
-  };
-}
 
 // 選択肢のアルファベットを日本語に変換するヘルパー
 function getChoiceChar(choice: 'a' | 'b' | 'c' | 'd'): string {
@@ -758,44 +698,39 @@ export default function App() {
                         </div>
 
                         {/* 常時一括表示される3つのセクション */}
-                        {(() => {
-                          const parsed = parseExplanation(activeAnkiCards[currentCardIndex].explanation);
-                          return (
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', textAlign: 'left' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', textAlign: 'left' }}>
                               
-                              {/* 1. 結論 */}
-                              <div className="glass-panel" style={{ padding: '12px 16px', borderLeftWidth: '8px', borderLeftColor: 'var(--accent-blue)' }}>
-                                <strong style={{ fontSize: '13px', color: 'var(--accent-blue)', display: 'block', marginBottom: '6px' }}>
-                                  ① 結論 ＆ 重要キーワード 🔍
-                                </strong>
-                                <p style={{ fontSize: '12.5px', lineHeight: '1.6', color: 'var(--text-main)', fontWeight: '700', whiteSpace: 'pre-wrap', margin: 0 }}>
-                                  {parsed.conclusion}
-                                </p>
-                              </div>
+                          {/* 1. 結論 */}
+                          <div className="glass-panel" style={{ padding: '12px 16px', borderLeftWidth: '8px', borderLeftColor: 'var(--accent-blue)' }}>
+                            <strong style={{ fontSize: '13px', color: 'var(--accent-blue)', display: 'block', marginBottom: '6px' }}>
+                              ① 結論 ＆ 重要キーワード 🔍
+                            </strong>
+                            <p style={{ fontSize: '12.5px', lineHeight: '1.6', color: 'var(--text-main)', fontWeight: '700', whiteSpace: 'pre-wrap', margin: 0 }}>
+                              {activeAnkiCards[currentCardIndex].explanation_conclusion}
+                            </p>
+                          </div>
 
-                              {/* 2. 身近な例え話 */}
-                              <div className="glass-panel" style={{ padding: '12px 16px', borderLeftWidth: '8px', borderLeftColor: 'var(--accent-yellow)' }}>
-                                <strong style={{ fontSize: '13px', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>
-                                  ② 身近な日常生活の例え話 💡
-                                </strong>
-                                <p style={{ fontSize: '12.5px', lineHeight: '1.6', color: 'var(--text-main)', fontWeight: '700', whiteSpace: 'pre-wrap', margin: 0 }}>
-                                  {parsed.analogy}
-                                </p>
-                              </div>
+                          {/* 2. 身近な例え話 */}
+                          <div className="glass-panel" style={{ padding: '12px 16px', borderLeftWidth: '8px', borderLeftColor: 'var(--accent-yellow)' }}>
+                            <strong style={{ fontSize: '13px', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>
+                              ② 身近な日常生活の例え話 💡
+                            </strong>
+                            <p style={{ fontSize: '12.5px', lineHeight: '1.6', color: 'var(--text-main)', fontWeight: '700', whiteSpace: 'pre-wrap', margin: 0 }}>
+                              {activeAnkiCards[currentCardIndex].explanation_analogy}
+                            </p>
+                          </div>
 
-                              {/* 3. 罠の指摘 */}
-                              <div className="glass-panel" style={{ padding: '12px 16px', borderLeftWidth: '8px', borderLeftColor: 'var(--primary-color)' }}>
-                                <strong style={{ fontSize: '13px', color: 'var(--primary-color)', display: 'block', marginBottom: '6px' }}>
-                                  ③ 引っかけの罠 ＆ 回避ポイント ⚠️
-                                </strong>
-                                <p style={{ fontSize: '12.5px', lineHeight: '1.6', color: 'var(--text-main)', fontWeight: '700', whiteSpace: 'pre-wrap', margin: 0 }}>
-                                  {parsed.trap}
-                                </p>
-                              </div>
+                          {/* 3. 罠の指摘 */}
+                          <div className="glass-panel" style={{ padding: '12px 16px', borderLeftWidth: '8px', borderLeftColor: 'var(--primary-color)' }}>
+                            <strong style={{ fontSize: '13px', color: 'var(--primary-color)', display: 'block', marginBottom: '6px' }}>
+                              ③ 引っかけの罠 ＆ 回避ポイント ⚠️
+                            </strong>
+                            <p style={{ fontSize: '12.5px', lineHeight: '1.6', color: 'var(--text-main)', fontWeight: '700', whiteSpace: 'pre-wrap', margin: 0 }}>
+                              {activeAnkiCards[currentCardIndex].explanation_trap}
+                            </p>
+                          </div>
 
-                            </div>
-                          );
-                        })()}
+                        </div>
 
                         {/* 大カード裏返しの復帰用（クリックでロック表面に戻す） */}
                         <div style={{ textAlign: 'center', marginTop: '20px' }}>
@@ -1113,7 +1048,9 @@ function getMockData(): QuestionCard[] {
       choice_c: 'DNSクエリの送信元ポート番号を固定する。',
       choice_d: 'キャッシュDNSサーバに登録するレコードの有効期限（TTL）を長くする。',
       correct_answer: 'イ',
-      explanation: '正解は【イ】DNSSECを導入する。\n身近な例え：偽物の配達員が「あなたが注文したハンバーガーです！」と嘘の荷物を届けてくるのに対して、お店公式の「デジタル未開封シール（デジタル署名）」を貼って送り、本物かどうかを確かめる防犯シールと同じ仕組みです。\nひっかけと罠：ポート番号固定（ウ）やTTL（エ）は小手先の対策であり根本解決になりません。ゾーン転送制限（ア）はサーバ設定の話でポイズニングとは関係ありません。',
+      explanation_conclusion: '正解は【イ】。DNSSECを導入することでDNS応答のデジタル署名を検証できるようになり、ポイズニングを根本防ぐことができます。',
+      explanation_analogy: '偽物の配達員が「あなたが注文したハンバーガーです！」と嘘の荷物を届けてくるのに対して、お店公式の「デジタル未開封シール（デジタル署名）」を貼って送り、本物かどうかを確かめる防犯シールと同じ仕組みです。',
+      explanation_trap: '【解法のポイント】ポート番号固定（ウ）やTTL（エ）は小手先の対策であり根本解決になりません。ゾーン転送制限（ア）はサーバ設定の話でポイズニングとは関係ありません。',
       category: 'テクノロジ系',
       sub_category: 'セキュリティ',
       key_word: 'DNSキャッシュポイズニング',
@@ -1129,7 +1066,9 @@ function getMockData(): QuestionCard[] {
       choice_c: 'DNSの情報を書き換えるキャッシュポイズニング',
       choice_d: '大量のメールを送信するスパム攻撃',
       correct_answer: 'イ',
-      explanation: '正解は【イ】SQLインジェクション。\n身近な例え：レストランの注文票に「ラーメン ＋ レジからお金を全部盗み出す」という悪い指示を混ぜて書いてくるお客さんに対し、厨房の手前で注文内容をチェックして悪い呪文を排除する「用心深い受付のガードマン」です。\nひっかけと罠：OSの脆弱性（ア）はWAFの防備対象外でファイアウォールやIPSの領分です。DNSポイズニング（ウ）やスパム（エ）はプロトコルが全く異なり、WAFでは防げません。',
+      explanation_conclusion: '正解は【イ】。WAFはHTTPプロトコルの内容を解析し、Webアプリケーションの脆弱性を突くSQLインジェクションなどを防御します。',
+      explanation_analogy: 'レストランの注文票に「ラーメン ＋ レジからお金を全部盗み出す」という悪い指示を混ぜて書いてくるお客さんに対し、厨房の手前で注文内容をチェックして悪い呪文を排除する「用心深い受付のガードマン」です。',
+      explanation_trap: '【解法のポイント】OSの脆弱性（ア）はWAFの防備対象外でファイアウォールやIPS of 領分です。DNSポイズニング（ウ）やスパム（エ）はプロトコルが全く異なり、WAFでは防げません。',
       category: 'テクノロジ系',
       sub_category: 'セキュリティ',
       key_word: 'WAF',
@@ -1145,7 +1084,9 @@ function getMockData(): QuestionCard[] {
       choice_c: 'ネットワーク層',
       choice_d: 'トランスポート層',
       correct_answer: 'ウ',
-      explanation: '正解は【ウ】ネットワーク層。\n身近な例え：手紙の住所（IPアドレス）を見て「この手紙は東京行きだからあっちのトラックだな」と、中継地点で次の配送先ルートを決める「郵便局の仕分けシステム（ルーティング）」と同じです。\nひっかけと罠：物理層（ア）は電気信号（光ケーブル等）、データリンク層（イ）はMACアドレス（スイッチ）、トランスポート層（エ）はポート番号（データ転送信頼性）です。',
+      explanation_conclusion: '正解は【ウ】。ルータはネットワーク層（レイヤ3）で動作し、IPアドレスに基づき最適な経路へのルーティングを行います。',
+      explanation_analogy: '手紙の住所（IPアドレス）を見て「この手紙は東京行きだからあっちのトラックだな」と、中継地点で次の配送先ルートを決める「郵便局の仕分けシステム（ルーティング）」と同じです。',
+      explanation_trap: '【解法のポイント】物理層（ア）は電気信号（光ケーブル等）、データリンク層（イ）はMACアドレス（スイッチ）、トランスポート層（エ）はポート番号（データ転送信頼性）です。',
       category: 'テクノロジ系',
       sub_category: 'ネットワーク',
       key_word: 'ルータ',
