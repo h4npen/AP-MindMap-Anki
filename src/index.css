@@ -1,0 +1,441 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
+
+:root {
+  /* Alima Word Generator inspired Brutalist Palette */
+  --bg-color: #f7f3eb; /* 温かみのあるオフホワイト */
+  --panel-bg: #ffffff;
+  
+  --primary-color: #FF4A4A; /* 鮮烈な赤 */
+  --primary-hover: #E33838;
+  
+  --accent-yellow: #FFD633; /* 鮮烈な黄 */
+  --accent-blue: #3E54FF;   /* 鮮烈な青 */
+  --accent-mint: #00f5d4;   /* ミント */
+  
+  --text-main: #1c1c1c;
+  --text-secondary: #555555;
+  --text-muted: #777777;
+  --border-color: #1c1c1c;
+  
+  /* Fonts */
+  --font-outfit: 'Outfit', 'Zen Kaku Gothic New', sans-serif;
+  --font-zen: 'Zen Kaku Gothic New', sans-serif;
+  
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-zen);
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  overflow-x: hidden;
+  min-height: 100svh;
+  /* ドット背景パターン（いい味のヴィンテージグレー #d3cbc0 をはっきりと復活） */
+  background-image: radial-gradient(#d3cbc0 2px, transparent 2px);
+  background-size: 20px 20px;
+  background-position: 0 0;
+  overscroll-behavior-y: contain;
+}
+
+#root {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* ==========================================================================
+   🧱 Brutalist Panel Styles (Old Glass Panel)
+   ========================================================================== */
+.glass-panel {
+  background: var(--panel-bg);
+  border: 3px solid var(--border-color);
+  border-radius: 0; /* ソリッドな直角 */
+  box-shadow: 6px 6px 0 var(--border-color);
+  transition: transform 0.1s, box-shadow 0.1s;
+  color: var(--text-main);
+}
+
+.glass-panel:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--accent-blue);
+  border-color: var(--border-color);
+}
+
+/* ==========================================================================
+   ⚡ Brutalist Button Styles (Old Neon Button)
+   ========================================================================== */
+.neon-btn {
+  background: var(--accent-blue);
+  color: #ffffff;
+  border: 3px solid var(--border-color);
+  padding: 12px 24px;
+  font-family: var(--font-outfit);
+  font-weight: 900;
+  border-radius: 0;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 4px 4px 0 var(--border-color);
+  transition: transform 0.1s, box-shadow 0.1s, background-color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  justify-content: center;
+  letter-spacing: 0.5px;
+}
+
+.neon-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--border-color);
+  background-color: #2b3fd6;
+}
+
+.neon-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--border-color);
+}
+
+.neon-btn:disabled {
+  background-color: #cccccc !important;
+  color: #666666 !important;
+  cursor: not-allowed;
+  transform: translate(0, 0) !important;
+  box-shadow: 4px 4px 0 var(--border-color) !important;
+}
+
+.neon-btn-mint {
+  background: var(--accent-mint);
+  color: var(--text-main);
+}
+
+.neon-btn-mint:hover {
+  background: #00cca8;
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   🔄 3D Flip for brutalist Anki Card (iPad / PC 見開きデュアルカード最適化)
+   ========================================================================== */
+.anki-dual-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  /* iPad縦やスマホ等の狭い画面では縦に並べる */
+  .anki-dual-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.card-container {
+  perspective: 1000px;
+  width: 100%;
+  max-width: 540px; /* 横幅を調整して左右並びが綺麗に収まるように */
+  height: 620px;    /* 高さを少し高めに */
+  margin: 10px 0;
+  position: relative;
+  touch-action: none;
+}
+
+@media (max-width: 1024px) {
+  .card-container {
+    max-width: 580px;
+    margin: 10px auto;
+  }
+}
+
+.anki-card {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.anki-card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 0;
+  border: 4px solid var(--border-color);
+  box-sizing: border-box;
+}
+
+/* 前面も選択肢が多いと見切れるのを防ぐためスクロール対応にし、スクロールバーを隠す */
+.card-front {
+  background: var(--panel-bg);
+  box-shadow: 8px 8px 0 var(--accent-blue);
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;    /* Firefox */
+}
+
+.card-front::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.card-back {
+  background: var(--panel-bg);
+  transform: rotateY(180deg);
+  box-shadow: 8px 8px 0 var(--accent-yellow);
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;    /* Firefox */
+}
+
+.card-back::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* ==========================================================================
+   🎮 クイズ判定・選択肢の◯✕判定スタイル
+   ========================================================================== */
+.choice-box {
+  padding: 14px 18px;
+  font-size: 13px;
+  text-align: left;
+  background: var(--bg-color);
+  border: 3px solid var(--border-color);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s, background-color 0.15s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.choice-box:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--border-color);
+  background-color: #fff;
+}
+
+.choice-box:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--border-color);
+}
+
+/* 正解時のスタイル */
+.choice-correct {
+  background-color: var(--accent-mint) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: 4px 4px 0 var(--border-color) !important;
+  transform: translate(-2px, -2px) !important;
+}
+
+/* 不正解時のスタイル */
+.choice-incorrect {
+  background-color: var(--primary-color) !important;
+  color: #ffffff !important;
+  border-color: var(--border-color) !important;
+  box-shadow: 4px 4px 0 var(--border-color) !important;
+  transform: translate(-2px, -2px) !important;
+}
+
+/* ◯/✕ インジケータラベル */
+.choice-badge {
+  font-size: 16px;
+  font-weight: 900;
+  padding: 2px 8px;
+  border: 2px solid var(--border-color);
+  background: #ffffff;
+  color: var(--text-main);
+  box-shadow: 2px 2px 0 var(--border-color);
+}
+
+.choice-incorrect .choice-badge {
+  color: var(--primary-color);
+}
+
+.choice-correct .choice-badge {
+  color: #00cca8;
+}
+
+/* ==========================================================================
+   🗺️ SVG MindMap Interactive Node Animations (ホバー時の「ぶるぶる」振動を完全解消)
+   ========================================================================== */
+.node-glow {
+  stroke-width: 3px;
+  transition: all 0.2s ease-in-out;
+}
+
+.node-glow:hover {
+  stroke-width: 5px; /* 枠線を太くして安全にホバーをアピール */
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   🔄 3D Flip for Mini Sub-Cards (解説パタパタカード用)
+   ========================================================================== */
+.sub-card-container {
+  perspective: 600px;
+  width: 100%;
+  height: 110px; /* ミニカードごとの高さ */
+  margin-bottom: 12px;
+  position: relative;
+  touch-action: none;
+}
+
+.sub-anki-card {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.sub-anki-card.is-flipped {
+  transform: rotateX(180deg); /* 縦方向にくるっと回す */
+}
+
+.sub-card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 0;
+  border: 3px solid var(--border-color);
+  box-sizing: border-box;
+}
+
+.sub-card-front {
+  background: var(--panel-bg);
+  box-shadow: 4px 4px 0 var(--border-color);
+  transition: background-color 0.15s;
+}
+
+.sub-card-front:hover {
+  background-color: var(--accent-yellow);
+}
+
+.sub-card-back {
+  background: var(--panel-bg);
+  transform: rotateX(180deg);
+  box-shadow: 4px 4px 0 var(--accent-blue);
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;    /* Firefox */
+}
+
+.sub-card-back::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* ==========================================================================
+   📱 Layout
+   ========================================================================== */
+.app-header {
+  padding: env(safe-area-inset-top, 20px) 20px 15px;
+  background: var(--panel-bg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 4px solid var(--border-color);
+}
+
+.app-content {
+  flex: 1;
+  padding: 20px;
+  padding-bottom: calc(85px + env(safe-area-inset-bottom, 20px));
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(65px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--panel-bg);
+  border-top: 4px solid var(--border-color);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+  box-shadow: 0 -4px 0 rgba(0,0,0,0.05);
+}
+
+.nav-item {
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+  font-family: var(--font-outfit);
+  font-weight: 700;
+  padding: 4px 10px;
+  border: 2px solid transparent;
+}
+
+.nav-item.active {
+  background-color: var(--accent-yellow);
+  border: 2px solid var(--border-color);
+  box-shadow: 2px 2px 0 var(--border-color);
+  transform: translate(-1px, -1px);
+}
+
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--text-main);
+  stroke-width: 2.5px;
+}
+
+/* ==========================================================================
+   📊 Brutalist Progress bar
+   ========================================================================== */
+.progress-neon-bar {
+  width: 100%;
+  height: 14px;
+  background: #e2dcd0;
+  border: 3px solid var(--border-color);
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-neon-fill {
+  height: 100%;
+  background: var(--primary-color);
+  border-right: 3px solid var(--border-color);
+  transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
