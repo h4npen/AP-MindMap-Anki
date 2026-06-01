@@ -65,7 +65,7 @@ function getChoiceChar(choice: 'a' | 'b' | 'c' | 'd'): string {
 }
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'anki' | 'mindmap' | 'sheet'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'anki' | 'mindmap' | 'sheet' | 'ebbinghaus'>('dashboard');
   const [cards, setCards] = useState<QuestionCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -76,6 +76,7 @@ export default function App() {
 
   // 選択肢のインタラクティブな判定用状態 ('a' | 'b' | 'c' | 'd' | null)
   const [selectedChoice, setSelectedChoice] = useState<'a' | 'b' | 'c' | 'd' | null>(null);
+  const [showJudge, setShowJudge] = useState<'correct' | 'incorrect' | null>(null);
 
   // 右側の解説カードがアンロック（3D反転）されているか
   const [isRightCardFlipped, setIsRightCardFlipped] = useState(false);
@@ -116,6 +117,7 @@ export default function App() {
   useEffect(() => {
     setSelectedChoice(null);
     setIsRightCardFlipped(false);
+    setShowJudge(null);
   }, [currentCardIndex, activeTab, ankiMode]);
 
   // 対象Ankiカードの抽出 (モード別)
@@ -126,24 +128,45 @@ export default function App() {
   // ==========================================
   // 📸 2. 画像アップロード ＆ Base64変換 ➔ GAS送信 (POST)
   // ==========================================
+
+  // 画像をCanvas経由で圧縮するユーティリティ（Vercel 4.5MB上限対策）
+  const compressImage = (file: File, maxWidth = 1280, quality = 0.75): Promise<{ base64: string; mimeType: string }> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const scale = Math.min(1, maxWidth / img.width);
+        const w = Math.round(img.width * scale);
+        const h = Math.round(img.height * scale);
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return reject(new Error('Canvas context error'));
+        ctx.drawImage(img, 0, 0, w, h);
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve({ base64: dataUrl.split(',')[1], mimeType: 'image/jpeg' });
+      };
+      img.onerror = reject;
+      img.src = url;
+    });
+  };
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
 
     setUploading(true);
 
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64Data = reader.result as string;
-      const rawBase64 = base64Data.split(',')[1];
-
+    compressImage(file).then(async ({ base64: rawBase64, mimeType }) => {
       try {
         const response = await fetch(GAS_API_URL, {
           method: 'POST',
           body: JSON.stringify({
             action: 'upload',
             image: rawBase64,
-            mimeType: file.type || 'image/jpeg'
+            mimeType
           })
         });
         const text = await response.text();
@@ -168,9 +191,13 @@ export default function App() {
       } finally {
         setUploading(false);
       }
-    };
-    reader.readAsDataURL(file);
+    }).catch(err => {
+      console.error('Compression error:', err);
+      alert('⚠️ 画像の圧縮に失敗しました。別の画像をお試しください。');
+      setUploading(false);
+    });
   };
+
 
   // ==========================================
   // 🔁 3. Anki学習状況の更新 (POST)
@@ -218,6 +245,10 @@ export default function App() {
     setSelectedChoice(choice);
     // 回答したら右側のカードをフリップして自動アンロック
     setIsRightCardFlipped(true);
+
+    const choiceChar = getChoiceChar(choice);
+    const isCorrectChoice = choiceChar === activeAnkiCards[currentCardIndex].correct_answer;
+    setShowJudge(isCorrectChoice ? 'correct' : 'incorrect');
   };
 
   // 検索フィルタリングロジック
@@ -250,32 +281,9 @@ export default function App() {
   // ==========================================
   if (uploading) {
     return (
-      <div id="root" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100svh', backgroundColor: 'var(--bg-color)' }}>
-        <div style={{ textAlign: 'center', padding: '30px', maxWidth: '480px' }}>
-          
-          <div className="glass-panel" style={{ 
-            display: 'inline-block', 
-            padding: '24px', 
-            backgroundColor: 'var(--accent-yellow)', 
-            borderWidth: '4px',
-            borderColor: 'var(--border-color)',
-            boxShadow: '6px 6px 0 var(--border-color)',
-            marginBottom: '20px'
-          }}>
-            {/* spinクラスのアニメーションで激しくくるくる回る */}
-            <div style={{ fontSize: '72px', animation: 'spin 2s linear infinite', display: 'inline-block' }}>🌀</div>
-          </div>
-          
-          <div className="glass-panel" style={{ padding: '20px', backgroundColor: '#fff', borderLeftWidth: '8px', borderLeftColor: 'var(--accent-blue)' }}>
-            <h2 style={{ fontSize: '18px', fontWeight: '900', color: 'var(--text-main)', marginBottom: '8px', textTransform: 'uppercase' }}>
-              🔮 Gemini Analyzing Past Question...
-            </h2>
-            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: 'bold', lineHeight: '1.6' }}>
-              Geminiがスプレッドシートの裏で画像を一生懸命解析しています。<br />
-              <strong>「過去問の文字起こし」「選択肢の整理」「文系向けの例え話」「ひっかけの罠の解説」</strong>を自動生成してカードに登録するまで、<strong>約15〜30秒ほど</strong>このままお待ちください！
-            </p>
-          </div>
-        </div>
+      <div className="loading-overlay-wl" style={{ display: 'flex' }}>
+        <div className="spinner-wl"></div>
+        <div className="loading-text-wl">解析中...</div>
       </div>
     );
   }
@@ -635,6 +643,14 @@ export default function App() {
                       <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 'bold', textAlign: 'center', marginTop: 'auto' }}>
                         {selectedChoice === null ? '👉 選択肢を選んで解答してください（◯/✕判定が出ます）' : '✅ 解答完了！右側の解説を確認しましょう！'}
                       </div>
+
+                      {/* 正誤判定オーバーレイアニメーション */}
+                      {showJudge === 'correct' && (
+                        <div className="judge-overlay show-correct">◯</div>
+                      )}
+                      {showJudge === 'incorrect' && (
+                        <div className="judge-overlay show-incorrect">✕</div>
+                      )}
                     </div>
                   </div>
 
@@ -1000,6 +1016,45 @@ export default function App() {
 
           </div>
         )}
+
+        {/* 🧠 忘却曲線（エビングハウス）タブ */}
+        {activeTab === 'ebbinghaus' && (
+          <div className="glass-panel" style={{ padding: '20px', minHeight: '600px' }}>
+            <h2 style={{ fontSize: '18px', fontWeight: '900', borderBottom: '3px solid var(--border-color)', paddingBottom: '12px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>🧠</span> 忘却曲線（エビングハウス）
+            </h2>
+            <div style={{ display: 'flex', gap: '15px', overflowX: 'auto', paddingBottom: '10px' }}>
+              {[
+                { level: 1, title: 'Lv.1 翌日復習', color: 'var(--primary-color)' },
+                { level: 2, title: 'Lv.2 3日後', color: '#ff9800' },
+                { level: 3, title: 'Lv.3 1週間後', color: 'var(--accent-yellow)' },
+                { level: 4, title: 'Lv.4 2週間後', color: 'var(--accent-blue)' },
+                { level: 5, title: 'Lv.5 定着済(1ヶ月)', color: 'var(--accent-mint)' }
+              ].map(bucket => {
+                const bucketCards = cards.filter(c => c.review_level === bucket.level);
+                return (
+                  <div key={bucket.level} style={{ minWidth: '200px', flex: '1', border: '3px solid var(--border-color)', background: 'var(--bg-color)', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ background: bucket.color, color: bucket.level === 3 || bucket.level === 5 ? 'var(--text-main)' : '#fff', padding: '10px', fontWeight: '900', borderBottom: '3px solid var(--border-color)', textAlign: 'center' }}>
+                      {bucket.title} ({bucketCards.length})
+                    </div>
+                    <div style={{ padding: '10px', display: 'flex', flexDirection: 'column', gap: '10px', overflowY: 'auto', maxHeight: '450px' }}>
+                      {bucketCards.map(c => (
+                        <div key={c.id} className="glass-panel" style={{ padding: '10px', cursor: 'pointer', fontSize: '13px', fontWeight: 'bold' }} onClick={() => {
+                          setAnkiMode('all');
+                          const index = cards.findIndex(card => card.id === c.id);
+                          setCurrentCardIndex(index !== -1 ? index : 0);
+                          setActiveTab('anki');
+                        }}>
+                          {c.key_word || c.question}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Bottom Navigation */}
@@ -1031,6 +1086,12 @@ export default function App() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
           </svg>
           全データ
+        </a>
+        <a href="#ebbinghaus" className={`nav-item ${activeTab === 'ebbinghaus' ? 'active' : ''}`} onClick={() => setActiveTab('ebbinghaus')}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+          忘却曲線
         </a>
       </nav>
     </div>

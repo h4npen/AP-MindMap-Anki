@@ -439,3 +439,72 @@ body {
   border-right: 3px solid var(--border-color);
   transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+/* ==========================================================================
+   🔄 WL-LogicLab Loading Overlay (洗練されたスピナー)
+   ========================================================================== */
+.loading-overlay-wl {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(244, 245, 243, 0.85);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+}
+
+.spinner-wl {
+  width: 44px; height: 44px;
+  border: 4px solid var(--border-color);
+  border-top: 4px solid var(--accent-mint);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text-wl {
+  font-weight: 700;
+  color: var(--text-main);
+  font-size: 1rem;
+  letter-spacing: 0.08rem;
+}
+
+/* ==========================================================================
+   ⭕❌ 正誤判定アニメーション（過去問道場風）
+   ========================================================================== */
+.judge-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  font-size: 150px;
+  font-weight: 900;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.judge-overlay.show-correct {
+  color: var(--primary-color); /* 赤色の◯ */
+  animation: popOut 0.8s ease-out forwards;
+}
+
+.judge-overlay.show-incorrect {
+  color: var(--accent-blue); /* 青色の✕ */
+  animation: popOut 0.8s ease-out forwards;
+}
+
+@keyframes popOut {
+  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+  20% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; }
+  80% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
+}
