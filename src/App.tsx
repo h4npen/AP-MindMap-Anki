@@ -1,6 +1,65 @@
 import React, { useState, useEffect } from 'react';
 
 // ==========================================
+// 🟥 強力暗記！虫食い穴埋め（デジタル赤シート）コンポーネント
+// ==========================================
+interface MaskedTextProps {
+  text: string;
+}
+
+export function MaskedText({ text }: MaskedTextProps) {
+  const [unmaskedMap, setUnmaskedMap] = useState<{ [key: string]: boolean }>({});
+
+  if (!text) return null;
+
+  // 「【...】」にマッチする正規表現で分割
+  const parts = text.split(/(【[^】]+】)/g);
+
+  const toggleMask = (key: string) => {
+    setUnmaskedMap(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  return (
+    <>
+      {parts.map((part, index) => {
+        const isTarget = part.startsWith('【') && part.endsWith('】');
+        if (isTarget) {
+          const innerText = part.slice(1, -1);
+          const maskKey = `${index}-${part}`;
+          const isRevealed = unmaskedMap[maskKey];
+          return (
+            <span
+              key={index}
+              onClick={() => toggleMask(maskKey)}
+              style={{
+                backgroundColor: isRevealed ? 'var(--accent-yellow)' : '#2d2d2d',
+                color: isRevealed ? 'var(--text-main)' : 'transparent',
+                border: '2px solid var(--border-color)',
+                padding: '1px 8px',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                userSelect: isRevealed ? 'text' : 'none',
+                fontWeight: '900',
+                transition: 'background-color 0.15s, color 0.15s',
+                display: 'inline-block',
+                margin: '1px 3px',
+                boxShadow: isRevealed ? 'none' : '2px 2px 0 var(--border-color)',
+                fontSize: '12px',
+                verticalAlign: 'middle'
+              }}
+              title={isRevealed ? "クリックで隠す" : "クリックで開示"}
+            >
+              {innerText}
+            </span>
+          );
+        }
+        return <span key={index}>{part}</span>;
+      })}
+    </>
+  );
+}
+
+// ==========================================
 // ⚙️ GAS APIの設定（Vercel仲介プロキシ経由）
 // ==========================================
 const GAS_API_URL = '/api/gas';
@@ -82,6 +141,13 @@ export default function App() {
   // 右側の解説カードがアンロック（3D反転）されているか
   const [isRightCardFlipped, setIsRightCardFlipped] = useState(false);
 
+  // 📚 斜め読み防止！解説アコーディオンの開示ステップ状態
+  const [revealedSteps, setRevealedSteps] = useState<{ conclusion: boolean; analogy: boolean; trap: boolean }>({
+    conclusion: true, // 結論は最初から表示
+    analogy: false,
+    trap: false
+  });
+
   // データ一覧用検索キーワード
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -131,6 +197,7 @@ export default function App() {
     setSelectedChoice(null);
     setIsRightCardFlipped(false);
     setShowJudge(null);
+    setRevealedSteps({ conclusion: true, analogy: false, trap: false });
   }, [currentCardIndex, activeTab, ankiMode]);
 
   // 対象Ankiカードの抽出 (モード別)
@@ -726,38 +793,82 @@ export default function App() {
                           <div style={{ borderBottom: '3px solid var(--border-color)', marginBottom: '15px' }} />
                         </div>
 
-                        {/* 常時一括表示される3つのセクション */}
+                        {/* 📚 斜め読み防止！アコーディオン＆虫食い赤シート解説 */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', textAlign: 'left' }}>
                               
                           {/* 1. 結論 */}
-                          <div className="glass-panel" style={{ padding: '12px 16px', borderLeftWidth: '8px', borderLeftColor: 'var(--accent-blue)' }}>
+                          <div className="glass-panel" style={{ padding: '12px 16px', borderLeftWidth: '8px', borderLeftColor: 'var(--accent-blue)', display: 'block' }}>
                             <strong style={{ fontSize: '13px', color: 'var(--accent-blue)', display: 'block', marginBottom: '6px' }}>
                               ① 結論 ＆ 重要キーワード 🔍
                             </strong>
                             <p style={{ fontSize: '12.5px', lineHeight: '1.6', color: 'var(--text-main)', fontWeight: '700', whiteSpace: 'pre-wrap', margin: 0 }}>
-                              {activeAnkiCards[currentCardIndex].explanation_conclusion}
+                              <MaskedText text={activeAnkiCards[currentCardIndex].explanation_conclusion} />
                             </p>
                           </div>
+
+                          {/* ステップ1完了時の、ステップ2「例え話」展開ボタン */}
+                          {!revealedSteps.analogy && (
+                            <button
+                              className="neon-btn neon-btn-mint"
+                              style={{
+                                width: '100%',
+                                justifyContent: 'center',
+                                fontSize: '13px',
+                                padding: '10px 14px',
+                                boxShadow: '3px 3px 0 var(--border-color)',
+                                fontWeight: '900',
+                                cursor: 'pointer'
+                              }}
+                              onClick={() => setRevealedSteps(prev => ({ ...prev, analogy: true }))}
+                            >
+                              💡 次のステップ：例え話でかみ砕く ➔
+                            </button>
+                          )}
 
                           {/* 2. 身近な例え話 */}
-                          <div className="glass-panel" style={{ padding: '12px 16px', borderLeftWidth: '8px', borderLeftColor: 'var(--accent-yellow)' }}>
-                            <strong style={{ fontSize: '13px', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>
-                              ② 身近な日常生活の例え話 💡
-                            </strong>
-                            <p style={{ fontSize: '12.5px', lineHeight: '1.6', color: 'var(--text-main)', fontWeight: '700', whiteSpace: 'pre-wrap', margin: 0 }}>
-                              {activeAnkiCards[currentCardIndex].explanation_analogy}
-                            </p>
-                          </div>
+                          {revealedSteps.analogy && (
+                            <div className="glass-panel" style={{ padding: '12px 16px', borderLeftWidth: '8px', borderLeftColor: 'var(--accent-yellow)', animation: 'fadeIn 0.3s ease-out' }}>
+                              <strong style={{ fontSize: '13px', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>
+                                ② 身近な日常生活の例え話 💡
+                              </strong>
+                              <p style={{ fontSize: '12.5px', lineHeight: '1.6', color: 'var(--text-main)', fontWeight: '700', whiteSpace: 'pre-wrap', margin: 0 }}>
+                                <MaskedText text={activeAnkiCards[currentCardIndex].explanation_analogy} />
+                              </p>
+                            </div>
+                          )}
+
+                          {/* ステップ2完了時の、ステップ3「罠」展開ボタン */}
+                          {revealedSteps.analogy && !revealedSteps.trap && (
+                            <button
+                              className="neon-btn"
+                              style={{
+                                width: '100%',
+                                justifyContent: 'center',
+                                fontSize: '13px',
+                                padding: '10px 14px',
+                                background: 'var(--accent-yellow)',
+                                color: 'var(--text-main)',
+                                boxShadow: '3px 3px 0 var(--border-color)',
+                                fontWeight: '900',
+                                cursor: 'pointer'
+                              }}
+                              onClick={() => setRevealedSteps(prev => ({ ...prev, trap: true }))}
+                            >
+                              ⚠️ 最終ステップ：引っかけの罠を暴く ➔
+                            </button>
+                          )}
 
                           {/* 3. 罠の指摘 */}
-                          <div className="glass-panel" style={{ padding: '12px 16px', borderLeftWidth: '8px', borderLeftColor: 'var(--primary-color)' }}>
-                            <strong style={{ fontSize: '13px', color: 'var(--primary-color)', display: 'block', marginBottom: '6px' }}>
-                              ③ 引っかけの罠 ＆ 回避ポイント ⚠️
-                            </strong>
-                            <p style={{ fontSize: '12.5px', lineHeight: '1.6', color: 'var(--text-main)', fontWeight: '700', whiteSpace: 'pre-wrap', margin: 0 }}>
-                              {activeAnkiCards[currentCardIndex].explanation_trap}
-                            </p>
-                          </div>
+                          {revealedSteps.trap && (
+                            <div className="glass-panel" style={{ padding: '12px 16px', borderLeftWidth: '8px', borderLeftColor: 'var(--primary-color)', animation: 'fadeIn 0.3s ease-out' }}>
+                              <strong style={{ fontSize: '13px', color: 'var(--primary-color)', display: 'block', marginBottom: '6px' }}>
+                                ③ 引っかけの罠 ＆ 回避ポイント ⚠️
+                              </strong>
+                              <p style={{ fontSize: '12.5px', lineHeight: '1.6', color: 'var(--text-main)', fontWeight: '700', whiteSpace: 'pre-wrap', margin: 0 }}>
+                                <MaskedText text={activeAnkiCards[currentCardIndex].explanation_trap} />
+                              </p>
+                            </div>
+                          )}
 
                         </div>
 
