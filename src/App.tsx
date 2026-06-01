@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 const GAS_API_URL = '/api/gas';
 
 // 環境変数からスプレッドシートの直接のURLを取得
-const SPREADSHEET_URL = import.meta.env.VITE_SPREADSHEET_URL || 'https://docs.google.com/spreadsheets/d/1X5l8g3UwPg3Q6oNdawS9_e2dcd0fVITE_GAS_URL_NOT_FOUND/edit';
+const SPREADSHEET_URL = import.meta.env.VITE_SPREADSHEET_URL || 'https://docs.google.com/spreadsheets/d/1YZ_G_cocHF_99V5DCIF_tiVqvZY2ejykP3sovyC8eCQ/edit';
 
 interface QuestionCard {
   id: string;
