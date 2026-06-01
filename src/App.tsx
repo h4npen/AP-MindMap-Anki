@@ -10,7 +10,7 @@ const SPREADSHEET_URL = import.meta.env.VITE_SPREADSHEET_URL || 'https://docs.go
 
 interface QuestionCard {
   id: string;
-  question: string;
+  question: string; // 🔍 用語 (GASのB列に対応)
   choice_a: string;
   choice_b: string;
   choice_c: string;
@@ -21,10 +21,11 @@ interface QuestionCard {
   explanation_trap: string;       // ③ 罠
   category: string;
   sub_category: string;
-  key_word: string;
+  text_question: string; // 🔍 問題文 (GASのE列に対応)
   review_level: number;
   status: '未定着' | '定着済';
   search_key?: string; // 🔍 道場検索キー (例: "令和5年秋期 問1")
+  past_url?: string; // 🔍 過去問道場URL (GASのO列に対応)
 }
 
 // 🔍 道場検索キーから過去問道場のURLを自動生成する関数
@@ -265,9 +266,9 @@ export default function App() {
 
   // 検索フィルタリングロジック
   const filteredCards = cards.filter(c => 
-    c.key_word.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    c.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    c.sub_category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (c.question && c.question.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (c.text_question && c.text_question.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (c.sub_category && c.sub_category.toLowerCase().includes(searchQuery.toLowerCase())) ||
     (c.search_key && c.search_key.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
@@ -605,7 +606,7 @@ export default function App() {
                           })()}
                         </div>
                         <p style={{ fontSize: '16px', lineHeight: '1.6', textAlign: 'left', fontWeight: '700', color: 'var(--text-main)' }}>
-                          {activeAnkiCards[currentCardIndex].question}
+                          {activeAnkiCards[currentCardIndex].text_question}
                         </p>
                       </div>
 
@@ -842,7 +843,7 @@ export default function App() {
 
                   {/* 動的に自動配置される赤い弱点ノード */}
                   {mapNodes.map((node) => (
-                    <g key={node.id} onClick={() => setSelectedMapNode(node.key_word)} style={{ cursor: 'pointer' }}>
+                    <g key={node.id} onClick={() => setSelectedMapNode(node.question)} style={{ cursor: 'pointer' }}>
                       <circle 
                         cx={node.cx} 
                         cy={node.cy} 
@@ -861,7 +862,7 @@ export default function App() {
                         textAnchor="middle" 
                         pointerEvents="none"
                       >
-                        {node.key_word.length > 8 ? `${node.key_word.substring(0, 7)}…` : node.key_word}
+                        {node.question && node.question.length > 8 ? `${node.question.substring(0, 7)}…` : (node.question || '')}
                       </text>
                     </g>
                   ))}
@@ -880,23 +881,23 @@ export default function App() {
                 </button>
                 <h4 style={{ fontSize: '16px', fontWeight: '900', color: 'var(--text-main)', marginBottom: '8px' }}>{selectedMapNode}</h4>
 
-                {cards.some(c => c.key_word === selectedMapNode || c.sub_category === selectedMapNode) ? (
+                {cards.some(c => c.question === selectedMapNode || c.sub_category === selectedMapNode) ? (
                   <div>
                     <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '10px', fontWeight: 'bold' }}>
-                      紐づく過去問が {cards.filter(c => c.key_word === selectedMapNode || c.sub_category === selectedMapNode).length} 件あります。
+                      紐づく過去問が {cards.filter(c => c.question === selectedMapNode || c.sub_category === selectedMapNode).length} 件あります。
                     </p>
                     <button
                       className="neon-btn neon-btn-mint"
                       style={{ padding: '8px 16px', fontSize: '12px' }}
                       onClick={() => {
-                        const index = activeAnkiCards.findIndex(c => c.key_word === selectedMapNode || c.sub_category === selectedMapNode);
+                        const index = activeAnkiCards.findIndex(c => c.question === selectedMapNode || c.sub_category === selectedMapNode);
                         if (index !== -1) {
                           setCurrentCardIndex(index);
                           setActiveTab('anki');
                         } else {
                           // 定着済でも全カードモードに切り替えて遷移
                           setAnkiMode('all');
-                          const allIndex = cards.findIndex(c => c.key_word === selectedMapNode || c.sub_category === selectedMapNode);
+                          const allIndex = cards.findIndex(c => c.question === selectedMapNode || c.sub_category === selectedMapNode);
                           setCurrentCardIndex(allIndex !== -1 ? allIndex : 0);
                           setActiveTab('anki');
                         }
@@ -992,7 +993,7 @@ export default function App() {
                           setActiveTab('anki');
                         }}
                       >
-                        <td style={{ padding: '12px 8px', fontWeight: 'bold' }}>{c.key_word}</td>
+                        <td style={{ padding: '12px 8px', fontWeight: 'bold' }}>{c.question}</td>
                         <td style={{ padding: '12px 8px', color: 'var(--text-secondary)' }}>{c.sub_category}</td>
                         <td style={{ padding: '12px 8px', fontFamily: 'var(--font-outfit)', fontWeight: 'bold' }} onClick={(e) => {
                           const url = getPastQuestionUrl(c.search_key);
@@ -1057,7 +1058,7 @@ export default function App() {
                           setCurrentCardIndex(index !== -1 ? index : 0);
                           setActiveTab('anki');
                         }}>
-                          {c.key_word || c.question}
+                          {c.question}
                         </div>
                       ))}
                     </div>
@@ -1115,7 +1116,8 @@ function getMockData(): QuestionCard[] {
   return [
     {
       id: 'mock-1',
-      question: 'DNSキャッシュポイズニング攻撃に対する根本的な対策はどれか。',
+      question: 'DNSキャッシュポイズニング',
+      text_question: 'DNSキャッシュポイズニング攻撃に対する根本的な対策はどれか。',
       choice_a: 'DNSサーバでゾーン転送を許可するIPアドレスを制限する。',
       choice_b: 'DNS応答に含まれる署名を検証するDNSSECを導入する。',
       choice_c: 'DNSクエリの送信元ポート番号を固定する。',
@@ -1126,14 +1128,14 @@ function getMockData(): QuestionCard[] {
       explanation_trap: '【解法のポイント】ポート番号固定（ウ）やTTL（エ）は小手先の対策であり根本解決になりません。ゾーン転送制限（ア）はサーバ設定の話でポイズニングとは関係ありません。',
       category: 'テクノロジ系',
       sub_category: 'セキュリティ',
-      key_word: 'DNSキャッシュポイズニング',
       review_level: 2,
       status: '未定着',
       search_key: '令和5年秋期 問36'
     },
     {
       id: 'mock-2',
-      question: 'WAF（Web Application Firewall）を導入することで防御できる攻撃はどれか。',
+      question: 'WAF',
+      text_question: 'WAF（Web Application Firewall）を導入することで防御できる攻撃はどれか。',
       choice_a: 'サーバ内のOSの脆弱性を突いた不正アクセス',
       choice_b: 'Webアプリケーションの脆弱性を突いたSQLインジェクション',
       choice_c: 'DNSの情報を書き換えるキャッシュポイズニング',
@@ -1144,14 +1146,14 @@ function getMockData(): QuestionCard[] {
       explanation_trap: '【解法のポイント】OSの脆弱性（ア）はWAFの防備対象外でファイアウォールやIPS of 領分です。DNSポイズニング（ウ）やスパム（エ）はプロトコルが全く異なり、WAFでは防げません。',
       category: 'テクノロジ系',
       sub_category: 'セキュリティ',
-      key_word: 'WAF',
       review_level: 5,
       status: '定着済',
       search_key: '令和4年秋期 問41'
     },
     {
       id: 'mock-3',
-      question: 'OSI基本参照モデルにおいて、ルータが動作し経路選択を行うレイヤはどれか。',
+      question: 'ルータ',
+      text_question: 'OSI基本参照モデルにおいて、ルータが動作し経路選択を行うレイヤはどれか。',
       choice_a: '物理層',
       choice_b: 'データリンク層',
       choice_c: 'ネットワーク層',
@@ -1162,7 +1164,6 @@ function getMockData(): QuestionCard[] {
       explanation_trap: '【解法のポイント】物理層（ア）は電気信号（光ケーブル等）、データリンク層（イ）はMACアドレス（スイッチ）、トランスポート層（エ）はポート番号（データ転送信頼性）です。',
       category: 'テクノロジ系',
       sub_category: 'ネットワーク',
-      key_word: 'ルータ',
       review_level: 1,
       status: '未定着',
       search_key: '令和3年春期 問33'
