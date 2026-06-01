@@ -4,7 +4,17 @@
 // ==========================================
 
 const GEMINI_API_KEY = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
+const SPREADSHEET_ID = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
 const SHEET_NAME = "シート1"; // ご自身のシート名に合わせて変更してください
+
+// スプレッドシートを取得するヘルパー
+function getSheet() {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  if (!ss) throw new Error('スプレッドシートが見つかりません。SPREADSHEET_ID を確認してください。');
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) throw new Error('シートが見つかりません: ' + SHEET_NAME);
+  return sheet;
+}
 
 function doPost(e) {
   try {
@@ -29,10 +39,7 @@ function doPost(e) {
 
 function doGet(e) {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
-    if (!sheet) {
-      throw new Error("シートが見つかりません: " + SHEET_NAME);
-    }
+    const sheet = getSheet();
     
     // A2からQ列の最終行まで取得 (17列)
     const lastRow = sheet.getLastRow();
@@ -178,8 +185,7 @@ function getPastQuestionUrl(searchKey) {
 // 💾 スプレッドシート保存ロジック (17列構成)
 // ------------------------------------------
 function saveToSpreadsheet(cardData) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
-  if (!sheet) throw new Error("シートが見つかりません: " + SHEET_NAME);
+  const sheet = getSheet();
 
   const newId = 'card-' + new Date().getTime();
   const status = '未定着';

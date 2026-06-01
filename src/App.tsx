@@ -93,12 +93,24 @@ export default function App() {
   const fetchCards = async () => {
     try {
       setLoading(true);
-      const response = await fetch(GAS_API_URL);
-      const json = await response.json();
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15秒タイムアウト
+      const response = await fetch(GAS_API_URL, { signal: controller.signal });
+      clearTimeout(timeoutId);
+      const text = await response.text();
+      let json;
+      try {
+        json = JSON.parse(text);
+      } catch {
+        console.error('GAS response (not JSON):', text.substring(0, 500));
+        setCards(getMockData());
+        return;
+      }
       if (json.status === 'success') {
         setCards(json.data);
       } else {
         console.error('GAS Error:', json.message);
+        alert('⚠️ データ取得エラー: ' + json.message);
         setCards(getMockData());
       }
     } catch (e) {
