@@ -31,7 +31,18 @@ function doPost(e) {
       return createJsonResponse({ status: 'success', data: savedCard });
     }
 
-    return createJsonResponse({ status: 'error', message: 'Unknown action' });
+    if (action === 'import_from_csv') {
+      const searchKey = postData.searchKey;
+      const category = postData.category || '';
+      const subCategory = postData.subCategory || '';
+      
+      const newCard = processTextWithGemini(searchKey, category, subCategory);
+      const savedCard = saveToSpreadsheet(newCard);
+      
+      return createJsonResponse({ status: 'success', data: savedCard });
+    }
+
+    return createJsonResponse({ status: 'error', message: 'Unknown action: ' + action });
   } catch (error) {
     return createJsonResponse({ status: 'error', message: error.toString() });
   }
@@ -92,8 +103,8 @@ function processImageWithGemini(base64Image, mimeType) {
 提供された過去問のスクリーンショット画像を読み取り、以下のJSONフォーマットで完全に解析してください。
 
 【3つの解説ルールを絶対に守ること】
-1. 結論ファースト (explanation_conclusion): まずは正解の記号と、その理由を一言でズバッと答えてください。
-2. 超絶かみ砕き解説 (explanation_analogy): 教科書的な専門用語の羅列は禁止。必ず「料理」「お店の経営」「日常生活のトラブル」などの『身近な例え話』に変換し、直感的にイメージできるよう徹底的に翻訳してください。
+1. 結論ファースト (explanation_conclusion): まずは正解의記号と、その理由を一言でズバッと答えてください。
+2. 超絶かみ砕き解説 (explanation_analogy): 教科書的な専門用語の羅列は禁止。必ず「料理」「お店の経営」「日常生活のトラブル」などの『身近な例え話』に変換し、3行以内の非常にシンプルかつコンパクトな文章で、直感的にイメージできるよう端的に説明してください（長文でのダラダラとした説明は厳禁です）。
 3. 引っかかりやすい罠の指摘 (explanation_trap): 「なぜ他の選択肢を選ぶと間違えるのか」「人間の直感や勘違いを利用した、どんな引っかけが仕組まれているか」を具体的に分析し、回避策を教えてください。
 
 【JSONフォーマット要件】
@@ -126,6 +137,77 @@ function processImageWithGemini(base64Image, mimeType) {
             data: base64Image
           }
         }
+      ]
+    }]
+  };
+
+  const options = {
+    method: 'post',
+    contentType: 'application/json',
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  };
+
+  const response = UrlFetchApp.fetch(url, options);
+  const json = JSON.parse(response.getContentText());
+
+  if (json.error) {
+    throw new Error("Gemini API Error: " + JSON.stringify(json.error));
+  }
+
+  const rawText = json.candidates[0].content.parts[0].text;
+  const cleanJsonText = rawText.replace(/```json\n?|```/g, '').trim();
+  
+  try {
+    return JSON.parse(cleanJsonText);
+  } catch (e) {
+    throw new Error("Geminiが正しいJSONを返しませんでした: " + cleanJsonText);
+  }
+}
+
+// ------------------------------------------
+// 🧠 Gemini API 連携ロジック (テキストベース: CSVインポート用)
+// ------------------------------------------
+function processTextWithGemini(searchKey, category, subCategory) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+  
+  const prompt = `
+あなたは「応用情報技術者試験」の超優秀な家庭教師です。
+以下の応用情報技術者試験の過去問について、実際の問題文、選択肢、正答を調査・特定し、指定のJSONフォーマットで完全に解析してください。
+
+【過去問の検索キー】
+${searchKey}
+(カテゴリ分類のヒント: 大カテゴリ=${category}, 小カテゴリ=${subCategory})
+
+【3つの解説ルールを絶対に守ること】
+1. 結論ファースト (explanation_conclusion): まずは正解の記号と、その理由を一言でズバッと答えてください。
+2. 超絶かみ砕き解説 (explanation_analogy): 教科書的な専門用語の羅列は禁止。必ず「料理」「お店の経営」「日常生活のトラブル」などの『身近な例え話』に変換し、3行以内の非常にシンプルかつコンパクトな文章で、直感的にイメージできるよう端的に説明してください（長文でのダラダラとした説明は厳禁です）。
+3. 引っかかりやすい罠の指摘 (explanation_trap): 「なぜ他の選択肢を選ぶと間違えるのか」「人間の直感や勘違いを利用した、どんな引っかけが仕組まれているか」を具体的に分析し、回避策を教えてください。
+
+【JSONフォーマット要件】
+{
+  "question": "抽出した中心的な用語（例：WAF、アジャイル）",
+  "category": "大カテゴリ（例：テクノロジ系）",
+  "sub_category": "小カテゴリ（例：セキュリティ）",
+  "text_question": "実際の問題文全体を再現",
+  "choice_a": "アの選択肢の文章",
+  "choice_b": "イの選択肢の文章",
+  "choice_c": "ウの選択肢の文章",
+  "choice_d": "エの選択肢の文章",
+  "correct_answer": "正解の記号（ア、イ、ウ、エ のいずれか1文字）",
+  "explanation_conclusion": "上記ルール1に基づく結論ファーストの解説",
+  "explanation_analogy": "上記ルール2に基づく超かみ砕いた例え話解説",
+  "explanation_trap": "上記ルール3に基づく引っかかりやすい罠の指摘",
+  "search_key": "${searchKey}"
+}
+
+必ず上記のキー名をもつJSON形式のみを出力してください（マークダウンのバッククォート \`\`\`json などは不要です）。
+  `;
+
+  const payload = {
+    contents: [{
+      parts: [
+        { text: prompt }
       ]
     }]
   };

@@ -59,6 +59,60 @@ export function MaskedText({ text }: MaskedTextProps) {
   );
 }
 
+interface CsvQuestion {
+  id: string;
+  searchKey: string;
+  category: string;
+  subCategory: string;
+  selected: boolean;
+}
+
+// 過去問道場CSV（Shift-JIS）を解析して間違えた問題を抽出する関数
+export function parseDojoCsv(csvText: string): CsvQuestion[] {
+  const lines = csvText.split(/\r?\n/);
+  if (lines.length < 2) return [];
+
+  const questions: CsvQuestion[] = [];
+  
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    // カンマ区切りのパース（ダブルクォート内のカンマを考慮する簡易的な正規表現）
+    const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+    if (cols.length < 6) continue;
+
+    const judge = cols[1]?.trim(); // 「正誤」 (× または ○)
+    if (judge === '×') {
+      const category = cols[2]?.replace(/"/g, '').trim() || ''; // 分野名
+      const majorCat = cols[3]?.replace(/"/g, '').trim() || ''; // 大分類
+      const subCategory = cols[4]?.replace(/"/g, '').trim() || ''; // 中分類
+      const sourceCol = cols[5]?.trim() || ''; // 出典 "=HYPERLINK("URL", "検索キー")"
+
+      // 出典カラムから検索キーを抽出
+      // 例: "=HYPERLINK(""https://..."",""平成17年春期 問5"")"
+      const match = sourceCol.match(/""([^""]+)""\)/) || sourceCol.match(/"([^"]+)"\)/);
+      let searchKey = '';
+      if (match && match[1]) {
+        searchKey = match[1];
+      } else {
+        searchKey = sourceCol.replace(/"/g, '').trim();
+      }
+
+      if (searchKey) {
+        questions.push({
+          id: `csv-${i}-${Date.now()}`,
+          searchKey,
+          category,
+          subCategory: subCategory || majorCat || category, // 小分類がなければ大分類、なければ分野名
+          selected: true
+        });
+      }
+    }
+  }
+  return questions;
+}
+
 // ==========================================
 // ⚙️ GAS APIの設定（Vercel仲介プロキシ経由）
 // ==========================================
@@ -154,6 +208,15 @@ export default function App() {
   // マインドマップ用選択ノード
   const [selectedMapNode, setSelectedMapNode] = useState<string | null>(null);
 
+  // 📊 CSVインポート用の一時状態
+  const [parsedCsvQuestions, setParsedCsvQuestions] = useState<CsvQuestion[]>([]);
+  const [importingProgress, setImportingProgress] = useState<{
+    current: number;
+    total: number;
+    active: boolean;
+    statusText: string;
+  } | null>(null);
+
   // ==========================================
   // 📥 1. スプレッドシートからデータを取得する (GET)
   // ==========================================
@@ -231,6 +294,103 @@ export default function App() {
       img.onerror = reject;
       img.src = url;
     });
+  };
+
+  // 📊 CSVファイルがアップロードされた時の解析処理
+  const handleCsvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    const file = e.target.files[0];
+    
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const arrayBuffer = event.target?.result as ArrayBuffer;
+      const decoder = new TextDecoder('shift-jis');
+      const text = decoder.decode(arrayBuffer);
+      
+      try {
+        const questions = parseDojoCsv(text);
+        if (questions.length === 0) {
+          alert('CSVから間違えた問題（×の行）を検出できませんでした。');
+          return;
+        }
+        setParsedCsvQuestions(questions);
+      } catch (err) {
+        console.error('CSV parse error:', err);
+        alert('CSVファイルの解析に失敗しました。');
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  };
+
+  // ⚡ 抽出した問題から1件ずつ安全にGASにPOST送信してインポートするキュー処理
+  const startCsvImport = async () => {
+    const selectedQuestions = parsedCsvQuestions.filter(q => q.selected);
+    const total = selectedQuestions.length;
+    if (total === 0) {
+      alert('インポートする問題が選択されていません。');
+      return;
+    }
+
+    setImportingProgress({
+      current: 0,
+      total,
+      active: true,
+      statusText: '一括カード生成の準備中...'
+    });
+
+    let successCount = 0;
+    const newCards: QuestionCard[] = [];
+
+    for (let i = 0; i < total; i++) {
+      const q = selectedQuestions[i];
+      setImportingProgress({
+        current: i + 1,
+        total,
+        active: true,
+        statusText: `「${q.searchKey}」のカードを生成中 (${i + 1}/${total}件)...`
+      });
+
+      try {
+        const response = await fetch(GAS_API_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'import_from_csv',
+            searchKey: q.searchKey,
+            category: q.category,
+            subCategory: q.subCategory
+          })
+        });
+
+        const text = await response.text();
+        let json;
+        try {
+          json = JSON.parse(text);
+        } catch {
+          console.error(`GAS response for ${q.searchKey} is not JSON:`, text);
+          continue;
+        }
+
+        if (json.status === 'success') {
+          newCards.push(json.data);
+          successCount++;
+        } else {
+          console.error(`Import failed for ${q.searchKey}:`, json.message);
+        }
+      } catch (err) {
+        console.error(`Import error for ${q.searchKey}:`, err);
+      }
+    }
+
+    if (newCards.length > 0) {
+      setCards(prev => [...newCards, ...prev]);
+    }
+
+    setImportingProgress(null);
+    setParsedCsvQuestions([]);
+    alert(`🎉 CSVインポート完了！\n成功: ${successCount} / ${total} 件のカードを生成しました。`);
+    
+    setAnkiMode('review');
+    setActiveTab('anki');
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -355,6 +515,56 @@ export default function App() {
       lineY2: `${cy}%`
     };
   });
+
+  // ==========================================
+  // 🌀 📊 CSVインポート中の一括生成プログレスローディング
+  // ==========================================
+  if (importingProgress && importingProgress.active) {
+    const percent = Math.round((importingProgress.current / importingProgress.total) * 100);
+    return (
+      <div className="loading-overlay-wl" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div className="spinner-wl"></div>
+        <div style={{ textAlign: 'center', color: '#fff', zIndex: 10 }}>
+          <div className="loading-text-wl" style={{ fontSize: '18px', fontWeight: '900', marginBottom: '8px' }}>
+            一括カード生成中...
+          </div>
+          <div style={{ fontSize: '13px', fontWeight: 'bold', color: 'var(--accent-mint)', marginBottom: '15px', maxWidth: '300px', margin: '0 auto' }}>
+            {importingProgress.statusText}
+          </div>
+          {/* ネオブルータリズム調の進捗バー */}
+          <div style={{ 
+            width: '260px', 
+            height: '22px', 
+            backgroundColor: '#333', 
+            border: '3px solid #fff', 
+            boxShadow: '4px 4px 0 #000', 
+            position: 'relative',
+            overflow: 'hidden',
+            margin: '0 auto'
+          }}>
+            <div style={{ 
+              width: `${percent}%`, 
+              height: '100%', 
+              backgroundColor: 'var(--accent-mint)', 
+              transition: 'width 0.3s ease-out' 
+            }} />
+            <span style={{ 
+              position: 'absolute', 
+              top: '50%', 
+              left: '50%', 
+              transform: 'translate(-50%, -50%)', 
+              color: '#fff', 
+              fontWeight: '900', 
+              fontSize: '11px',
+              textShadow: '1px 1px 0 #000'
+            }}>
+              {percent}%
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // ==========================================
   // 🌀 📸 画像アップロード中の全画面くるくるローディング
@@ -493,6 +703,115 @@ export default function App() {
                 {uploading ? '⏳ Gemini 解析中...' : 'ファイルを選択'}
                 <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} disabled={uploading} />
               </label>
+            </div>
+
+            {/* 📊 過去問道場CSV一括インポート */}
+            <div className="glass-panel" style={{ 
+              padding: '30px 20px', 
+              borderStyle: 'dashed', 
+              borderWidth: '3px', 
+              borderColor: 'var(--border-color)', 
+              textAlign: 'center', 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center', 
+              gap: '15px' 
+            }}>
+              <div style={{ fontSize: '48px' }}>📊</div>
+              <div>
+                <h3 style={{ fontSize: '18px', fontWeight: '900', marginBottom: '6px' }}>過去問道場の学習履歴から一括インポート</h3>
+                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: 'bold' }}>
+                  道場からエクスポートしたCSVを読み込み、間違えた問題を一括でカード化します
+                </p>
+              </div>
+
+              {parsedCsvQuestions.length === 0 ? (
+                <label className="neon-btn neon-btn-mint" style={{ cursor: 'pointer', width: '100%', maxWidth: '240px' }}>
+                  学習履歴CSVを選択
+                  <input type="file" accept=".csv" onChange={handleCsvUpload} style={{ display: 'none' }} />
+                </label>
+              ) : (
+                <div style={{ width: '100%', textAlign: 'left', marginTop: '10px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 'bold' }}>
+                      検出された間違えた問題: {parsedCsvQuestions.length} 件
+                    </span>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button 
+                        style={{ fontSize: '11px', padding: '2px 6px', cursor: 'pointer', fontWeight: 'bold', border: '1.5px solid var(--border-color)', background: '#eee' }}
+                        onClick={() => setParsedCsvQuestions(prev => prev.map(q => ({ ...q, selected: true })))}
+                      >
+                        全選択
+                      </button>
+                      <button 
+                        style={{ fontSize: '11px', padding: '2px 6px', cursor: 'pointer', fontWeight: 'bold', border: '1.5px solid var(--border-color)', background: '#eee' }}
+                        onClick={() => setParsedCsvQuestions(prev => prev.map(q => ({ ...q, selected: false })))}
+                      >
+                        全解除
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* スクロール可能な問題リスト */}
+                  <div style={{ 
+                    maxHeight: '200px', 
+                    overflowY: 'auto', 
+                    border: '2px solid var(--border-color)', 
+                    padding: '8px', 
+                    background: '#fafafa',
+                    marginBottom: '15px'
+                  }}>
+                    {parsedCsvQuestions.map((q) => (
+                      <label 
+                        key={q.id} 
+                        style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: '8px', 
+                          fontSize: '12px', 
+                          padding: '4px 0', 
+                          cursor: 'pointer',
+                          borderBottom: '1px solid #eee'
+                        }}
+                      >
+                        <input 
+                          type="checkbox" 
+                          checked={q.selected} 
+                          onChange={() => setParsedCsvQuestions(prev => prev.map(item => item.id === q.id ? { ...item, selected: !item.selected } : item))}
+                        />
+                        <span style={{ 
+                          fontSize: '10px', 
+                          background: q.category.includes('テクノロジ') ? 'var(--accent-mint)' : 'var(--accent-yellow)',
+                          padding: '1px 4px',
+                          border: '1px solid var(--border-color)',
+                          fontWeight: 'bold',
+                          color: '#000'
+                        }}>
+                          {q.subCategory}
+                        </span>
+                        <span style={{ fontWeight: 'bold', color: 'var(--text-main)' }}>{q.searchKey}</span>
+                      </label>
+                    ))}
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <button 
+                      className="neon-btn" 
+                      style={{ flex: 1, padding: '8px', fontSize: '12px', justifyContent: 'center', background: '#ccc', cursor: 'pointer' }}
+                      onClick={() => setParsedCsvQuestions([])}
+                    >
+                      キャンセル
+                    </button>
+                    <button 
+                      className="neon-btn neon-btn-mint" 
+                      style={{ flex: 2, padding: '8px', fontSize: '12px', justifyContent: 'center', cursor: 'pointer' }}
+                      onClick={startCsvImport}
+                    >
+                      ⚡ {parsedCsvQuestions.filter(q => q.selected).length} 件のカードを一括生成 ➔
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* カテゴリ別の定着進捗 */}
