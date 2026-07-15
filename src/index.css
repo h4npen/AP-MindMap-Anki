@@ -1,25 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@400;600;800;900&display=swap');
 
 :root {
-  /* FF / Retro RPG Theme */
-  --bg-color: #0c0c12; /* 目に優しい暗黒背景 */
-  --panel-bg: linear-gradient(to bottom, #000088 0%, #000033 100%); /* クラシックFFブルー */
+  /* FF14 HUD inspired Theme */
+  --bg-color: #08080a; /* 非常に深い黒背景 */
+  --panel-bg: rgba(23, 22, 21, 0.94); /* FF14風 半透明のダークブラウン/グレー */
   
-  --primary-color: #ff3b30; /* 赤（ダメージ・未定着） */
-  --primary-hover: #d32f2f;
+  --primary-color: #e04545; /* 赤（ダメージ・未定着） */
+  --primary-hover: #b82d2d;
   
-  --accent-yellow: #ffd700; /* ゴールド（定着済・重要） */
-  --accent-blue: #0000ff;   
-  --accent-mint: #00ffcc;   /* ミントグリーン */
+  --accent-yellow: #dfb558; /* ゴールド（定着済・重要） */
+  --accent-blue: #3377ff;   
+  --accent-mint: #47d6b6;   /* ミント */
   
-  --text-main: #ffffff;      /* テキストは基本的に白 */
-  --text-secondary: #cccccc; /* 二次情報 */
-  --text-muted: #888888;
-  --border-color: #ffffff;   /* 白い枠線 */
+  --text-main: #ffffff;      /* テキストは完全な白で視認性を最大化 */
+  --text-secondary: #dcdcdc; /* 明るめのグレー */
+  --text-muted: #999999;
+  --border-color: #c5a870;   /* 上品なゴールド・真鍮色 */
   
   /* Fonts */
-  --font-rpg: 'DotGothic16', sans-serif;
-  --font-pixel: 'Press Start 2P', monospace;
+  --font-rpg: 'Noto Sans JP', sans-serif;
+  --font-pixel: 'Outfit', sans-serif;
   
   color-scheme: dark;
 }
@@ -39,9 +39,9 @@ body {
   color: var(--text-main);
   overflow-x: hidden;
   min-height: 100svh;
-  /* ドット絵チックなグリッド背景 */
-  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 16px 16px;
+  /* 細かなドットの星空風背景 */
+  background-image: radial-gradient(rgba(197, 168, 112, 0.06) 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
   overscroll-behavior-y: contain;
 }
 
@@ -53,37 +53,37 @@ body {
 }
 
 /* ==========================================================================
-   🧱 RPG Classic Window (Old Glass Panel)
+   🧱 RPG Classic Window (FF14 HUD Panel)
    ========================================================================== */
 .glass-panel {
   background: var(--panel-bg) !important;
-  border: 3px double var(--border-color); /* FF風の二重線枠 */
-  box-shadow: 0 0 0 3px #000, inset 0 0 12px rgba(255, 255, 255, 0.2); /* 外側黒アウトラインと内側シャドウ */
-  border-radius: 6px;
-  transition: transform 0.1s, box-shadow 0.1s;
+  border: 1.5px solid var(--border-color); /* 細くてシャープなゴールド線 */
+  border-radius: 4px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), inset 0 0 1px 1px rgba(255, 255, 255, 0.08); /* 影と内側グロー */
+  transition: border-color 0.15s, transform 0.1s;
   color: var(--text-main);
+  backdrop-filter: blur(8px); /* ガラスのような高級感 */
 }
 
 .glass-panel:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 0 0 0 3px #000, 0 4px 8px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.3);
+  border-color: #ffdf9e; /* ホバー時は明るい金に */
 }
 
 /* ==========================================================================
-   ⚡ RPG Pixel Button Styles (Old Neon Button)
+   ⚡ RPG Pixel Button Styles (FF14 HUD Button)
    ========================================================================== */
 .neon-btn {
-  background: #111116;
-  color: #ffffff;
-  border: 2px solid var(--border-color);
-  padding: 10px 20px;
+  background: linear-gradient(to bottom, #2b2a28 0%, #151413 100%); /* シックなメタルプレート風 */
+  color: #ffdf9e; /* ボタンの文字は真鍮ゴールド */
+  border: 1.5px solid #8e7751;
+  padding: 8px 18px;
   font-family: var(--font-rpg);
   font-weight: bold;
-  border-radius: 4px;
+  border-radius: 3px;
   cursor: pointer;
   outline: none;
-  box-shadow: 2px 2px 0 #000;
-  transition: transform 0.1s, box-shadow 0.1s, background-color 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -93,31 +93,32 @@ body {
 }
 
 .neon-btn:hover {
-  background-color: #222230;
+  background: linear-gradient(to bottom, #3d3b38 0%, #201e1d 100%);
   border-color: var(--accent-yellow);
+  color: #ffffff;
 }
 
 .neon-btn:active {
-  transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0 #000;
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 
 .neon-btn:disabled {
-  background-color: #33333b !important;
-  color: #777777 !important;
-  border-color: #555555 !important;
+  background: #1c1b1a !important;
+  color: #5a5754 !important;
+  border-color: #383633 !important;
   cursor: not-allowed;
-  transform: translate(0, 0) !important;
   box-shadow: none !important;
 }
 
 .neon-btn-mint {
   border-color: var(--accent-mint);
-  color: #fff;
+  color: var(--accent-mint);
 }
 
 .neon-btn-mint:hover {
-  background: rgba(0, 255, 204, 0.1);
+  background: rgba(71, 214, 182, 0.08);
+  color: #fff;
 }
 
 /* ==========================================================================
@@ -227,38 +228,40 @@ body {
   padding: 12px 16px;
   font-size: 13px;
   text-align: left;
-  background: rgba(0, 0, 0, 0.4);
-  border: 2px solid var(--border-color);
-  border-radius: 4px;
+  background: rgba(10, 10, 12, 0.6); /* 濃い半透明黒 */
+  border: 1px solid rgba(197, 168, 112, 0.4); /* うっすらゴールドのシャープな枠線 */
+  border-radius: 3px;
   font-weight: bold;
   cursor: pointer;
-  transition: border-color 0.15s, background-color 0.15s;
+  transition: all 0.15s ease;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .choice-box:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(197, 168, 112, 0.08);
   border-color: var(--accent-yellow);
+  box-shadow: inset 0 0 12px rgba(223, 181, 88, 0.15);
 }
 
 .choice-box:active {
-  transform: translate(1px, 1px);
+  transform: translateY(1px);
 }
 
 /* 正解時のスタイル */
 .choice-correct {
-  background-color: rgba(0, 255, 204, 0.15) !important;
+  background-color: rgba(71, 214, 182, 0.12) !important;
   border-color: var(--accent-mint) !important;
-  box-shadow: 0 0 8px rgba(0, 255, 204, 0.5) !important;
+  box-shadow: 0 0 10px rgba(71, 214, 182, 0.3) !important;
 }
 
 /* 不正解時のスタイル */
 .choice-incorrect {
-  background-color: rgba(255, 59, 48, 0.15) !important;
+  background-color: rgba(224, 69, 69, 0.12) !important;
   border-color: var(--primary-color) !important;
-  box-shadow: 0 0 8px rgba(255, 59, 48, 0.5) !important;
+  box-shadow: 0 0 10px rgba(224, 69, 69, 0.3) !important;
 }
 
 /* ◯/✕ インジケータラベル */
@@ -266,10 +269,10 @@ body {
   font-size: 11px;
   font-weight: bold;
   padding: 2px 6px;
-  border: 1px solid var(--border-color);
-  background: #111116;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: #151413;
   color: var(--text-main);
-  border-radius: 3px;
+  border-radius: 2px;
 }
 
 .choice-incorrect .choice-badge {

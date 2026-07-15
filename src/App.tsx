@@ -713,18 +713,18 @@ export default function App() {
           <div>
             <h1 style={{ 
               fontFamily: 'var(--font-pixel)', 
-              fontSize: '20px', 
-              letterSpacing: '1px', 
+              fontSize: '22px', 
+              letterSpacing: '2px', 
               color: 'var(--accent-yellow)', 
-              fontWeight: 900,
+              fontWeight: 800,
               textTransform: 'uppercase',
-              textShadow: '2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000',
+              textShadow: '1px 1px 3px rgba(0,0,0,0.8)',
               display: 'inline-block',
               margin: 0 
             }}>
               AP MINDMAP
             </h1>
-            <p style={{ fontSize: '10px', color: 'var(--text-secondary)', fontWeight: 'bold', marginTop: '4px', marginLeft: '2px', fontFamily: 'var(--font-rpg)' }}>
+            <p style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 'bold', marginTop: '3px', marginLeft: '2px', fontFamily: 'var(--font-rpg)' }}>
               応用情報 脳内ハッキング学習
             </p>
           </div>
