@@ -42,6 +42,32 @@ function doPost(e) {
       return createJsonResponse({ status: 'success', data: savedCard });
     }
 
+    if (action === 'update_status') {
+      const id = postData.id;
+      const status = postData.status;
+      const reviewLevel = postData.review_level; // 送信されたら更新
+      const nowStr = Utilities.formatDate(new Date(), "Asia/Tokyo", "yyyy-MM-dd'T'HH:mm:ssXXX");
+
+      const sheet = getSheet();
+      const lastRow = sheet.getLastRow();
+      if (lastRow >= 2) {
+        const idRange = sheet.getRange(2, 1, lastRow - 1, 1);
+        const ids = idRange.getValues();
+        for (let i = 0; i < ids.length; i++) {
+          if (ids[i][0] === id) {
+            const rowNum = i + 2;
+            sheet.getRange(rowNum, 16).setValue(status); // P列 (16): 状態
+            if (reviewLevel !== undefined) {
+              sheet.getRange(rowNum, 17).setValue(reviewLevel); // Q列 (17): レベル
+            }
+            sheet.getRange(rowNum, 18).setValue(nowStr); // R列 (18): 最終復習日時
+            break;
+          }
+        }
+      }
+      return createJsonResponse({ status: 'success' });
+    }
+
     return createJsonResponse({ status: 'error', message: 'Unknown action: ' + action });
   } catch (error) {
     return createJsonResponse({ status: 'error', message: error.toString() });
@@ -52,13 +78,13 @@ function doGet(e) {
   try {
     const sheet = getSheet();
     
-    // A2からQ列の最終行まで取得 (17列)
+    // A2からR列の最終行まで取得 (18列)
     const lastRow = sheet.getLastRow();
     if (lastRow < 2) {
       return createJsonResponse({ status: 'success', data: [] });
     }
     
-    const dataRange = sheet.getRange(2, 1, lastRow - 1, 17);
+    const dataRange = sheet.getRange(2, 1, lastRow - 1, 18);
     const values = dataRange.getValues();
     
     const cards = values.map(row => ({
@@ -78,7 +104,8 @@ function doGet(e) {
       search_key: row[13],
       past_url: row[14],
       status: row[15],
-      review_level: row[16]
+      review_level: row[16] || 1,
+      last_reviewed_at: row[17] || ''
     }));
     
     return createJsonResponse({ status: 'success', data: cards });
@@ -291,7 +318,8 @@ function saveToSpreadsheet(cardData) {
     cardData.search_key || '',             // N(14): 検索キー
     pastUrl,                               // O(15): 過去問URL
     status,                                // P(16): 状態
-    level                                  // Q(17): レベル
+    level,                                 // Q(17): レベル
+    ''                                     // R(18): 最終復習日時 (初期値空欄)
   ];
 
   sheet.appendRow(newRow);
@@ -313,6 +341,7 @@ function saveToSpreadsheet(cardData) {
     search_key: cardData.search_key,
     past_url: pastUrl,
     status: status,
-    review_level: level
+    review_level: level,
+    last_reviewed_at: ''
   };
 }

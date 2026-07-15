@@ -150,7 +150,7 @@ body {
   perspective: 1000px;
   width: 100%;
   max-width: 540px; /* 横幅を調整して左右並びが綺麗に収まるように */
-  height: 620px;    /* 高さを少し高めに */
+  height: 600px;    /* デフォルトの高さ */
   margin: 10px 0;
   position: relative;
   touch-action: none;
@@ -160,6 +160,13 @@ body {
   .card-container {
     max-width: 580px;
     margin: 10px auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    height: 480px;  /* スマホ等では高さを抑えて画面からはみ出さないようにする */
+    max-width: 100%;
   }
 }
 
