@@ -712,45 +712,41 @@ export default function App() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <h1 style={{ 
-              fontFamily: 'var(--font-outfit)', 
-              fontSize: '24px', 
+              fontFamily: 'var(--font-pixel)', 
+              fontSize: '20px', 
               letterSpacing: '1px', 
-              color: 'var(--text-main)', 
+              color: 'var(--accent-yellow)', 
               fontWeight: 900,
               textTransform: 'uppercase',
-              textShadow: '3px 3px 0 var(--accent-yellow)',
-              background: '#fff',
-              border: '3px solid var(--border-color)',
-              boxShadow: '4px 4px 0 var(--border-color)',
-              padding: '6px 16px',
+              textShadow: '2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000',
               display: 'inline-block',
               margin: 0 
             }}>
-              AP MindMap
+              AP MINDMAP
             </h1>
-            <p style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 'bold', marginTop: '6px', marginLeft: '4px' }}>
+            <p style={{ fontSize: '10px', color: 'var(--text-secondary)', fontWeight: 'bold', marginTop: '4px', marginLeft: '2px', fontFamily: 'var(--font-rpg)' }}>
               応用情報 脳内ハッキング学習
             </p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {/* ストリークカウンター */}
+            {/* ストリークカウンター (RPGステータス風) */}
             <div 
               className="glass-panel" 
               style={{ 
-                padding: '8px 12px', 
-                fontSize: '12px', 
-                fontWeight: '900', 
+                padding: '6px 10px', 
+                fontSize: '11px', 
                 borderColor: 'var(--border-color)', 
-                background: 'var(--accent-yellow)',
-                boxShadow: '2px 2px 0 var(--border-color)',
-                color: 'var(--text-main)',
+                color: '#fff',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '4px'
+                gap: '4px',
+                fontFamily: 'var(--font-rpg)'
               }}
               title="連続で復習した日数（デバイス間で同期されます）"
             >
-              🔥 {calculateStreak(cards)}日連続!
+              <span style={{ color: 'var(--accent-yellow)', fontWeight: 'bold' }}>STREAK</span>
+              <span style={{ fontFamily: 'var(--font-pixel)', fontSize: '10px' }}>{calculateStreak(cards)}</span>
+              <span>日</span>
             </div>
           </div>
         </div>

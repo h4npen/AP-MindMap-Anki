@@ -1,28 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap');
 
 :root {
-  /* Alima Word Generator inspired Brutalist Palette */
-  --bg-color: #f7f3eb; /* 温かみのあるオフホワイト */
-  --panel-bg: #ffffff;
+  /* FF / Retro RPG Theme */
+  --bg-color: #0c0c12; /* 目に優しい暗黒背景 */
+  --panel-bg: linear-gradient(to bottom, #000088 0%, #000033 100%); /* クラシックFFブルー */
   
-  --primary-color: #FF4A4A; /* 鮮烈な赤 */
-  --primary-hover: #E33838;
+  --primary-color: #ff3b30; /* 赤（ダメージ・未定着） */
+  --primary-hover: #d32f2f;
   
-  --accent-yellow: #FFD633; /* 鮮烈な黄 */
-  --accent-blue: #3E54FF;   /* 鮮烈な青 */
-  --accent-mint: #00f5d4;   /* ミント */
+  --accent-yellow: #ffd700; /* ゴールド（定着済・重要） */
+  --accent-blue: #0000ff;   
+  --accent-mint: #00ffcc;   /* ミントグリーン */
   
-  --text-main: #1c1c1c;
-  --text-secondary: #555555;
-  --text-muted: #777777;
-  --border-color: #1c1c1c;
+  --text-main: #ffffff;      /* テキストは基本的に白 */
+  --text-secondary: #cccccc; /* 二次情報 */
+  --text-muted: #888888;
+  --border-color: #ffffff;   /* 白い枠線 */
   
   /* Fonts */
-  --font-outfit: 'Outfit', 'Zen Kaku Gothic New', sans-serif;
-  --font-zen: 'Zen Kaku Gothic New', sans-serif;
+  --font-rpg: 'DotGothic16', sans-serif;
+  --font-pixel: 'Press Start 2P', monospace;
   
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 * {
@@ -35,15 +34,14 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: var(--font-zen);
+  font-family: var(--font-rpg);
   background-color: var(--bg-color);
   color: var(--text-main);
   overflow-x: hidden;
   min-height: 100svh;
-  /* ドット背景パターン（いい味のヴィンテージグレー #d3cbc0 をはっきりと復活） */
-  background-image: radial-gradient(#d3cbc0 2px, transparent 2px);
-  background-size: 20px 20px;
-  background-position: 0 0;
+  /* ドット絵チックなグリッド背景 */
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 16px 16px;
   overscroll-behavior-y: contain;
 }
 
@@ -55,37 +53,36 @@ body {
 }
 
 /* ==========================================================================
-   🧱 Brutalist Panel Styles (Old Glass Panel)
+   🧱 RPG Classic Window (Old Glass Panel)
    ========================================================================== */
 .glass-panel {
-  background: var(--panel-bg);
-  border: 3px solid var(--border-color);
-  border-radius: 0; /* ソリッドな直角 */
-  box-shadow: 6px 6px 0 var(--border-color);
+  background: var(--panel-bg) !important;
+  border: 3px double var(--border-color); /* FF風の二重線枠 */
+  box-shadow: 0 0 0 3px #000, inset 0 0 12px rgba(255, 255, 255, 0.2); /* 外側黒アウトラインと内側シャドウ */
+  border-radius: 6px;
   transition: transform 0.1s, box-shadow 0.1s;
   color: var(--text-main);
 }
 
 .glass-panel:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 8px 8px 0 var(--accent-blue);
-  border-color: var(--border-color);
+  transform: translate(-1px, -1px);
+  box-shadow: 0 0 0 3px #000, 0 4px 8px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
 /* ==========================================================================
-   ⚡ Brutalist Button Styles (Old Neon Button)
+   ⚡ RPG Pixel Button Styles (Old Neon Button)
    ========================================================================== */
 .neon-btn {
-  background: var(--accent-blue);
+  background: #111116;
   color: #ffffff;
-  border: 3px solid var(--border-color);
-  padding: 12px 24px;
-  font-family: var(--font-outfit);
-  font-weight: 900;
-  border-radius: 0;
+  border: 2px solid var(--border-color);
+  padding: 10px 20px;
+  font-family: var(--font-rpg);
+  font-weight: bold;
+  border-radius: 4px;
   cursor: pointer;
   outline: none;
-  box-shadow: 4px 4px 0 var(--border-color);
+  box-shadow: 2px 2px 0 #000;
   transition: transform 0.1s, box-shadow 0.1s, background-color 0.2s;
   display: inline-flex;
   align-items: center;
@@ -96,32 +93,31 @@ body {
 }
 
 .neon-btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 var(--border-color);
-  background-color: #2b3fd6;
+  background-color: #222230;
+  border-color: var(--accent-yellow);
 }
 
 .neon-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 var(--border-color);
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 #000;
 }
 
 .neon-btn:disabled {
-  background-color: #cccccc !important;
-  color: #666666 !important;
+  background-color: #33333b !important;
+  color: #777777 !important;
+  border-color: #555555 !important;
   cursor: not-allowed;
   transform: translate(0, 0) !important;
-  box-shadow: 4px 4px 0 var(--border-color) !important;
+  box-shadow: none !important;
 }
 
 .neon-btn-mint {
-  background: var(--accent-mint);
-  color: var(--text-main);
+  border-color: var(--accent-mint);
+  color: #fff;
 }
 
 .neon-btn-mint:hover {
-  background: #00cca8;
-  color: var(--text-main);
+  background: rgba(0, 255, 204, 0.1);
 }
 
 /* ==========================================================================
@@ -228,64 +224,62 @@ body {
    🎮 クイズ判定・選択肢の◯✕判定スタイル
    ========================================================================== */
 .choice-box {
-  padding: 14px 18px;
+  padding: 12px 16px;
   font-size: 13px;
   text-align: left;
-  background: var(--bg-color);
-  border: 3px solid var(--border-color);
-  font-weight: 700;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  font-weight: bold;
   cursor: pointer;
-  transition: transform 0.1s, box-shadow 0.1s, background-color 0.15s;
+  transition: border-color 0.15s, background-color 0.15s;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .choice-box:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 var(--border-color);
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent-yellow);
 }
 
 .choice-box:active {
   transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0 var(--border-color);
 }
 
 /* 正解時のスタイル */
 .choice-correct {
-  background-color: var(--accent-mint) !important;
-  border-color: var(--border-color) !important;
-  box-shadow: 4px 4px 0 var(--border-color) !important;
-  transform: translate(-2px, -2px) !important;
+  background-color: rgba(0, 255, 204, 0.15) !important;
+  border-color: var(--accent-mint) !important;
+  box-shadow: 0 0 8px rgba(0, 255, 204, 0.5) !important;
 }
 
 /* 不正解時のスタイル */
 .choice-incorrect {
-  background-color: var(--primary-color) !important;
-  color: #ffffff !important;
-  border-color: var(--border-color) !important;
-  box-shadow: 4px 4px 0 var(--border-color) !important;
-  transform: translate(-2px, -2px) !important;
+  background-color: rgba(255, 59, 48, 0.15) !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 8px rgba(255, 59, 48, 0.5) !important;
 }
 
 /* ◯/✕ インジケータラベル */
 .choice-badge {
-  font-size: 16px;
-  font-weight: 900;
-  padding: 2px 8px;
-  border: 2px solid var(--border-color);
-  background: #ffffff;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border: 1px solid var(--border-color);
+  background: #111116;
   color: var(--text-main);
-  box-shadow: 2px 2px 0 var(--border-color);
+  border-radius: 3px;
 }
 
 .choice-incorrect .choice-badge {
   color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 .choice-correct .choice-badge {
-  color: #00cca8;
+  color: var(--accent-mint);
+  border-color: var(--accent-mint);
 }
 
 /* ==========================================================================
@@ -368,17 +362,17 @@ body {
    📱 Layout
    ========================================================================== */
 .app-header {
-  padding: env(safe-area-inset-top, 20px) 20px 15px;
-  background: var(--panel-bg);
+  padding: env(safe-area-inset-top, 16px) 16px 12px;
+  background: var(--bg-color);
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 4px solid var(--border-color);
+  border-bottom: 2px solid var(--border-color);
 }
 
 .app-content {
   flex: 1;
-  padding: 20px;
+  padding: 16px;
   padding-bottom: calc(85px + env(safe-area-inset-bottom, 20px));
 }
 
@@ -387,15 +381,14 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  height: calc(65px + env(safe-area-inset-bottom, 0px));
+  height: calc(60px + env(safe-area-inset-bottom, 0px));
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  background: var(--panel-bg);
-  border-top: 4px solid var(--border-color);
+  background: #111116;
+  border-top: 2px solid var(--border-color);
   display: flex;
   justify-content: space-around;
   align-items: center;
   z-index: 100;
-  box-shadow: 0 -4px 0 rgba(0,0,0,0.05);
 }
 
 .nav-item {
@@ -405,70 +398,72 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   transition: all 0.15s ease;
-  font-family: var(--font-outfit);
-  font-weight: 700;
-  padding: 4px 10px;
-  border: 2px solid transparent;
+  font-family: var(--font-rpg);
+  font-weight: bold;
+  padding: 4px 12px;
+  border: 1px solid transparent;
+  border-radius: 4px;
 }
 
 .nav-item.active {
-  background-color: var(--accent-yellow);
-  border: 2px solid var(--border-color);
-  box-shadow: 2px 2px 0 var(--border-color);
-  transform: translate(-1px, -1px);
+  background-color: rgba(255, 215, 0, 0.1);
+  border: 1.5px solid var(--accent-yellow);
+  color: var(--accent-yellow);
+}
+
+.nav-item.active svg {
+  stroke: var(--accent-yellow);
 }
 
 .nav-item svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   stroke: var(--text-main);
   stroke-width: 2.5px;
 }
 
 /* ==========================================================================
-   📊 Brutalist Progress bar
+   📊 Brutalist Progress bar (HP/MPゲージ仕様)
    ========================================================================== */
 .progress-neon-bar {
   width: 100%;
-  height: 14px;
-  background: #e2dcd0;
-  border: 3px solid var(--border-color);
-  border-radius: 0;
+  height: 12px;
+  background: #000;
+  border: 2px solid var(--border-color);
+  border-radius: 3px;
   overflow: hidden;
   position: relative;
 }
 
 .progress-neon-fill {
   height: 100%;
-  background: var(--primary-color);
-  border-right: 3px solid var(--border-color);
-  transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: linear-gradient(to right, #0055ff, #00ffcc); /* 青〜水色のグラデーション */
+  transition: width 0.4s ease;
 }
 
 /* ==========================================================================
-   🔄 WL-LogicLab Loading Overlay (洗練されたスピナー)
+   🔄 WL-LogicLab Loading Overlay (RPG風ローディング)
    ========================================================================== */
 .loading-overlay-wl {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(244, 245, 243, 0.85);
+  background: rgba(12, 12, 18, 0.95);
   z-index: 2000;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(2px);
 }
 
 .spinner-wl {
-  width: 44px; height: 44px;
-  border: 4px solid var(--border-color);
-  border-top: 4px solid var(--accent-mint);
+  width: 32px; height: 32px;
+  border: 3px solid #333;
+  border-top: 3px solid var(--accent-yellow);
   border-radius: 50%;
-  animation: spin 0.9s linear infinite;
+  animation: spin 0.8s linear infinite;
   margin-bottom: 1rem;
 }
 
@@ -478,10 +473,11 @@ body {
 }
 
 .loading-text-wl {
-  font-weight: 700;
-  color: var(--text-main);
-  font-size: 1rem;
-  letter-spacing: 0.08rem;
+  font-family: var(--font-rpg);
+  font-weight: bold;
+  color: var(--accent-yellow);
+  font-size: 14px;
+  letter-spacing: 0.1rem;
 }
 
 /* ==========================================================================
