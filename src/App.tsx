@@ -254,7 +254,7 @@ function getChoiceChar(choice: 'a' | 'b' | 'c' | 'd'): string {
 }
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'anki' | 'mindmap' | 'sheet' | 'ebbinghaus'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'anki' | 'import' | 'sheet'>('dashboard');
   const [cards, setCards] = useState<QuestionCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -263,7 +263,9 @@ export default function App() {
   // ダッシュボード内アコーディオン開閉状態
   const [showMindmapAcc, setShowMindmapAcc] = useState(false);
   const [showEbbinghausAcc, setShowEbbinghausAcc] = useState(false);
-  const [showAddQuestionAcc, setShowAddQuestionAcc] = useState(false);
+
+  // 全データタブ: カテゴリフィルター
+  const [categoryFilter, setCategoryFilter] = useState<string>('');
 
   // 1回あたりの復習カード制限 (5問セッションなど)
   const [sessionLimit, setSessionLimit] = useState<number | null>(5);
@@ -574,7 +576,6 @@ export default function App() {
       setCurrentCardIndex(currentCardIndex + 1);
     } else {
       setCurrentCardIndex(0);
-      alert('🎉 本セッションのカードをすべて完了しました！');
       setActiveTab('dashboard');
     }
 
@@ -605,13 +606,17 @@ export default function App() {
     setShowJudge(isCorrectChoice ? 'correct' : 'incorrect');
   };
 
-  // 検索フィルタリングロジック
-  const filteredCards = cards.filter(c => 
-    (c.question && c.question.toLowerCase().includes(searchQuery.toLowerCase())) ||
-    (c.text_question && c.text_question.toLowerCase().includes(searchQuery.toLowerCase())) ||
-    (c.sub_category && c.sub_category.toLowerCase().includes(searchQuery.toLowerCase())) ||
-    (c.search_key && c.search_key.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  // 検索 + カテゴリフィルタリングロジック
+  const filteredCards = cards.filter(c => {
+    const matchSearch = !searchQuery || (
+      (c.question && c.question.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (c.text_question && c.text_question.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (c.sub_category && c.sub_category.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (c.search_key && c.search_key.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+    const matchCategory = !categoryFilter || (c.category && c.category.includes(categoryFilter.substring(0, 4)));
+    return matchSearch && matchCategory;
+  });
 
   // ==========================================
   // 🗺️ 弱点マップの完全動的ノード生成
@@ -707,46 +712,44 @@ export default function App() {
 
   return (
     <div id="root">
-      {/* Header */}
+      {/* ヘッダー */}
       <header className="app-header">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <h1 style={{ 
-              fontFamily: 'var(--font-pixel)', 
-              fontSize: '22px', 
+              fontFamily: 'var(--font-number)', 
+              fontSize: '20px', 
               letterSpacing: '2px', 
-              color: 'var(--accent-yellow)', 
-              fontWeight: 800,
+              color: 'var(--amber)', 
+              fontWeight: 900,
               textTransform: 'uppercase',
-              textShadow: '1px 1px 3px rgba(0,0,0,0.8)',
-              display: 'inline-block',
               margin: 0 
             }}>
               AP MINDMAP
             </h1>
-            <p style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 'bold', marginTop: '3px', marginLeft: '2px', fontFamily: 'var(--font-rpg)' }}>
+            <p style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 600, marginTop: '2px' }}>
               応用情報 脳内ハッキング学習
             </p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {/* ストリークカウンター (RPGステータス風) */}
+            {/* ストリークカウンター */}
             <div 
               className="glass-panel" 
               style={{ 
-                padding: '6px 10px', 
-                fontSize: '11px', 
-                borderColor: 'var(--border-color)', 
+                padding: '6px 10px',
+                borderColor: 'var(--border)',
                 color: '#fff',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '4px',
-                fontFamily: 'var(--font-rpg)'
+                gap: '6px'
               }}
               title="連続で復習した日数（デバイス間で同期されます）"
             >
-              <span style={{ color: 'var(--accent-yellow)', fontWeight: 'bold' }}>STREAK</span>
-              <span style={{ fontFamily: 'var(--font-pixel)', fontSize: '10px' }}>{calculateStreak(cards)}</span>
-              <span>日</span>
+              {calculateStreak(cards) >= 3 && <span className="streak-flame">🔥</span>}
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: '20px', fontWeight: 900, fontFamily: 'var(--font-number)', color: 'var(--amber)', lineHeight: 1 }}>{calculateStreak(cards)}</div>
+                <div style={{ fontSize: '9px', color: 'var(--text-muted)', fontWeight: 600 }}>DAY STREAK</div>
+              </div>
             </div>
           </div>
         </div>
@@ -756,388 +759,252 @@ export default function App() {
       <main className="app-content">
         {/* ----------------- ダッシュボード (ホーム) ----------------- */}
         {activeTab === 'dashboard' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-
-            {/* 本日の目標・進捗 */}
-            <div className="glass-panel" style={{ padding: '20px', position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '6px', background: 'var(--accent-blue)' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }} className="fade-in">
+    
+            {/* ヒーローカード: 今日の復習 */}
+            <div style={{ 
+              background: 'var(--bg-elevated)', 
+              border: '1px solid var(--border)',
+              borderRadius: '12px',
+              padding: '24px 20px',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              {/* 上部のアクセントライン */}
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(to right, var(--teal), var(--amber))' }} />
               
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <h2 style={{ fontSize: '16px', fontWeight: '900', color: 'var(--text-secondary)' }}>今日の復習進捗</h2>
-                <span style={{ fontSize: '13px', fontWeight: 'bold', color: 'var(--text-main)' }}>
-                  今日完了: <strong style={{ fontSize: '16px', color: 'var(--accent-blue)' }}>{todayCompletedCount}</strong>問
-                </span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                <div>
+                  <h2 style={{ fontSize: '13px', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '4px' }}>TODAY</h2>
+                  <div style={{ fontSize: '28px', fontWeight: 900, color: 'var(--text-primary)', fontFamily: 'var(--font-number)' }}>
+                    {dueCards.length > 0 ? (
+                      <>{dueCards.length}<span style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-secondary)', marginLeft: '4px' }}>問 要復習</span></>
+                    ) : (
+                      <span style={{ fontSize: '20px', color: 'var(--green)' }}>🎉 完了！</span>
+                    )}
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '2px' }}>今日完了</div>
+                  <div style={{ fontSize: '24px', fontWeight: 900, color: 'var(--amber)', fontFamily: 'var(--font-number)' }}>
+                    {todayCompletedCount}<span style={{ fontSize: '13px', fontWeight: 600, marginLeft: '2px' }}>問</span>
+                  </div>
+                </div>
               </div>
-
-              {/* 進捗ゲージ */}
+              
+              {/* 進捗バー */}
               {(() => {
                 const target = sessionLimit || 5;
                 const percent = Math.min(100, Math.round((todayCompletedCount / target) * 100));
                 return (
                   <div style={{ marginBottom: '20px' }}>
                     <div className="progress-neon-bar">
-                      <div
-                        className="progress-neon-fill"
-                        style={{
-                          width: `${percent}%`,
-                          background: 'var(--accent-mint)'
-                        }}
-                      />
+                      <div className="progress-neon-fill" style={{ width: `${percent}%` }} />
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginTop: '6px', fontWeight: 'bold', color: 'var(--text-muted)' }}>
-                      <span>目標まで {Math.max(0, target - todayCompletedCount)} 問</span>
-                      <span>目標: {target}問 ({percent}%)</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginTop: '5px', color: 'var(--text-muted)' }}>
+                      <span>目標: {target}問</span>
+                      <span>{percent}% 達成</span>
                     </div>
                   </div>
                 );
               })()}
-
-              <div style={{ borderBottom: '2px solid var(--border-color)', marginBottom: '15px' }} />
-
-              {/* クイック開始セクション */}
-              <div style={{ textAlign: 'center' }}>
-                <h3 style={{ fontSize: '14px', fontWeight: '900', color: 'var(--text-main)', marginBottom: '10px', textAlign: 'left' }}>
-                  ⚡ クイック復習トレーニング
-                </h3>
-                
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '15px' }}>
-                  <button 
-                    className={`glass-panel ${sessionLimit === 5 ? 'active' : ''}`}
-                    style={{ flex: '1', padding: '8px', fontSize: '12px', fontWeight: '900', cursor: 'pointer', background: sessionLimit === 5 ? 'var(--accent-yellow)' : '#fff' }}
-                    onClick={() => setSessionLimit(5)}
-                  >
-                    5問
-                  </button>
-                  <button 
-                    className={`glass-panel ${sessionLimit === 10 ? 'active' : ''}`}
-                    style={{ flex: '1', padding: '8px', fontSize: '12px', fontWeight: '900', cursor: 'pointer', background: sessionLimit === 10 ? 'var(--accent-yellow)' : '#fff' }}
-                    onClick={() => setSessionLimit(10)}
-                  >
-                    10問
-                  </button>
-                  <button 
-                    className={`glass-panel ${sessionLimit === null ? 'active' : ''}`}
-                    style={{ flex: '1', padding: '8px', fontSize: '12px', fontWeight: '900', cursor: 'pointer', background: sessionLimit === null ? 'var(--accent-yellow)' : '#fff' }}
-                    onClick={() => setSessionLimit(null)}
-                  >
-                    制限なし
-                  </button>
-                </div>
-
-                <div style={{ display: 'flex', gap: '12px' }}>
+              
+              {/* セッション数選択 */}
+              <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+                {[5, 10, null].map(limit => (
                   <button
-                    className="neon-btn"
-                    style={{ flex: 2, justifyContent: 'center', fontSize: '15px', padding: '12px' }}
-                    disabled={dueCards.length === 0}
-                    onClick={() => {
-                      setAnkiMode('review');
-                      setCurrentCardIndex(0);
-                      setActiveTab('anki');
+                    key={String(limit)}
+                    onClick={() => setSessionLimit(limit)}
+                    style={{
+                      flex: 1, padding: '6px', fontSize: '12px', fontWeight: 700,
+                      borderRadius: '6px', border: '1px solid',
+                      cursor: 'pointer', transition: 'all 0.15s',
+                      background: sessionLimit === limit ? 'var(--amber-dim)' : 'var(--bg-input)',
+                      borderColor: sessionLimit === limit ? 'var(--amber)' : 'var(--border-subtle)',
+                      color: sessionLimit === limit ? 'var(--amber)' : 'var(--text-muted)'
                     }}
                   >
-                    📅 期限切れ {dueCards.length} 問を復習
+                    {limit === null ? '全問' : `${limit}問`}
                   </button>
-                  <button
-                    className="neon-btn neon-btn-mint"
-                    style={{ flex: 1, justifyContent: 'center', fontSize: '13px', padding: '12px' }}
-                    onClick={() => {
-                      setAnkiMode('all');
-                      setCurrentCardIndex(0);
-                      setActiveTab('anki');
-                    }}
-                  >
-                    📚 全 {cards.length} 問
-                  </button>
-                </div>
+                ))}
               </div>
-            </div>
-
-            {/* 📥 アコーディオン：問題の追加 (スクショ & CSV) */}
-            <div className="glass-panel" style={{ overflow: 'hidden' }}>
-              <div 
-                style={{ padding: '15px 20px', background: 'var(--bg-color)', borderBottom: showAddQuestionAcc ? '3px solid var(--border-color)' : 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
-                onClick={() => setShowAddQuestionAcc(!showAddQuestionAcc)}
+              
+              {/* メインCTAボタン */}
+              <button
+                className="neon-btn"
+                style={{
+                  width: '100%', padding: '14px',
+                  fontSize: '15px', fontWeight: 900,
+                  background: dueCards.length === 0 ? 'var(--bg-input)' : 'var(--amber)',
+                  color: dueCards.length === 0 ? 'var(--text-muted)' : '#0f1520',
+                  borderColor: dueCards.length === 0 ? 'var(--border-subtle)' : 'var(--amber)',
+                  borderRadius: '8px'
+                }}
+                disabled={dueCards.length === 0}
+                onClick={() => {
+                  setAnkiMode('review');
+                  setCurrentCardIndex(0);
+                  setActiveTab('anki');
+                }}
               >
-                <h3 style={{ fontSize: '15px', fontWeight: '900', color: 'var(--text-main)', margin: 0 }}>
-                  ＋ 問題を追加する（スクショ / 過去問道場CSV）
-                </h3>
-                <span style={{ fontSize: '16px', fontWeight: 'bold' }}>{showAddQuestionAcc ? '▲' : '▼'}</span>
-              </div>
-
-              {showAddQuestionAcc && (
-                <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                  {/* クイック画像アップロード */}
-                  <div style={{ 
-                    padding: '20px', 
-                    border: '2px dashed var(--border-color)', 
-                    textAlign: 'center', 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    alignItems: 'center', 
-                    gap: '12px' 
-                  }}>
-                    <div style={{ fontSize: '32px' }}>📸</div>
-                    <div>
-                      <h4 style={{ fontSize: '15px', fontWeight: '900', marginBottom: '4px' }}>間違えた問題のスクショを登録</h4>
-                      <p style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 'bold' }}>Geminiが文字起こしと極上解説を自動生成します</p>
-                    </div>
-
-                    <label className="neon-btn neon-btn-mint" style={{ cursor: 'pointer', width: '100%', maxWidth: '200px', padding: '8px 16px', fontSize: '12px' }}>
-                      {uploading ? '⏳ 解析中...' : 'ファイルを選択'}
-                      <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} disabled={uploading} />
-                    </label>
-                  </div>
-
-                  {/* 📊 過去問道場CSV一括インポート */}
-                  <div style={{ 
-                    padding: '20px', 
-                    border: '2px dashed var(--border-color)', 
-                    textAlign: 'center', 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    alignItems: 'center', 
-                    gap: '12px' 
-                  }}>
-                    <div style={{ fontSize: '32px' }}>📊</div>
-                    <div>
-                      <h4 style={{ fontSize: '15px', fontWeight: '900', marginBottom: '4px' }}>過去問道場CSVから一括インポート</h4>
-                      <p style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 'bold' }}>学習履歴CSVから間違えた問題を一括自動生成します</p>
-                    </div>
-
-                    {parsedCsvQuestions.length === 0 ? (
-                      <label className="neon-btn neon-btn-mint" style={{ cursor: 'pointer', width: '100%', maxWidth: '200px', padding: '8px 16px', fontSize: '12px' }}>
-                        履歴CSVを選択
-                        <input type="file" accept=".csv" onChange={handleCsvUpload} style={{ display: 'none' }} />
-                      </label>
-                    ) : (
-                      <div style={{ width: '100%', textAlign: 'left', marginTop: '5px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                          <span style={{ fontSize: '11px', fontWeight: 'bold' }}>
-                            検出された間違えた問題: {parsedCsvQuestions.length} 件
-                          </span>
-                          <div style={{ display: 'flex', gap: '6px' }}>
-                            <button 
-                              style={{ fontSize: '10px', padding: '2px 4px', cursor: 'pointer', fontWeight: 'bold', border: '1px solid var(--border-color)', background: '#eee' }}
-                              onClick={() => setParsedCsvQuestions(prev => prev.map(q => ({ ...q, selected: true })))}
-                            >
-                              全選択
-                            </button>
-                            <button 
-                              style={{ fontSize: '10px', padding: '2px 4px', cursor: 'pointer', fontWeight: 'bold', border: '1px solid var(--border-color)', background: '#eee' }}
-                              onClick={() => setParsedCsvQuestions(prev => prev.map(q => ({ ...q, selected: false })))}
-                            >
-                              全解除
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* スクロール可能な問題リスト */}
-                        <div style={{ 
-                          maxHeight: '150px', 
-                          overflowY: 'auto', 
-                          border: '2px solid var(--border-color)', 
-                          padding: '6px', 
-                          background: '#fafafa',
-                          marginBottom: '10px'
-                        }}>
-                          {parsedCsvQuestions.map((q) => (
-                            <label 
-                              key={q.id} 
-                              style={{ 
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                gap: '6px', 
-                                fontSize: '11px', 
-                                padding: '3px 0', 
-                                cursor: 'pointer',
-                                borderBottom: '1px solid #eee'
-                              }}
-                            >
-                              <input 
-                                type="checkbox" 
-                                checked={q.selected} 
-                                onChange={() => setParsedCsvQuestions(prev => prev.map(item => item.id === q.id ? { ...item, selected: !item.selected } : item))}
-                              />
-                              <span style={{ 
-                                fontSize: '9px', 
-                                background: q.category.includes('テクノロジ') ? 'var(--accent-mint)' : 'var(--accent-yellow)',
-                                padding: '1px 3px',
-                                border: '1px solid var(--border-color)',
-                                fontWeight: 'bold'
-                              }}>
-                                {q.subCategory}
-                              </span>
-                              <span style={{ fontWeight: 'bold' }}>{q.searchKey}</span>
-                            </label>
-                          ))}
-                        </div>
-
-                        <div style={{ display: 'flex', gap: '8px' }}>
-                          <button 
-                            className="neon-btn" 
-                            style={{ flex: 1, padding: '6px', fontSize: '11px', background: '#ccc', cursor: 'pointer' }}
-                            onClick={() => setParsedCsvQuestions([])}
-                          >
-                            キャンセル
-                          </button>
-                          <button 
-                            className="neon-btn neon-btn-mint" 
-                            style={{ flex: 2, padding: '6px', fontSize: '11px', cursor: 'pointer' }}
-                            onClick={startCsvImport}
-                          >
-                            ⚡ {parsedCsvQuestions.filter(q => q.selected).length} 件生成
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                {dueCards.length === 0 ? '✅ 今日の復習は完了' : `▶ 今すぐ復習する  ${dueCards.length}問`}
+              </button>
+              
+              {cards.length > 0 && (
+                <button
+                  onClick={() => {
+                    setAnkiMode('all');
+                    setCurrentCardIndex(0);
+                    setActiveTab('anki');
+                  }}
+                  style={{
+                    width: '100%', marginTop: '8px', padding: '8px',
+                    fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)',
+                    background: 'transparent', border: 'none', cursor: 'pointer',
+                    textDecoration: 'underline', textDecorationColor: 'var(--border)'
+                  }}
+                >
+                  全 {cards.length} 問から復習する
+                </button>
               )}
             </div>
 
-            {/* 🧠 アコーディオン：忘却曲線（エビングハウス）の分類状況 */}
+            {/* 2列グリッド: 分野別進捗 + クイック統計 */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              
+              {/* 分野別定着率 */}
+              <div className="glass-panel" style={{ padding: '16px' }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '12px' }}>分野別定着率</div>
+                {['テクノロジ系', 'マネジメント', 'ストラテジ'].map(cat => {
+                  const total = cards.filter(c => c.category && c.category.includes(cat.substring(0, 4))).length;
+                  const done = cards.filter(c => c.category && c.category.includes(cat.substring(0, 4)) && c.status === '定着済').length;
+                  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+                  return (
+                    <div key={cat} style={{ marginBottom: '10px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '3px' }}>
+                        <span>{cat.substring(0, 5)}</span>
+                        <span style={{ fontFamily: 'var(--font-number)', color: 'var(--amber)' }}>{pct}%</span>
+                      </div>
+                      <div className="progress-neon-bar" style={{ height: '5px' }}>
+                        <div className="progress-neon-fill" style={{ width: `${pct}%` }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* クイック統計 */}
+              <div className="glass-panel" style={{ padding: '16px' }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '12px' }}>ステータス</div>
+                {[
+                  { label: '総カード', value: cards.length, color: 'var(--text-primary)' },
+                  { label: '要復習', value: dueCards.length, color: 'var(--red)' },
+                  { label: '定着済', value: cards.filter(c => c.status === '定着済').length, color: 'var(--green)' }
+                ].map(({ label, value, color }) => (
+                  <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{label}</span>
+                    <span style={{ fontSize: '18px', fontWeight: 900, fontFamily: 'var(--font-number)', color }}>{value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 忘却曲線 アコーディオン */}
             <div className="glass-panel" style={{ overflow: 'hidden' }}>
-              <div 
-                style={{ padding: '15px 20px', background: 'var(--bg-color)', borderBottom: showEbbinghausAcc ? '3px solid var(--border-color)' : 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
+              <div
+                style={{ padding: '14px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
                 onClick={() => setShowEbbinghausAcc(!showEbbinghausAcc)}
               >
-                <h3 style={{ fontSize: '15px', fontWeight: '900', color: 'var(--text-main)', margin: 0 }}>
-                  🧠 忘却曲線（エビングハウス）定着状況
-                </h3>
-                <span style={{ fontSize: '16px', fontWeight: 'bold' }}>{showEbbinghausAcc ? '▲' : '▼'}</span>
+                <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)' }}>🧠 エビングハウス定着状況</span>
+                <span style={{ color: 'var(--text-muted)', fontSize: '12px' }}>{showEbbinghausAcc ? '▲' : '▼'}</span>
               </div>
-
               {showEbbinghausAcc && (
-                <div style={{ padding: '15px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '10px' }}>
-                    {[
-                      { level: 1, title: 'Lv.1 翌日', color: 'var(--primary-color)' },
-                      { level: 2, title: 'Lv.2 3日後', color: '#ff9800' },
-                      { level: 3, title: 'Lv.3 1週間', color: 'var(--accent-yellow)' },
-                      { level: 4, title: 'Lv.4 2週間', color: 'var(--accent-blue)' },
-                      { level: 5, title: 'Lv.5 定着済', color: 'var(--accent-mint)' }
-                    ].map(bucket => {
-                      const bucketCards = cards.filter(c => c.review_level === bucket.level);
-                      return (
-                        <div key={bucket.level} style={{ minWidth: '160px', flex: '1', border: '2px solid var(--border-color)', background: '#fff', display: 'flex', flexDirection: 'column' }}>
-                          <div style={{ background: bucket.color, color: bucket.level === 3 || bucket.level === 5 ? 'var(--text-main)' : '#fff', padding: '6px', fontSize: '11px', fontWeight: '900', borderBottom: '2px solid var(--border-color)', textAlign: 'center' }}>
-                            {bucket.title} ({bucketCards.length})
-                          </div>
-                          <div style={{ padding: '6px', display: 'flex', flexDirection: 'column', gap: '6px', overflowY: 'auto', maxHeight: '200px' }}>
-                            {bucketCards.map(c => (
-                              <div 
-                                key={c.id} 
-                                className="glass-panel" 
-                                style={{ padding: '6px', cursor: 'pointer', fontSize: '11px', fontWeight: 'bold', boxShadow: '2px 2px 0 var(--border-color)' }} 
-                                onClick={() => {
-                                  setAnkiMode('all');
-                                  const index = cards.findIndex(card => card.id === c.id);
-                                  setCurrentCardIndex(index !== -1 ? index : 0);
-                                  setActiveTab('anki');
-                                }}
-                              >
-                                {c.question && c.question.length > 10 ? `${c.question.substring(0, 9)}…` : c.question}
-                              </div>
-                            ))}
-                          </div>
+                <div style={{ padding: '0 16px 16px', display: 'flex', gap: '8px', overflowX: 'auto' }}>
+                  {[
+                    { level: 1, title: 'Lv1 翌日', color: 'var(--red)' },
+                    { level: 2, title: 'Lv2 3日', color: 'var(--orange)' },
+                    { level: 3, title: 'Lv3 1週', color: 'var(--amber)' },
+                    { level: 4, title: 'Lv4 2週', color: 'var(--teal)' },
+                    { level: 5, title: 'Lv5 定着', color: 'var(--green)' }
+                  ].map(bucket => {
+                    const bucketCards = cards.filter(c => c.review_level === bucket.level);
+                    return (
+                      <div key={bucket.level} style={{ minWidth: '80px', flex: '1', background: 'var(--bg-input)', borderRadius: '6px', border: `1px solid ${bucket.color}22`, overflow: 'hidden' }}>
+                        <div style={{ background: bucket.color, padding: '5px 6px', fontSize: '10px', fontWeight: 700, textAlign: 'center', color: '#0f1520' }}>
+                          {bucket.title} ({bucketCards.length})
                         </div>
-                      );
-                    })}
-                  </div>
+                        <div style={{ padding: '6px', maxHeight: '120px', overflowY: 'auto' }}>
+                          {bucketCards.map(c => (
+                            <div
+                              key={c.id}
+                              style={{ fontSize: '10px', padding: '3px 4px', color: 'var(--text-secondary)', cursor: 'pointer', borderRadius: '3px' }}
+                              onClick={() => {
+                                setAnkiMode('all');
+                                const index = cards.findIndex(card => card.id === c.id);
+                                setCurrentCardIndex(index !== -1 ? index : 0);
+                                setActiveTab('anki');
+                              }}
+                            >
+                              {c.question && c.question.length > 8 ? `${c.question.substring(0, 7)}…` : c.question}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
 
-            {/* 🗺️ アコーディオン：脳内弱点マインドマップ */}
+            {/* 弱点マップ アコーディオン */}
             <div className="glass-panel" style={{ overflow: 'hidden' }}>
-              <div 
-                style={{ padding: '15px 20px', background: 'var(--bg-color)', borderBottom: showMindmapAcc ? '3px solid var(--border-color)' : 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
+              <div
+                style={{ padding: '14px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
                 onClick={() => setShowMindmapAcc(!showMindmapAcc)}
               >
-                <h3 style={{ fontSize: '15px', fontWeight: '900', color: 'var(--text-main)', margin: 0 }}>
-                  🗺️ 脳内弱点マインドマップ
-                </h3>
-                <span style={{ fontSize: '16px', fontWeight: 'bold' }}>{showMindmapAcc ? '▲' : '▼'}</span>
+                <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)' }}>🗺️ 弱点マインドマップ</span>
+                <span style={{ color: 'var(--text-muted)', fontSize: '12px' }}>{showMindmapAcc ? '▲' : '▼'}</span>
               </div>
-
               {showMindmapAcc && (
-                <div style={{ padding: '15px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <p style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 'bold', margin: 0 }}>
-                    赤いノードが未暗記の弱点用語です（タップでジャンプ）
-                  </p>
-                  
-                  <div style={{ width: '100%', height: '300px', position: 'relative', overflow: 'hidden', background: '#fff', border: '2px solid var(--border-color)' }}>
+                <div style={{ padding: '0 16px 16px' }}>
+                  <div style={{ width: '100%', height: '260px', position: 'relative', overflow: 'hidden', background: 'var(--bg-input)', borderRadius: '6px' }}>
                     {mapNodes.length === 0 ? (
-                      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%', gap: '6px' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%', gap: '8px' }}>
                         <div style={{ fontSize: '32px' }}>🎉</div>
-                        <strong style={{ fontSize: '14px', fontWeight: '900' }}>脳内弱点はありません！</strong>
+                        <strong style={{ fontSize: '14px', color: 'var(--green)' }}>弱点はありません！</strong>
                       </div>
                     ) : (
                       <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0 }}>
                         {mapNodes.map((node) => (
-                          <line 
-                            key={`line-${node.id}`} 
-                            x1="50%" 
-                            y1="50%" 
-                            x2={node.lineX2} 
-                            y2={node.lineY2} 
-                            stroke="var(--border-color)" 
-                            strokeWidth="2" 
-                          />
+                          <line key={`line-${node.id}`} x1="50%" y1="50%" x2={node.lineX2} y2={node.lineY2} stroke="var(--border)" strokeWidth="1.5" />
                         ))}
-
-                        <circle cx="50%" cy="50%" r="20" fill="var(--accent-yellow)" stroke="var(--border-color)" strokeWidth="3" />
-                        <text x="50%" y="53%" fill="var(--text-main)" fontSize="10" fontWeight="900" textAnchor="middle" pointerEvents="none">AP脳内</text>
-
+                        <circle cx="50%" cy="50%" r="20" fill="var(--amber)" />
+                        <text x="50%" y="53%" fill="#0f1520" fontSize="9" fontWeight="900" textAnchor="middle" pointerEvents="none">AP脳内</text>
                         {mapNodes.map((node) => (
                           <g key={node.id} onClick={() => setSelectedMapNode(node.question)} style={{ cursor: 'pointer' }}>
-                            <circle 
-                              cx={node.cx} 
-                              cy={node.cy} 
-                              r="12" 
-                              fill="#fff" 
-                              stroke="var(--primary-color)" 
-                              strokeWidth="3" 
-                              className="node-glow" 
-                            />
-                            <text 
-                              x={node.cx} 
-                              y={parseFloat(node.cy) + 8 + '%'} 
-                              fill="var(--text-main)" 
-                              fontSize="9" 
-                              fontWeight="900" 
-                              textAnchor="middle" 
-                              pointerEvents="none"
-                            >
-                              {node.question && node.question.length > 6 ? `${node.question.substring(0, 5)}…` : (node.question || '')}
+                            <circle cx={node.cx} cy={node.cy} r="11" fill="var(--bg-elevated)" stroke="var(--red)" strokeWidth="2" className="node-glow" />
+                            <text x={node.cx} y={`${parseFloat(node.cy) + 8}%`} fill="var(--text-secondary)" fontSize="8" fontWeight="700" textAnchor="middle" pointerEvents="none">
+                              {node.question && node.question.length > 5 ? `${node.question.substring(0, 4)}…` : (node.question || '')}
                             </text>
                           </g>
                         ))}
                       </svg>
                     )}
                   </div>
-
                   {selectedMapNode && (
-                    <div className="glass-panel" style={{ padding: '12px', position: 'relative', borderLeftWidth: '6px', borderLeftColor: 'var(--accent-blue)', marginTop: '8px' }}>
-                      <button
-                        style={{ position: 'absolute', top: '8px', right: '8px', background: 'transparent', border: 'none', color: 'var(--text-main)', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer' }}
-                        onClick={() => setSelectedMapNode(null)}
-                      >
-                        ✕
-                      </button>
-                      <h4 style={{ fontSize: '14px', fontWeight: '900', color: 'var(--text-main)', margin: '0 0 6px 0' }}>{selectedMapNode}</h4>
-                      <button
-                        className="neon-btn neon-btn-mint"
-                        style={{ padding: '6px 12px', fontSize: '11px' }}
-                        onClick={() => {
-                          setAnkiMode('all');
-                          const allIndex = cards.findIndex(c => c.question === selectedMapNode || c.sub_category === selectedMapNode);
-                          setCurrentCardIndex(allIndex !== -1 ? allIndex : 0);
-                          setActiveTab('anki');
-                        }}
-                      >
-                        🚀 この過去問へジャンプ
-                      </button>
+                    <div className="glass-panel" style={{ padding: '12px', marginTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '13px', fontWeight: 700 }}>{selectedMapNode}</span>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <button style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '16px' }} onClick={() => setSelectedMapNode(null)}>✕</button>
+                        <button className="neon-btn neon-btn-mint" style={{ padding: '4px 10px', fontSize: '11px' }}
+                          onClick={() => {
+                            setAnkiMode('all');
+                            const allIndex = cards.findIndex(c => c.question === selectedMapNode || c.sub_category === selectedMapNode);
+                            setCurrentCardIndex(allIndex !== -1 ? allIndex : 0);
+                            setActiveTab('anki');
+                          }}
+                        >ジャンプ →</button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -1538,65 +1405,64 @@ export default function App() {
 
         {/* ----------------- 全データ (スプレッドシート連携) ----------------- */}
         {activeTab === 'sheet' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <div style={{ textAlign: 'center' }}>
-              <div className="glass-panel" style={{ display: 'inline-block', padding: '6px 16px', marginBottom: '8px', backgroundColor: 'var(--accent-blue)' }}>
-                <h2 style={{ fontSize: '16px', fontWeight: '900', color: '#fff', margin: 0 }}>データベース＆スプレッドシート</h2>
-              </div>
-              <p style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: 'bold' }}>登録問題データの検索・一覧表示、及びマスター編集を行えます</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }} className="fade-in">
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h2 style={{ fontSize: '16px', fontWeight: 900, color: 'var(--text-primary)', margin: 0 }}>全データ</h2>
+              <a 
+                href={SPREADSHEET_URL} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="neon-btn neon-btn-mint"
+                style={{ padding: '6px 12px', fontSize: '11px', textDecoration: 'none' }}
+              >
+                📊 スプレッドシート ↗
+              </a>
             </div>
 
-            {/* 巨大スプレッドシートボタン */}
-            <a 
-              href={SPREADSHEET_URL} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="neon-btn neon-btn-mint"
-              style={{ 
-                width: '100%', 
-                padding: '12px 18px', 
-                fontSize: '14px', 
-                justifyContent: 'center', 
-                textDecoration: 'none', 
-                boxShadow: '4px 4px 0 var(--border-color)',
-                textAlign: 'center'
-              }}
-            >
-              📊 Google スプレッドシートを直接開く ↗
-            </a>
+            {/* カテゴリフィルター */}
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              {['', 'テクノロジ系', 'マネジメント系', 'ストラテジ系'].map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setCategoryFilter(cat)}
+                  style={{
+                    padding: '5px 12px', fontSize: '12px', fontWeight: 700,
+                    borderRadius: '20px', border: '1px solid',
+                    cursor: 'pointer', transition: 'all 0.15s',
+                    background: categoryFilter === cat ? 'var(--amber-dim)' : 'var(--bg-input)',
+                    borderColor: categoryFilter === cat ? 'var(--amber)' : 'var(--border-subtle)',
+                    color: categoryFilter === cat ? 'var(--amber)' : 'var(--text-muted)'
+                  }}
+                >
+                  {cat === '' ? 'すべて' : cat}
+                </button>
+              ))}
+            </div>
 
             {/* 検索バー */}
             <input 
-              type="text" 
+              type="text"
               placeholder="🔍 用語、カテゴリ、問題文で検索..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                padding: '10px 14px',
-                fontSize: '13px',
-                border: '3px solid var(--border-color)',
-                boxShadow: '3px 3px 0 var(--border-color)',
-                outline: 'none',
-                fontWeight: 'bold',
-                fontFamily: 'inherit'
-              }}
             />
 
             {/* データテーブル */}
             <div className="glass-panel" style={{ overflowX: 'auto', padding: '10px' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '12px' }}>
                 <thead>
-                  <tr style={{ borderBottom: '3px solid var(--border-color)' }}>
-                    <th style={{ padding: '8px', fontWeight: '900' }}>用語</th>
-                    <th style={{ padding: '8px', fontWeight: '900' }}>カテゴリ</th>
-                    <th style={{ padding: '8px', fontWeight: '900' }}>検索キー</th>
-                    <th style={{ padding: '8px', fontWeight: '900' }}>状態/Lv</th>
+                  <tr style={{ borderBottom: '2px solid var(--border)' }}>
+                    <th style={{ padding: '8px', fontWeight: 900, color: 'var(--text-muted)', fontSize: '11px' }}>用語</th>
+                    <th style={{ padding: '8px', fontWeight: 900, color: 'var(--text-muted)', fontSize: '11px' }}>カテゴリ</th>
+                    <th style={{ padding: '8px', fontWeight: 900, color: 'var(--text-muted)', fontSize: '11px' }}>検索キー</th>
+                    <th style={{ padding: '8px', fontWeight: 900, color: 'var(--text-muted)', fontSize: '11px' }}>状態/Lv</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredCards.length === 0 ? (
                     <tr>
-                      <td colSpan={4} style={{ padding: '15px 8px', textAlign: 'center', fontWeight: 'bold', color: 'var(--text-muted)' }}>
+                      <td colSpan={4} style={{ padding: '20px 8px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '13px' }}>
                         該当するデータが見つかりません
                       </td>
                     </tr>
@@ -1604,7 +1470,7 @@ export default function App() {
                     filteredCards.map((c) => (
                       <tr 
                         key={c.id} 
-                        style={{ borderBottom: '1px solid #e2dcd0', cursor: 'pointer' }}
+                        style={{ borderBottom: '1px solid var(--border-subtle)', cursor: 'pointer', transition: 'background 0.1s' }}
                         onClick={() => {
                           setAnkiMode('all');
                           const index = cards.findIndex(card => card.id === c.id);
@@ -1612,9 +1478,9 @@ export default function App() {
                           setActiveTab('anki');
                         }}
                       >
-                        <td style={{ padding: '10px 8px', fontWeight: 'bold' }}>{c.question}</td>
-                        <td style={{ padding: '10px 8px', color: 'var(--text-secondary)' }}>{c.sub_category}</td>
-                        <td style={{ padding: '10px 8px', fontFamily: 'var(--font-outfit)', fontWeight: 'bold' }} onClick={(e) => {
+                        <td style={{ padding: '10px 8px', fontWeight: 700, color: 'var(--text-primary)' }}>{c.question}</td>
+                        <td style={{ padding: '10px 8px', color: 'var(--text-secondary)', fontSize: '11px' }}>{c.sub_category}</td>
+                        <td style={{ padding: '10px 8px' }} onClick={(e) => {
                           const url = getPastQuestionUrl(c.search_key);
                           if (url) {
                             e.stopPropagation();
@@ -1622,21 +1488,23 @@ export default function App() {
                           }
                         }}>
                           {c.search_key ? (
-                            <span style={{ color: 'var(--accent-blue)', textDecoration: 'underline', cursor: 'pointer' }}>
+                            <span style={{ color: 'var(--teal)', textDecoration: 'underline', cursor: 'pointer', fontSize: '11px' }}>
                               {c.search_key} ↗
                             </span>
                           ) : '-'}
                         </td>
                         <td style={{ padding: '10px 8px' }}>
                           <span style={{ 
-                            padding: '1px 4px', 
-                            fontSize: '9px', 
-                            fontWeight: 'bold', 
-                            border: '1px solid var(--border-color)', 
-                            background: c.status === '定着済' ? 'var(--accent-mint)' : 'var(--primary-color)',
-                            color: c.status === '定着済' ? 'var(--text-main)' : '#fff'
+                            padding: '2px 6px', 
+                            fontSize: '10px', 
+                            fontWeight: 700, 
+                            borderRadius: '4px',
+                            border: '1px solid',
+                            background: c.status === '定着済' ? 'var(--green-dim)' : 'var(--red-dim)',
+                            borderColor: c.status === '定着済' ? 'var(--green)' : 'var(--red)',
+                            color: c.status === '定着済' ? 'var(--green)' : 'var(--red)'
                           }}>
-                            {c.status} (Lv.{c.review_level})
+                            {c.status} Lv{c.review_level}
                           </span>
                         </td>
                       </tr>
@@ -1648,26 +1516,106 @@ export default function App() {
 
           </div>
         )}
+
+        {/* ----------------- ＋ インポートタブ ----------------- */}
+        {activeTab === 'import' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }} className="fade-in">
+            
+            <div style={{ textAlign: 'center', padding: '8px 0' }}>
+              <h2 style={{ fontSize: '18px', fontWeight: 900, color: 'var(--text-primary)', marginBottom: '6px' }}>問題を追加する</h2>
+              <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>過去問道場の結果CSVやスクショから自動生成します</p>
+            </div>
+
+            {/* CSV インポート */}
+            <div className="glass-panel" style={{ padding: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                <div style={{ fontSize: '28px' }}>📊</div>
+                <div>
+                  <h3 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '2px', color: 'var(--text-primary)' }}>過去問道場CSV 一括インポート</h3>
+                  <p style={{ fontSize: '11px', color: 'var(--text-muted)' }}>学習履歴CSVから間違えた問題を一括自動生成します</p>
+                </div>
+              </div>
+
+              {parsedCsvQuestions.length === 0 ? (
+                <label className="neon-btn neon-btn-mint" style={{ cursor: 'pointer', width: '100%', padding: '12px', fontSize: '13px' }}>
+                  📂 CSVファイルを選択
+                  <input type="file" accept=".csv" onChange={handleCsvUpload} style={{ display: 'none' }} />
+                </label>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--red)' }}>✗ 間違えた問題 {parsedCsvQuestions.length}件</span>
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <button style={{ fontSize: '11px', padding: '3px 8px', cursor: 'pointer', fontWeight: 700, border: '1px solid var(--border)', background: 'var(--bg-input)', color: 'var(--text-secondary)', borderRadius: '4px' }}
+                        onClick={() => setParsedCsvQuestions(prev => prev.map(q => ({ ...q, selected: true })))}>全選択</button>
+                      <button style={{ fontSize: '11px', padding: '3px 8px', cursor: 'pointer', fontWeight: 700, border: '1px solid var(--border)', background: 'var(--bg-input)', color: 'var(--text-secondary)', borderRadius: '4px' }}
+                        onClick={() => setParsedCsvQuestions(prev => prev.map(q => ({ ...q, selected: false })))}>全解除</button>
+                    </div>
+                  </div>
+                  
+                  <div style={{ maxHeight: '220px', overflowY: 'auto', background: 'var(--bg-input)', borderRadius: '6px', padding: '8px' }}>
+                    {parsedCsvQuestions.map((q) => (
+                      <label key={q.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', padding: '6px 4px', cursor: 'pointer', borderBottom: '1px solid var(--border-subtle)' }}>
+                        <input type="checkbox" checked={q.selected}
+                          onChange={() => setParsedCsvQuestions(prev => prev.map(item => item.id === q.id ? { ...item, selected: !item.selected } : item))} />
+                        <span style={{ fontSize: '10px', background: 'var(--amber-dim)', color: 'var(--amber)', padding: '1px 5px', borderRadius: '3px', fontWeight: 700, flexShrink: 0 }}>{q.subCategory}</span>
+                        <span style={{ fontWeight: 600, color: 'var(--text-secondary)', fontSize: '11px' }}>{q.searchKey}</span>
+                      </label>
+                    ))}
+                  </div>
+                  
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button className="neon-btn" style={{ flex: 1, padding: '8px', fontSize: '12px', color: 'var(--text-muted)', borderColor: 'var(--border-subtle)' }}
+                      onClick={() => setParsedCsvQuestions([])}>キャンセル</button>
+                    <button className="neon-btn neon-btn-mint" style={{ flex: 2, padding: '8px', fontSize: '13px', fontWeight: 900 }}
+                      onClick={startCsvImport}>
+                      ⚡ {parsedCsvQuestions.filter(q => q.selected).length} 件を生成
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* スクショアップロード */}
+            <div className="glass-panel" style={{ padding: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                <div style={{ fontSize: '28px' }}>📸</div>
+                <div>
+                  <h3 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '2px', color: 'var(--text-primary)' }}>スクショから問題を登録</h3>
+                  <p style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Gemini AIが解析して選択肢・解説を自動生成します</p>
+                </div>
+              </div>
+              <label className="neon-btn" style={{ cursor: 'pointer', width: '100%', padding: '12px', fontSize: '13px' }}>
+                {uploading ? '⏳ 解析中...' : '📷 画像ファイルを選択'}
+                <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} disabled={uploading} />
+              </label>
+            </div>
+
+          </div>
+        )}
       </main>
 
-      {/* Bottom Navigation */}
+      {/* ボトムナビ */}
       <nav className="bottom-nav">
-        <a href="#dashboard" className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>
+        <a href="#dashboard" className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); setActiveTab('dashboard'); }}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
           </svg>
           ホーム
         </a>
-        <a href="#anki" className={`nav-item ${activeTab === 'anki' ? 'active' : ''}`} onClick={() => {
-          setCurrentCardIndex(0);
-          setActiveTab('anki');
-        }}>
+        <a href="#anki" className={`nav-item ${activeTab === 'anki' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); setCurrentCardIndex(0); setActiveTab('anki'); }}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
           Anki復習
         </a>
-        <a href="#sheet" className={`nav-item ${activeTab === 'sheet' ? 'active' : ''}`} onClick={() => setActiveTab('sheet')}>
+        <a href="#import" className={`nav-item nav-import ${activeTab === 'import' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); setActiveTab('import'); }}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          ＋追加
+        </a>
+        <a href="#sheet" className={`nav-item ${activeTab === 'sheet' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); setActiveTab('sheet'); }}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
           </svg>

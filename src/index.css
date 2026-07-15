@@ -1,26 +1,57 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@400;600;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Outfit:wght@400;600;800;900&display=swap');
 
 :root {
-  /* FF14 HUD inspired Theme */
-  --bg-color: #08080a; /* 非常に深い黒背景 */
-  --panel-bg: rgba(23, 22, 21, 0.94); /* FF14風 半透明のダークブラウン/グレー */
-  
-  --primary-color: #e04545; /* 赤（ダメージ・未定着） */
-  --primary-hover: #b82d2d;
-  
-  --accent-yellow: #dfb558; /* ゴールド（定着済・重要） */
-  --accent-blue: #3377ff;   
-  --accent-mint: #47d6b6;   /* ミント */
-  
-  --text-main: #ffffff;      /* テキストは完全な白で視認性を最大化 */
-  --text-secondary: #dcdcdc; /* 明るめのグレー */
-  --text-muted: #999999;
-  --border-color: #c5a870;   /* 上品なゴールド・真鍮色 */
-  
-  /* Fonts */
-  --font-rpg: 'Noto Sans JP', sans-serif;
-  --font-pixel: 'Outfit', sans-serif;
-  
+  /* ==============================
+     🎨 暗記アプリ カラーパレット
+     深い紺色ベース × アンバーゴールド
+     ============================== */
+
+  /* 背景系 - 目が疲れにくい深紺 */
+  --bg-color:      #0f1520;
+  --bg-elevated:   #161f30;
+  --bg-card:       #1a2540;
+  --bg-input:      #111928;
+
+  /* アクセント - 暖色系ゴールド（知識・達成） */
+  --amber:         #f0b429;
+  --amber-light:   #fcd34d;
+  --amber-dim:     rgba(240, 180, 41, 0.15);
+
+  /* 機能カラー */
+  --teal:          #0ea5c8;
+  --teal-dim:      rgba(14, 165, 200, 0.12);
+  --green:         #22c55e;
+  --green-dim:     rgba(34, 197, 94, 0.12);
+  --red:           #ef4444;
+  --red-dim:       rgba(239, 68, 68, 0.12);
+  --orange:        #f97316;
+  --orange-dim:    rgba(249, 115, 22, 0.12);
+
+  /* テキスト */
+  --text-primary:  #f0f4f8;
+  --text-secondary:#a8b8d0;
+  --text-muted:    #5a7091;
+
+  /* ボーダー */
+  --border:        rgba(240, 180, 41, 0.2);
+  --border-strong: rgba(240, 180, 41, 0.5);
+  --border-subtle: rgba(168, 184, 208, 0.1);
+
+  /* フォント */
+  --font-main:     'Noto Sans JP', 'Outfit', sans-serif;
+  --font-number:   'Outfit', 'Noto Sans JP', sans-serif;
+
+  /* 後方互換 エイリアス */
+  --panel-bg:      var(--bg-elevated);
+  --text-main:     var(--text-primary);
+  --accent-yellow: var(--amber);
+  --accent-blue:   var(--teal);
+  --accent-mint:   var(--green);
+  --primary-color: var(--red);
+  --border-color:  var(--border-strong);
+  --font-rpg:      var(--font-main);
+  --font-pixel:    var(--font-number);
+
   color-scheme: dark;
 }
 
@@ -32,102 +63,108 @@
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-rpg);
+  font-family: var(--font-main);
   background-color: var(--bg-color);
-  color: var(--text-main);
+  color: var(--text-primary);
   overflow-x: hidden;
   min-height: 100svh;
-  /* 細かなドットの星空風背景 */
-  background-image: radial-gradient(rgba(197, 168, 112, 0.06) 1.2px, transparent 1.2px);
-  background-size: 24px 24px;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(14, 165, 200, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(240, 180, 41, 0.04) 0%, transparent 50%);
   overscroll-behavior-y: contain;
+  line-height: 1.6;
 }
 
 #root {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  position: relative;
 }
 
-/* ==========================================================================
-   🧱 RPG Classic Window (FF14 HUD Panel)
-   ========================================================================== */
+/* ==============================
+   🧱 パネル
+   ============================== */
 .glass-panel {
-  background: var(--panel-bg) !important;
-  border: 1.5px solid var(--border-color); /* 細くてシャープなゴールド線 */
-  border-radius: 4px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), inset 0 0 1px 1px rgba(255, 255, 255, 0.08); /* 影と内側グロー */
-  transition: border-color 0.15s, transform 0.1s;
-  color: var(--text-main);
-  backdrop-filter: blur(8px); /* ガラスのような高級感 */
+  background: var(--bg-elevated) !important;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  transition: border-color 0.2s;
 }
 
 .glass-panel:hover {
-  border-color: #ffdf9e; /* ホバー時は明るい金に */
+  border-color: var(--border-strong);
 }
 
-/* ==========================================================================
-   ⚡ RPG Pixel Button Styles (FF14 HUD Button)
-   ========================================================================== */
+/* ==============================
+   🔘 ボタン
+   ============================== */
 .neon-btn {
-  background: linear-gradient(to bottom, #2b2a28 0%, #151413 100%); /* シックなメタルプレート風 */
-  color: #ffdf9e; /* ボタンの文字は真鍮ゴールド */
-  border: 1.5px solid #8e7751;
-  padding: 8px 18px;
-  font-family: var(--font-rpg);
-  font-weight: bold;
-  border-radius: 3px;
+  background: var(--bg-card);
+  color: var(--amber);
+  border: 1.5px solid var(--border-strong);
+  padding: 10px 20px;
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 6px;
   cursor: pointer;
   outline: none;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-  transition: all 0.15s ease;
+  transition: all 0.18s ease;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   text-decoration: none;
   justify-content: center;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
 }
 
 .neon-btn:hover {
-  background: linear-gradient(to bottom, #3d3b38 0%, #201e1d 100%);
-  border-color: var(--accent-yellow);
-  color: #ffffff;
+  background: var(--amber-dim);
+  border-color: var(--amber);
+  color: var(--amber-light);
 }
 
 .neon-btn:active {
   transform: translateY(1px);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 
 .neon-btn:disabled {
-  background: #1c1b1a !important;
-  color: #5a5754 !important;
-  border-color: #383633 !important;
+  background: var(--bg-input) !important;
+  color: var(--text-muted) !important;
+  border-color: var(--border-subtle) !important;
   cursor: not-allowed;
-  box-shadow: none !important;
+}
+
+.btn-primary {
+  background: var(--amber) !important;
+  color: #0f1520 !important;
+  border-color: var(--amber) !important;
+  font-weight: 900 !important;
+}
+.btn-primary:hover {
+  background: var(--amber-light) !important;
+  border-color: var(--amber-light) !important;
 }
 
 .neon-btn-mint {
-  border-color: var(--accent-mint);
-  color: var(--accent-mint);
+  border-color: var(--teal);
+  color: var(--teal);
 }
-
 .neon-btn-mint:hover {
-  background: rgba(71, 214, 182, 0.08);
+  background: var(--teal-dim);
+  border-color: var(--teal);
   color: #fff;
 }
 
-/* ==========================================================================
-   🔄 3D Flip for brutalist Anki Card (iPad / PC 見開きデュアルカード最適化)
-   ========================================================================== */
+/* ==============================
+   🃏 Ankiカード
+   ============================== */
 .anki-dual-layout {
   display: flex;
   flex-direction: row;
-  gap: 24px;
+  gap: 20px;
   justify-content: center;
   align-items: flex-start;
   width: 100%;
@@ -136,7 +173,6 @@ body {
 }
 
 @media (max-width: 1024px) {
-  /* iPad縦やスマホ等の狭い画面では縦に並べる */
   .anki-dual-layout {
     flex-direction: column;
     align-items: center;
@@ -146,9 +182,9 @@ body {
 .card-container {
   perspective: 1000px;
   width: 100%;
-  max-width: 540px; /* 横幅を調整して左右並びが綺麗に収まるように */
-  height: 600px;    /* デフォルトの高さ */
-  margin: 10px 0;
+  max-width: 540px;
+  height: 600px;
+  margin: 8px 0;
   position: relative;
   touch-action: none;
 }
@@ -156,13 +192,14 @@ body {
 @media (max-width: 1024px) {
   .card-container {
     max-width: 580px;
-    margin: 10px auto;
+    margin: 8px auto;
   }
 }
 
 @media (max-width: 768px) {
   .card-container {
-    height: 480px;  /* スマホ等では高さを抑えて画面からはみ出さないようにする */
+    height: auto;
+    min-height: 420px;
     max-width: 100%;
   }
 }
@@ -172,7 +209,7 @@ body {
   height: 100%;
   position: absolute;
   transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
 }
 
@@ -186,126 +223,117 @@ body {
   height: 100%;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  padding: 30px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-radius: 0;
-  border: 4px solid var(--border-color);
+  border-radius: 10px;
+  border: 1px solid var(--border);
   box-sizing: border-box;
 }
 
-/* 前面も選択肢が多いと見切れるのを防ぐためスクロール対応にし、スクロールバーを隠す */
 .card-front {
-  background: var(--panel-bg);
-  box-shadow: 8px 8px 0 var(--accent-blue);
+  background: var(--bg-card);
+  border-left: 3px solid var(--teal);
   overflow-y: auto;
-  -ms-overflow-style: none; /* IE/Edge */
-  scrollbar-width: none;    /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-
-.card-front::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
-}
+.card-front::-webkit-scrollbar { display: none; }
 
 .card-back {
-  background: var(--panel-bg);
+  background: var(--bg-card);
+  border-left: 3px solid var(--amber);
   transform: rotateY(180deg);
-  box-shadow: 8px 8px 0 var(--accent-yellow);
   overflow-y: auto;
-  -ms-overflow-style: none; /* IE/Edge */
-  scrollbar-width: none;    /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
+.card-back::-webkit-scrollbar { display: none; }
 
-.card-back::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
-}
-
-/* ==========================================================================
-   🎮 クイズ判定・選択肢の◯✕判定スタイル
-   ========================================================================== */
+/* ==============================
+   🎯 選択肢
+   ============================== */
 .choice-box {
   padding: 12px 16px;
   font-size: 13px;
+  font-weight: 600;
   text-align: left;
-  background: rgba(10, 10, 12, 0.6); /* 濃い半透明黒 */
-  border: 1px solid rgba(197, 168, 112, 0.4); /* うっすらゴールドのシャープな枠線 */
-  border-radius: 3px;
-  font-weight: bold;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s ease;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  color: var(--text-primary);
+  line-height: 1.5;
 }
 
 .choice-box:hover {
-  background-color: rgba(197, 168, 112, 0.08);
-  border-color: var(--accent-yellow);
-  box-shadow: inset 0 0 12px rgba(223, 181, 88, 0.15);
+  background: var(--amber-dim);
+  border-color: var(--border-strong);
 }
 
 .choice-box:active {
   transform: translateY(1px);
 }
 
-/* 正解時のスタイル */
 .choice-correct {
-  background-color: rgba(71, 214, 182, 0.12) !important;
-  border-color: var(--accent-mint) !important;
-  box-shadow: 0 0 10px rgba(71, 214, 182, 0.3) !important;
+  background: var(--green-dim) !important;
+  border-color: var(--green) !important;
+  color: var(--green) !important;
 }
 
-/* 不正解時のスタイル */
 .choice-incorrect {
-  background-color: rgba(224, 69, 69, 0.12) !important;
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 10px rgba(224, 69, 69, 0.3) !important;
+  background: var(--red-dim) !important;
+  border-color: var(--red) !important;
+  color: var(--red) !important;
 }
 
-/* ◯/✕ インジケータラベル */
 .choice-badge {
   font-size: 11px;
-  font-weight: bold;
-  padding: 2px 6px;
-  border: 1px solid rgba(255,255,255,0.3);
-  background: #151413;
-  color: var(--text-main);
-  border-radius: 2px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: 8px;
 }
 
 .choice-incorrect .choice-badge {
-  color: var(--primary-color);
-  border-color: var(--primary-color);
+  background: var(--red-dim);
+  color: var(--red);
+  border: 1px solid var(--red);
 }
 
 .choice-correct .choice-badge {
-  color: var(--accent-mint);
-  border-color: var(--accent-mint);
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid var(--green);
 }
 
-/* ==========================================================================
-   🗺️ SVG MindMap Interactive Node Animations (ホバー時の「ぶるぶる」振動を完全解消)
-   ========================================================================== */
+/* ==============================
+   🗺️ SVGノード
+   ============================== */
 .node-glow {
-  stroke-width: 3px;
+  stroke-width: 2px;
   transition: all 0.2s ease-in-out;
 }
-
 .node-glow:hover {
-  stroke-width: 5px; /* 枠線を太くして安全にホバーをアピール */
+  stroke-width: 4px;
   cursor: pointer;
 }
 
-/* ==========================================================================
-   🔄 3D Flip for Mini Sub-Cards (解説パタパタカード用)
-   ========================================================================== */
+/* ==============================
+   🔄 サブカード
+   ============================== */
 .sub-card-container {
   perspective: 600px;
   width: 100%;
-  height: 110px; /* ミニカードごとの高さ */
-  margin-bottom: 12px;
+  height: 110px;
+  margin-bottom: 10px;
   position: relative;
   touch-action: none;
 }
@@ -320,7 +348,7 @@ body {
 }
 
 .sub-anki-card.is-flipped {
-  transform: rotateX(180deg); /* 縦方向にくるっと回す */
+  transform: rotateX(180deg);
 }
 
 .sub-card-face {
@@ -329,54 +357,49 @@ body {
   height: 100%;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  padding: 12px 18px;
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-radius: 0;
-  border: 3px solid var(--border-color);
+  border-radius: 6px;
+  border: 1px solid var(--border);
   box-sizing: border-box;
 }
 
 .sub-card-front {
-  background: var(--panel-bg);
-  box-shadow: 4px 4px 0 var(--border-color);
+  background: var(--bg-elevated);
   transition: background-color 0.15s;
 }
-
 .sub-card-front:hover {
-  background-color: var(--accent-yellow);
+  background: var(--amber-dim);
 }
 
 .sub-card-back {
-  background: var(--panel-bg);
+  background: var(--bg-card);
   transform: rotateX(180deg);
-  box-shadow: 4px 4px 0 var(--accent-blue);
   overflow-y: auto;
-  -ms-overflow-style: none; /* IE/Edge */
-  scrollbar-width: none;    /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
+.sub-card-back::-webkit-scrollbar { display: none; }
 
-.sub-card-back::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
-}
-
-/* ==========================================================================
-   📱 Layout
-   ========================================================================== */
+/* ==============================
+   📱 レイアウト
+   ============================== */
 .app-header {
-  padding: env(safe-area-inset-top, 16px) 16px 12px;
-  background: var(--bg-color);
+  padding: env(safe-area-inset-top, 14px) 16px 12px;
+  background: rgba(15, 21, 32, 0.96);
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 2px solid var(--border-color);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(10px);
 }
 
 .app-content {
   flex: 1;
   padding: 16px;
-  padding-bottom: calc(85px + env(safe-area-inset-bottom, 20px));
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 20px));
 }
 
 .bottom-nav {
@@ -386,88 +409,98 @@ body {
   right: 0;
   height: calc(60px + env(safe-area-inset-bottom, 0px));
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  background: #111116;
-  border-top: 2px solid var(--border-color);
+  background: rgba(15, 21, 32, 0.98);
+  border-top: 1px solid var(--border);
   display: flex;
   justify-content: space-around;
   align-items: center;
   z-index: 100;
+  backdrop-filter: blur(10px);
 }
 
 .nav-item {
-  color: var(--text-main);
+  color: var(--text-muted);
   text-decoration: none;
-  font-size: 11px;
+  font-size: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3px;
   transition: all 0.15s ease;
-  font-family: var(--font-rpg);
-  font-weight: bold;
-  padding: 4px 12px;
-  border: 1px solid transparent;
-  border-radius: 4px;
+  font-family: var(--font-main);
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 8px;
+  min-width: 56px;
+}
+
+.nav-item:hover {
+  color: var(--text-secondary);
 }
 
 .nav-item.active {
-  background-color: rgba(255, 215, 0, 0.1);
-  border: 1.5px solid var(--accent-yellow);
-  color: var(--accent-yellow);
+  color: var(--amber);
 }
 
 .nav-item.active svg {
-  stroke: var(--accent-yellow);
+  stroke: var(--amber);
+}
+
+.nav-item.nav-import.active {
+  color: var(--teal);
+}
+.nav-item.nav-import.active svg {
+  stroke: var(--teal);
 }
 
 .nav-item svg {
-  width: 18px;
-  height: 18px;
-  stroke: var(--text-main);
-  stroke-width: 2.5px;
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2px;
 }
 
-/* ==========================================================================
-   📊 Brutalist Progress bar (HP/MPゲージ仕様)
-   ========================================================================== */
+/* ==============================
+   📊 進捗バー
+   ============================== */
 .progress-neon-bar {
   width: 100%;
-  height: 12px;
-  background: #000;
-  border: 2px solid var(--border-color);
-  border-radius: 3px;
+  height: 8px;
+  background: var(--bg-input);
+  border-radius: 99px;
   overflow: hidden;
   position: relative;
 }
 
 .progress-neon-fill {
   height: 100%;
-  background: linear-gradient(to right, #0055ff, #00ffcc); /* 青〜水色のグラデーション */
+  background: linear-gradient(to right, var(--teal), var(--green));
+  border-radius: 99px;
   transition: width 0.4s ease;
 }
 
-/* ==========================================================================
-   🔄 WL-LogicLab Loading Overlay (RPG風ローディング)
-   ========================================================================== */
+/* ==============================
+   🌀 ローディング
+   ============================== */
 .loading-overlay-wl {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(12, 12, 18, 0.95);
+  background: rgba(15, 21, 32, 0.97);
   z-index: 2000;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 16px;
 }
 
 .spinner-wl {
-  width: 32px; height: 32px;
-  border: 3px solid #333;
-  border-top: 3px solid var(--accent-yellow);
+  width: 36px; height: 36px;
+  border: 3px solid var(--border-subtle);
+  border-top: 3px solid var(--amber);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
-  margin-bottom: 1rem;
 }
 
 @keyframes spin {
@@ -476,22 +509,21 @@ body {
 }
 
 .loading-text-wl {
-  font-family: var(--font-rpg);
-  font-weight: bold;
-  color: var(--accent-yellow);
-  font-size: 14px;
-  letter-spacing: 0.1rem;
+  font-family: var(--font-main);
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-size: 13px;
 }
 
-/* ==========================================================================
-   ⭕❌ 正誤判定アニメーション（過去問道場風）
-   ========================================================================== */
+/* ==============================
+   ⭕❌ 正誤オーバーレイ
+   ============================== */
 .judge-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.5);
-  font-size: 150px;
+  font-size: 120px;
   font-weight: 900;
   z-index: 1000;
   pointer-events: none;
@@ -499,18 +531,40 @@ body {
 }
 
 .judge-overlay.show-correct {
-  color: var(--primary-color); /* 赤色の◯ */
+  color: var(--green);
   animation: popOut 0.8s ease-out forwards;
 }
 
 .judge-overlay.show-incorrect {
-  color: var(--accent-blue); /* 青色の✕ */
+  color: var(--red);
   animation: popOut 0.8s ease-out forwards;
 }
 
 @keyframes popOut {
-  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-  20% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; }
-  80% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; }
+  0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+  20%  { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; }
+  80%  { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; }
   100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
+}
+
+/* ==============================
+   ✨ アニメーション
+   ============================== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.25s ease forwards;
+}
+
+@keyframes flicker {
+  0%, 100% { transform: scale(1) rotate(-2deg); }
+  50%       { transform: scale(1.1) rotate(2deg); }
+}
+
+.streak-flame {
+  display: inline-block;
+  animation: flicker 1.5s ease-in-out infinite;
 }
