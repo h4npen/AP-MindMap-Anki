@@ -89,12 +89,15 @@ export function App() {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [activeNoteId]);
 
+  // Progress percentage
+  const progressPercent = allNotes.length > 0 ? Math.round((completedIds.size / allNotes.length) * 100) : 0;
+
   return (
     <div className="app-container">
       {/* HEADER */}
       <header className="app-header">
         <div className="header-inner">
-          <div className="logo-area" onClick={() => setActiveNoteId(null)}>
+          <div className="logo-area" onClick={() => setActiveNoteId(null)} title="トップへ戻る">
             <span className="logo-icon">🧠</span>
             <div className="logo-text">
               <h1 className="logo-title">AP 直感攻略ノート</h1>
@@ -103,13 +106,17 @@ export function App() {
           </div>
 
           <div className="header-stats">
-            <span className="stat-pill">
-              全 {allNotes.length} 件
+            <span className="stat-pill count">
+              全 {allNotes.length} 本
             </span>
             <span className="stat-pill success">
-              読了 {completedIds.size} 件
+              読了 {completedIds.size} 本 ({progressPercent}%)
             </span>
           </div>
+        </div>
+        {/* Progress Bar under header */}
+        <div className="header-progress-track">
+          <div className="header-progress-fill" style={{ width: `${progressPercent}%` }} />
         </div>
       </header>
 
