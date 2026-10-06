@@ -1,0 +1,10 @@
+No.,正誤,分野名,大分類,中分類,出典,学習日
+1,×,ストラテジ系,経営戦略,ビジネスインダストリ,"=HYPERLINK(""https://www.ap-siken.com/kakomon/06_haru/q72.html"",""令和6年春期 問72"")",2026/10/5
+2,×,ストラテジ系,企業と法務,法務,"=HYPERLINK(""https://www.ap-siken.com/kakomon/01_aki/q80.html"",""令和元年秋期 問80"")",2026/10/5
+3,○,テクノロジ系,開発技術,ソフトウェア開発管理技術,"=HYPERLINK(""https://www.ap-siken.com/kakomon/06_haru/q50.html"",""令和6年春期 問50"")",2026/10/5
+4,○,テクノロジ系,技術要素,セキュリティ,"=HYPERLINK(""https://www.ap-siken.com/kakomon/27_haru/q44.html"",""平成27年春期 問44"")",2026/10/5
+5,○,マネジメント系,サービスマネジメント,システム監査,"=HYPERLINK(""https://www.ap-siken.com/kakomon/27_haru/q58.html"",""平成27年春期 問58"")",2026/10/5
+6,○,テクノロジ系,技術要素,データベース,"=HYPERLINK(""https://www.ap-siken.com/kakomon/30_aki/q28.html"",""平成30年秋期 問28"")",2026/10/5
+7,○,ストラテジ系,経営戦略,ビジネスインダストリ,"=HYPERLINK(""https://www.ap-siken.com/kakomon/29_aki/q71.html"",""平成29年秋期 問71"")",2026/10/5
+8,×,ストラテジ系,企業と法務,法務,"=HYPERLINK(""https://www.ap-siken.com/kakomon/05_aki/q80.html"",""令和5年秋期 問80"")",2026/10/5
+9,×,テクノロジ系,技術要素,セキュリティ,"=HYPERLINK(""https://www.ap-siken.com/kakomon/03_aki/q43.html"",""令和3年秋期 問43"")",2026/10/5
