@@ -1,4 +1,8 @@
-# 🧠 AP MindMap Anki（応用情報技術者試験・脳内ハッキング暗記カード）
+# 🧠 AP MindMap Anki（応用情報技術者試験・直感攻略ノート）
+
+> 🌐 **Webアプリ公開URL（GitHub Pages）**:  
+> 👉 **[https://h4npen.github.io/AP-MindMap-Anki/](https://h4npen.github.io/AP-MindMap-Anki/)**  
+> *(PC・スマホ・iPadからインストール不要で即座に学習可能！ホーム画面への追加推奨)*
 
 応用情報技術者試験（AP）の過去問対策を圧倒的に効率化する、**ニュー・ブルータリズムスタイル**を採用した超視覚的暗記学習Webアプリケーションです。
 
