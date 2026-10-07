@@ -74,11 +74,11 @@ def markdown_to_html_simple(md_text):
     """
     html = md_text
 
-    # 1. Mermaidコードブロックの保護
+    # 1. Mermaidコードブロックの保護（divプレースホルダーにしてpタグ混入を防止）
     mermaid_blocks = []
     def save_mermaid(match):
         mermaid_blocks.append(match.group(1).strip())
-        return f"<!--MERMAID_PLACEHOLDER_{len(mermaid_blocks)-1}-->"
+        return f'<div class="mermaid-placeholder" data-index="{len(mermaid_blocks)-1}"></div>'
 
     html = re.sub(r'```mermaid\s*\n(.*?)\n```', save_mermaid, html, flags=re.DOTALL)
 
@@ -115,11 +115,6 @@ def markdown_to_html_simple(md_text):
     # 8. 水平線
     html = re.sub(r'^---$', r'<hr class="print-hr">', html, flags=re.MULTILINE)
 
-    # 9. Mermaidの復元
-    for i, code in enumerate(mermaid_blocks):
-        clean_code = code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-        html = html.replace(f"<!--MERMAID_PLACEHOLDER_{i}-->", f'<div class="mermaid">{clean_code}</div>')
-
     # 段落（改行）
     paragraphs = html.split("\n\n")
     processed = []
@@ -133,7 +128,16 @@ def markdown_to_html_simple(md_text):
             p_br = p_strip.replace("\n", "<br>")
             processed.append(f"<p>{p_br}</p>")
 
-    return "\n".join(processed)
+    html = "\n".join(processed)
+
+    # 9. Mermaidの復元（矢印構文やタグを破壊しないようエスケープせずpre.mermaidで挿入）
+    for i, code in enumerate(mermaid_blocks):
+        html = html.replace(
+            f'<div class="mermaid-placeholder" data-index="{i}"></div>',
+            f'<pre class="mermaid">\n{code}\n</pre>'
+        )
+
+    return html
 
 
 HTML_TEMPLATE = """<!DOCTYPE html>
@@ -147,6 +151,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     mermaid.initialize({{
       startOnLoad: true,
       theme: 'neutral',
+      securityLevel: 'loose',
       fontFamily: 'Noto Sans JP, sans-serif',
       fontSize: 12
     }});
@@ -339,15 +344,21 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }}
 
     /* Mermaid図 */
-    .mermaid {{
+    .mermaid, pre.mermaid {{
       text-align: center;
-      margin: 8px 0;
+      margin: 8px auto;
       background: #ffffff;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+      font-size: inherit;
+      display: flex;
+      justify-content: center;
       page-break-inside: avoid;
       break-inside: avoid;
     }}
 
-    .mermaid svg {{
+    .mermaid svg, pre.mermaid svg {{
       max-height: 230px !important;
       width: auto !important;
       max-width: 100% !important;
