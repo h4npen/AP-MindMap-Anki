@@ -1,0 +1,19 @@
+No.,正誤,分野名,大分類,中分類,出典,学習日
+1,×,ストラテジ系,経営戦略,ビジネスインダストリ,"=HYPERLINK(""https://www.ap-siken.com/kakomon/06_haru/q72.html"",""令和6年春期 問72"")",2026/10/5
+2,×,ストラテジ系,企業と法務,法務,"=HYPERLINK(""https://www.ap-siken.com/kakomon/01_aki/q80.html"",""令和元年秋期 問80"")",2026/10/5
+3,○,テクノロジ系,開発技術,ソフトウェア開発管理技術,"=HYPERLINK(""https://www.ap-siken.com/kakomon/06_haru/q50.html"",""令和6年春期 問50"")",2026/10/5
+4,○,テクノロジ系,技術要素,セキュリティ,"=HYPERLINK(""https://www.ap-siken.com/kakomon/27_haru/q44.html"",""平成27年春期 問44"")",2026/10/5
+5,○,マネジメント系,サービスマネジメント,システム監査,"=HYPERLINK(""https://www.ap-siken.com/kakomon/27_haru/q58.html"",""平成27年春期 問58"")",2026/10/5
+6,○,テクノロジ系,技術要素,データベース,"=HYPERLINK(""https://www.ap-siken.com/kakomon/30_aki/q28.html"",""平成30年秋期 問28"")",2026/10/5
+7,○,ストラテジ系,経営戦略,ビジネスインダストリ,"=HYPERLINK(""https://www.ap-siken.com/kakomon/29_aki/q71.html"",""平成29年秋期 問71"")",2026/10/5
+8,×,ストラテジ系,企業と法務,法務,"=HYPERLINK(""https://www.ap-siken.com/kakomon/05_aki/q80.html"",""令和5年秋期 問80"")",2026/10/5
+9,×,テクノロジ系,技術要素,セキュリティ,"=HYPERLINK(""https://www.ap-siken.com/kakomon/03_aki/q43.html"",""令和3年秋期 問43"")",2026/10/5
+10,○,テクノロジ系,技術要素,セキュリティ,"=HYPERLINK(""https://www.ap-siken.com/kakomon/27_aki/q42.html"",""平成27年秋期 問42"")",2026/10/7
+11,○,テクノロジ系,コンピュータシステム,システム構成要素,"=HYPERLINK(""https://www.ap-siken.com/kakomon/06_haru/q14.html"",""令和6年春期 問14"")",2026/10/7
+12,○,テクノロジ系,技術要素,セキュリティ,"=HYPERLINK(""https://www.ap-siken.com/kakomon/04_haru/q41.html"",""令和4年春期 問41"")",2026/10/7
+13,×,ストラテジ系,システム戦略,システム企画,"=HYPERLINK(""https://www.ap-siken.com/kakomon/05_aki/q64.html"",""令和5年秋期 問64"")",2026/10/7
+14,×,テクノロジ系,コンピュータシステム,ソフトウェア,"=HYPERLINK(""https://www.ap-siken.com/kakomon/27_aki/q16.html"",""平成27年秋期 問16"")",2026/10/7
+15,×,ストラテジ系,企業と法務,企業活動,"=HYPERLINK(""https://www.ap-siken.com/kakomon/26_aki/q75.html"",""平成26年秋期 問75"")",2026/10/7
+16,○,ストラテジ系,経営戦略,技術戦略マネジメント,"=HYPERLINK(""https://www.ap-siken.com/kakomon/27_haru/q70.html"",""平成27年春期 問70"")",2026/10/7
+17,○,テクノロジ系,技術要素,セキュリティ,"=HYPERLINK(""https://www.ap-siken.com/kakomon/05_haru/q39.html"",""令和5年春期 問39"")",2026/10/7
+18,×,マネジメント系,サービスマネジメント,システム監査,"=HYPERLINK(""https://www.ap-siken.com/kakomon/03_haru/q59.html"",""令和3年春期 問59"")",2026/10/7
