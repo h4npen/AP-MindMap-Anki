@@ -94,8 +94,14 @@
 ## 04. システム構成要素
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
-| :--- | :--- | :--- | :---: |
+| :--- | :--- | :--- | :--- |
 | [sys-availability-mtbf-mttr.md](./inbox/04_システム構成要素/sys-availability-mtbf-mttr.md) | **稼働率とMTBF・MTTR**<br>（[R4秋 問14](https://www.ap-siken.com/kakomon/04_aki/q14.html)） | 『Bは元気・Rはリペア（修理）』<br>スマホの元気時間と入院時間。両方1.5倍になっても比率だから「変わらない」！ | inbox |
+
+## 05. ソフトウェア
+
+| ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
+| :--- | :--- | :--- | :--- |
+| [os-preemption-task-scheduling.md](./inbox/05_ソフトウェア/os-preemption-task-scheduling.md) | **プリエンプション方式のタスク管理**<br>（[H27秋 問16](https://www.ap-siken.com/kakomon/27_aki/q16.html)） | 市役所窓口のVIP顧客<br>一般客Bが手続き中でも、市長Aが来たら強制中断してCPUを横取り！自発的解放は待ち状態 | inbox |
 
 ## 09. データベース
 
@@ -150,27 +156,35 @@
 ## 16. システム監査
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
-| :--- | :--- | :--- | :---: |
+| :--- | :--- | :--- | :--- |
 | [audit-system-audit-charter-approval.md](./inbox/16_システム監査/audit-system-audit-charter-approval.md) | **規程の承認者と3者の力関係**<br>（[H30春 問59](https://www.ap-siken.com/kakomon/30_haru/q59.html)） | 警察と裁判所と社長<br>現場にルールを決めさせたら不正が隠せる（自己監査の禁止）。承認は社長一択！ | inbox |
+| [audit-master-file-availability-cia.md](./inbox/16_システム監査/audit-master-file-availability-cia.md) | **可用性とセキュリティ3大要件 (CIA)**<br>（[R3春 問59](https://www.ap-siken.com/kakomon/03_haru/q59.html)） | 金庫のCIA3兄弟<br>機密＝見せない、完全＝壊させない、可用＝いつでも使える予備キー（サーバ二重化）！ | inbox |
+
+## 17. システム企画
+
+| ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
+| :--- | :--- | :--- | :--- |
+| [strategy-investment-pbp-payback-period.md](./inbox/17_システム企画/strategy-investment-pbp-payback-period.md) | **投資評価の回収期間法 (PBP)**<br>（[R5秋 問64](https://www.ap-siken.com/kakomon/05_aki/q64.html)） | カフェの100万エスプレッソマシン<br>何年で元が取れる？Period（期間）＝PBP。利益率はROI、現在価値はNPV | inbox |
 
 ## 19. 経営戦略マネジメント
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
-| :--- | :--- | :--- | :---: |
+| :--- | :--- | :--- | :--- |
 | [strategy-value-chain-frameworks.md](./inbox/19_経営戦略マネジメント/strategy-value-chain-frameworks.md) | **バリューチェーンと4大フレームワーク**<br>（[R3秋 問67](https://www.ap-siken.com/kakomon/03_aki/q67.html)） | パン屋さんのバトンリレー<br>「5つの主活動と4つの支援活動」＝バリューチェーン。SWOT・BSCとの見分け方 | inbox |
 
 ## 21. ビジネスインダストリ
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
-| :--- | :--- | :--- | :---: |
+| :--- | :--- | :--- | :--- |
 | [strategy-cps-cyber-physical-system.md](./inbox/21_ビジネスインダストリ/strategy-cps-cyber-physical-system.md) | **サイバーフィジカルシステム (CPS)**<br>（[R4秋 問73](https://www.ap-siken.com/kakomon/04_aki/q73.html)） | 現実と仮想の卓球ラリー<br>畑のデータを測る（現実） → AIで分析（仮想） → 自動散水（現実にフィードバック） | inbox |
 | [strategy-edge-computing.md](./inbox/21_ビジネスインダストリ/strategy-edge-computing.md) | **エッジコンピューティング**<br>（[R6春 問72](https://www.ap-siken.com/kakomon/06_haru/q72.html)） | 現場の店長が即決！<br>本社（クラウド）のお伺い待ちをなくし、端末の近傍で超低遅延処理＆回線負荷軽減 | inbox |
 
 ## 22. 企業活動
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
-| :--- | :--- | :--- | :---: |
+| :--- | :--- | :--- | :--- |
 | [strategy-breakeven-point.md](./inbox/22_企業活動/strategy-breakeven-point.md) | **損益分岐点・安全余裕率**<br>（[R1秋 問77](https://www.ap-siken.com/kakomon/01_aki/q77.html)） | 『粗利を・こそげて・安心』<br>ラーメン屋の家賃回収パズル。小数を10倍して消す途中式を全記載 | inbox |
+| [strategy-qc7-relations-diagram.md](./inbox/22_企業活動/strategy-qc7-relations-diagram.md) | **新QC7つ道具「連関図」**<br>（[H26秋 問75](https://www.ap-siken.com/kakomon/26_aki/q75.html)） | 太った原因の悪循環ループ！<br>複雑に絡み合った因果関係を矢印で解きほぐし、根本原因（矢印が出る元凶）を暴く | inbox |
 
 ## 23. 法務
 
