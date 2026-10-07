@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "pipeline": "python scripts/pipeline.py"
+    "pipeline": "python scripts/pipeline.py",
+    "export-print": "python scripts/export_printable.py"
   },
   "dependencies": {
     "mermaid": "^12.1.0",
