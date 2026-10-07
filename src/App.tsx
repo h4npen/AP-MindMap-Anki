@@ -92,6 +92,19 @@ export function App() {
   // Progress percentage
   const progressPercent = allNotes.length > 0 ? Math.round((completedIds.size / allNotes.length) * 100) : 0;
 
+  // Exam countdown for 科目A (2026-11-07)
+  const daysLeft = useMemo(() => {
+    const examDate = new Date('2026-11-07T12:00:00+09:00');
+    const now = new Date();
+    const diff = examDate.getTime() - now.getTime();
+    return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+  }, []);
+
+  // Find schedule note
+  const scheduleNote = useMemo(() => {
+    return allNotes.find((n) => n.id.includes('schedule') || n.categoryNumber === '00') || null;
+  }, [allNotes]);
+
   return (
     <div className="app-container">
       {/* HEADER */}
@@ -106,6 +119,15 @@ export function App() {
           </div>
 
           <div className="header-stats">
+            {scheduleNote && (
+              <button
+                className="schedule-header-btn"
+                onClick={() => setActiveNoteId(scheduleNote.id)}
+                title="週別合格スケジュールを確認する"
+              >
+                🎯 科目Aまであと <strong>{daysLeft}日</strong>
+              </button>
+            )}
             <span className="stat-pill count">
               全 {allNotes.length} 本
             </span>
@@ -188,6 +210,28 @@ export function App() {
         ) : (
           /* ================= LIST VIEW ================= */
           <div className="notes-list-view">
+            {/* Roadmap Banner */}
+            {scheduleNote && (
+              <div
+                className="schedule-banner"
+                onClick={() => setActiveNoteId(scheduleNote.id)}
+                title="週別合格ロードマップを見る"
+              >
+                <div className="schedule-banner-left">
+                  <span className="schedule-banner-icon">🎯</span>
+                  <div className="schedule-banner-text">
+                    <div className="schedule-banner-title">
+                      11/7(土) 科目A 受験まで あと <strong>{daysLeft}日</strong>
+                    </div>
+                    <div className="schedule-banner-sub">
+                      【第1週: 10/6〜10/12】テクノロジ系集中（NW・DB・セキュリティ）＆ミス問登録
+                    </div>
+                  </div>
+                </div>
+                <span className="schedule-banner-arrow">週別詳細を見る →</span>
+              </div>
+            )}
+
             {/* Filter & Search Controls */}
             <div className="control-panel">
               {/* Search Bar */}

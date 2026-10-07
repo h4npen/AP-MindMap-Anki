@@ -9,6 +9,22 @@ interface MarkdownViewerProps {
 }
 
 export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ content }) => {
+  // LaTeX等の数式記法や矢印がそのまま生テキストで文字化けして見えないよう綺麗に整形
+  const cleanContent = React.useMemo(() => {
+    return content
+      .replace(/\$\\rightarrow\$/g, '→')
+      .replace(/\\rightarrow/g, '→')
+      .replace(/\\leftarrow/g, '←')
+      .replace(/\$\\frac\{([^}]+)\}\{([^}]+)\}\$/g, '$1/$2')
+      .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '$1/$2')
+      .replace(/\\times/g, '×')
+      .replace(/\\div/g, '÷')
+      .replace(/\\mathbf\{([^}]+)\}/g, '**$1**')
+      .replace(/\\text\{([^}]+)\}/g, '$1')
+      .replace(/\$\$([\s\S]*?)\$\$/g, (_match, p1) => `\n> ${p1.trim()}\n`)
+      .replace(/\$([0-9a-zA-Z\s+\-*/%./=]+)\$/g, '$1');
+  }, [content]);
+
   return (
     <div className="markdown-body">
       <ReactMarkdown
@@ -53,7 +69,7 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ content }) => {
           },
         }}
       >
-        {content}
+        {cleanContent}
       </ReactMarkdown>
     </div>
   );
