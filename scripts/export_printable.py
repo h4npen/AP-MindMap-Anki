@@ -158,26 +158,26 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   </script>
   <style>
     /* ========================================================
-       A5用紙・両面印刷（製本）専用組版スタイル
+       A4用紙・両面印刷（製本）専用組版スタイル
        ======================================================== */
     @page {{
-      size: A5 portrait; /* A5縦（148mm × 210mm） */
-      margin: 12mm 10mm 12mm 10mm; /* 上下12mm、左右10mm */
+      size: A4 portrait; /* A4縦（210mm × 297mm） */
+      margin: 15mm 15mm 15mm 15mm;
       @bottom-right {{
         content: counter(page);
-        font-size: 8pt;
-        color: #666;
+        font-size: 8.5pt;
+        color: #64748b;
       }}
     }}
 
     @page :left {{
-      margin-left: 8mm;
-      margin-right: 12mm; /* 偶数ページのとじしろ配慮 */
+      margin-left: 12mm;
+      margin-right: 18mm; /* 偶数ページのとじしろ配慮 */
     }}
 
     @page :right {{
-      margin-left: 12mm; /* 奇数ページのとじしろ配慮 */
-      margin-right: 8mm;
+      margin-left: 18mm; /* 奇数ページのとじしろ配慮 */
+      margin-right: 12mm;
     }}
 
     * {{
@@ -188,9 +188,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     body {{
       font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans JP', sans-serif;
-      font-size: 9.5pt;
-      line-height: 1.55;
-      color: #111827;
+      font-size: 10.5pt;
+      line-height: 1.62;
+      color: #0f172a;
       background: #ffffff;
       margin: 0;
       padding: 0;
@@ -246,51 +246,51 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     /* 見出し */
     .print-h1 {{
-      font-size: 12.5pt;
+      font-size: 14pt;
       font-weight: 800;
       color: #0f172a;
       border-bottom: 2px solid #0f172a;
-      padding-bottom: 4px;
-      margin: 0 0 8px 0;
+      padding-bottom: 5px;
+      margin: 0 0 10px 0;
       line-height: 1.35;
     }}
 
     .print-h2 {{
-      font-size: 10.5pt;
+      font-size: 11.5pt;
       font-weight: 800;
       color: #1e3a8a;
       background: #f1f5f9;
-      border-left: 4px solid #2563eb;
-      padding: 3px 8px;
-      margin: 12px 0 6px 0;
+      border-left: 5px solid #2563eb;
+      padding: 4px 10px;
+      margin: 14px 0 8px 0;
       page-break-after: avoid;
       break-after: avoid;
     }}
 
     .print-h3 {{
-      font-size: 9.5pt;
+      font-size: 10.5pt;
       font-weight: 700;
       color: #0f172a;
-      margin: 8px 0 4px 0;
+      margin: 10px 0 6px 0;
       page-break-after: avoid;
       break-after: avoid;
     }}
 
     p {{
-      margin: 4px 0;
+      margin: 5px 0;
     }}
 
     /* 引用・メタ情報 */
     .print-quote {{
       background: #f8fafc;
       border: 1px solid #cbd5e1;
-      border-left: 3.5px solid #64748b;
+      border-left: 4px solid #64748b;
       border-radius: 4px;
-      padding: 6px 10px;
-      margin: 6px 0 10px 0;
-      font-size: 8.5pt;
+      padding: 8px 12px;
+      margin: 8px 0 12px 0;
+      font-size: 9.5pt;
       color: #334155;
-      line-height: 1.45;
+      line-height: 1.5;
     }}
 
     /* 正解折りたたみ（印刷時は自動展開） */
@@ -298,31 +298,31 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       background: #faf5ff;
       border: 1.5px solid #a855f7;
       border-radius: 6px;
-      margin: 8px 0;
-      padding: 8px 12px;
+      margin: 10px 0;
+      padding: 10px 14px;
     }}
 
     .print-summary {{
       font-weight: 800;
       color: #6b21a8;
-      font-size: 9.5pt;
-      margin-bottom: 4px;
+      font-size: 10.5pt;
+      margin-bottom: 6px;
       list-style: none;
     }}
 
     /* リスト要素 */
     .print-bullet {{
-      margin: 3px 0;
-      padding-left: 10px;
-      text-indent: -10px;
+      margin: 4px 0;
+      padding-left: 12px;
+      text-indent: -12px;
     }}
 
     .print-check {{
-      margin: 4px 0;
-      font-size: 9pt;
+      margin: 6px 0;
+      font-size: 10pt;
       background: #fefce8;
       border: 1px dashed #ca8a04;
-      padding: 4px 8px;
+      padding: 6px 10px;
       border-radius: 4px;
     }}
 
@@ -330,7 +330,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     .print-hr {{
       border: none;
       border-top: 1px dashed #cbd5e1;
-      margin: 10px 0;
+      margin: 14px 0;
     }}
 
     /* コード・強調 */
@@ -338,15 +338,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       font-family: Consolas, Monaco, monospace;
       background: #f1f5f9;
       border: 1px solid #e2e8f0;
-      padding: 1px 4px;
-      font-size: 8.5pt;
+      padding: 2px 5px;
+      font-size: 9.5pt;
       border-radius: 3px;
     }}
 
     /* Mermaid図 */
     .mermaid, pre.mermaid {{
       text-align: center;
-      margin: 8px auto;
+      margin: 12px auto;
       background: #ffffff;
       border: none;
       padding: 0;
@@ -359,7 +359,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }}
 
     .mermaid svg, pre.mermaid svg {{
-      max-height: 230px !important;
+      max-height: 280px !important;
       width: auto !important;
       max-width: 100% !important;
     }}
@@ -369,7 +369,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   <div class="screen-toolbar">
     <div>
       <strong>📄 {title}</strong>
-      <span style="font-size: 12px; color: #94a3b8; margin-left: 10px;">（全 {total_count} 問収録・A5両面印刷最適化）</span>
+      <span style="font-size: 12px; color: #94a3b8; margin-left: 10px;">（全 {total_count} 問収録・A4両面印刷最適化）</span>
     </div>
     <button onclick="window.print()">🖨️ 今すぐ印刷 / PDF保存 (Ctrl+P)</button>
   </div>
@@ -462,16 +462,17 @@ def export_printable(target_dir, force_all=False, reset_history=False):
     save_print_history(history)
 
     print("\n" + "=" * 60)
-    print("✅ A5印刷用HTMLの書き出しが完了しました！")
+    print("✅ A4印刷用HTMLの書き出しが完了しました！")
     print(f"📄 出力先: {out_filepath}")
     print(f"📊 収録数: {len(files_to_print)} 問（重複なし）")
     print("=" * 60)
     print("\n👉 ブラウザでこのファイルを開き、Ctrl + P を押すだけで")
-    print("   用紙サイズ「A5」、両面印刷（長辺とじ）で美しく印刷・PDF保存できます！\n")
+    print("   用紙サイズ「A4」、両面印刷（長辺とじ）で美しく印刷・PDF保存できます！")
+    print("   ※紙を節約したい場合は、プリンタ設定の『2in1（1枚に2ページ）』でA5サイズ2分割印刷も可能です。\n")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="A5両面印刷用一括エクスポートツール")
+    parser = argparse.ArgumentParser(description="A4両面印刷用一括エクスポートツール")
     parser.add_argument("target_dir", nargs="?", default="docs/inbox/10_ネットワーク/", help="対象のMarkdownディレクトリ")
     parser.add_argument("--all", action="store_true", help="印刷履歴を無視して全問を出力する")
     parser.add_argument("--reset", action="store_true", help="印刷履歴をリセットする")
