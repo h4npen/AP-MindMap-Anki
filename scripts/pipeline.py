@@ -138,7 +138,7 @@ def scrape_question(url):
     if select_ul:
         for li in select_ul.find_all("li"):
             full_txt = li.get_text(" ", strip=True)
-            for k, kana in KANA_MAP.items():
+            for kana, k in KANA_MAP.items():
                 if full_txt.startswith(kana):
                     options[k] = full_txt[len(kana):].strip()
 

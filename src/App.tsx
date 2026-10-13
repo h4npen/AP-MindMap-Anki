@@ -100,6 +100,20 @@ export function App() {
     return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
   }, []);
 
+  const currentPhaseText = useMemo(() => {
+    if (daysLeft > 25) {
+      return '【第1週: 10/6〜10/12】テクノロジ系集中（NW・セキュリティ）＆ミス問登録';
+    } else if (daysLeft > 18) {
+      return '🔥【第2週: 10/13〜10/19】DB攻略 ＆ マネジメント・ストラテジ系で得点源を作る！（NW・セキュ完了済）';
+    } else if (daysLeft > 11) {
+      return '🔥【第3週: 10/20〜10/26】過去問年別演習（直近5年分周回）＆ 苦手プリント完全消化';
+    } else if (daysLeft > 4) {
+      return '🔥【第4週: 10/27〜11/2】本番シミュレーション（80問・150分通し）目標70%突破';
+    } else {
+      return '🎓【直前総仕上げ: 11/3〜11/7】A4プリント＆アプリ総ざらい！新規問題は解かず記憶定着！';
+    }
+  }, [daysLeft]);
+
   // Find schedule note
   const scheduleNote = useMemo(() => {
     return allNotes.find((n) => n.id.includes('schedule') || n.categoryNumber === '00') || null;
@@ -224,7 +238,7 @@ export function App() {
                       11/7(土) 科目A 受験まで あと <strong>{daysLeft}日</strong>
                     </div>
                     <div className="schedule-banner-sub">
-                      【第1週: 10/6〜10/12】テクノロジ系集中（NW・DB・セキュリティ）＆ミス問登録
+                      {currentPhaseText}
                     </div>
                   </div>
                 </div>
