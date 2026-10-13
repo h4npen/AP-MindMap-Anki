@@ -47,7 +47,8 @@ if sys.platform == "win32":
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DOCS_DIR = os.path.join(ROOT_DIR, "docs")
 HISTORY_FILE = os.path.join(DOCS_DIR, ".print_history.json")
-OUTPUT_DIR = os.path.join(ROOT_DIR, "dist", "printable")
+OUTPUT_DIR = os.path.join(ROOT_DIR, "printable")
+DIST_OUTPUT_DIR = os.path.join(ROOT_DIR, "dist", "printable")
 
 
 def load_print_history():
@@ -457,6 +458,15 @@ def export_printable(target_dir, force_all=False, reset_history=False):
 
     with open(out_filepath, "w", encoding="utf-8") as out_fp:
         out_fp.write(full_html)
+
+    # dist/printable にもミラー出力（ビルド成果物側でも参照できるようにする）
+    try:
+        os.makedirs(DIST_OUTPUT_DIR, exist_ok=True)
+        dist_filepath = os.path.join(DIST_OUTPUT_DIR, out_filename)
+        with open(dist_filepath, "w", encoding="utf-8") as dist_fp:
+            dist_fp.write(full_html)
+    except Exception:
+        pass
 
     # 履歴の保存
     save_print_history(history)

@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>AP暗記ノート（inbox）</title>
+  <!-- Mermaid.js for Vector Diagram Rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'neutral',
+      securityLevel: 'loose',
+      fontFamily: 'Noto Sans JP, sans-serif',
+      fontSize: 12
+    });
+  </script>
+  <style>
+    /* ========================================================
+       A4用紙・両面印刷（製本）専用組版スタイル
+       ======================================================== */
+    @page {
+      size: A4 portrait; /* A4縦（210mm × 297mm） */
+      margin: 15mm 15mm 15mm 15mm;
+      @bottom-right {
+        content: counter(page);
+        font-size: 8.5pt;
+        color: #64748b;
+      }
+    }
+
+    @page :left {
+      margin-left: 12mm;
+      margin-right: 18mm; /* 偶数ページのとじしろ配慮 */
+    }
+
+    @page :right {
+      margin-left: 18mm; /* 奇数ページのとじしろ配慮 */
+      margin-right: 12mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans JP', sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.62;
+      color: #0f172a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* 印刷ツールバー（画面表示時のみ） */
+    .screen-toolbar {
+      background: #1e293b;
+      color: #ffffff;
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .screen-toolbar button {
+      background: #f59e0b;
+      color: #000;
+      border: none;
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .screen-toolbar button:hover {
+      background: #d97706;
+    }
+
+    @media print {
+      .screen-toolbar {
+        display: none !important;
+      }
+    }
+
+    /* 1問ごとのカード区切り（改ページ） */
+    .question-sheet {
+      page-break-before: always;
+      break-before: page;
+      padding: 0;
+      margin: 0 auto;
+    }
+
+    .question-sheet:first-of-type {
+      page-break-before: avoid;
+      break-before: avoid;
+    }
+
+    /* 見出し */
+    .print-h1 {
+      font-size: 14pt;
+      font-weight: 800;
+      color: #0f172a;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 5px;
+      margin: 0 0 10px 0;
+      line-height: 1.35;
+    }
+
+    .print-h2 {
+      font-size: 11.5pt;
+      font-weight: 800;
+      color: #1e3a8a;
+      background: #f1f5f9;
+      border-left: 5px solid #2563eb;
+      padding: 4px 10px;
+      margin: 14px 0 8px 0;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    .print-h3 {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 10px 0 6px 0;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    p {
+      margin: 5px 0;
+    }
+
+    /* 引用・メタ情報 */
+    .print-quote {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-left: 4px solid #64748b;
+      border-radius: 4px;
+      padding: 8px 12px;
+      margin: 8px 0 12px 0;
+      font-size: 9.5pt;
+      color: #334155;
+      line-height: 1.5;
+    }
+
+    /* 正解折りたたみ（印刷時は自動展開） */
+    .print-details {
+      background: #faf5ff;
+      border: 1.5px solid #a855f7;
+      border-radius: 6px;
+      margin: 10px 0;
+      padding: 10px 14px;
+    }
+
+    .print-summary {
+      font-weight: 800;
+      color: #6b21a8;
+      font-size: 10.5pt;
+      margin-bottom: 6px;
+      list-style: none;
+    }
+
+    /* リスト要素 */
+    .print-bullet {
+      margin: 4px 0;
+      padding-left: 12px;
+      text-indent: -12px;
+    }
+
+    .print-check {
+      margin: 6px 0;
+      font-size: 10pt;
+      background: #fefce8;
+      border: 1px dashed #ca8a04;
+      padding: 6px 10px;
+      border-radius: 4px;
+    }
+
+    /* 水平線 */
+    .print-hr {
+      border: none;
+      border-top: 1px dashed #cbd5e1;
+      margin: 14px 0;
+    }
+
+    /* コード・強調 */
+    code {
+      font-family: Consolas, Monaco, monospace;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 2px 5px;
+      font-size: 9.5pt;
+      border-radius: 3px;
+    }
+
+    /* Mermaid図 */
+    .mermaid, pre.mermaid {
+      text-align: center;
+      margin: 12px auto;
+      background: #ffffff;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+      font-size: inherit;
+      display: flex;
+      justify-content: center;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .mermaid svg, pre.mermaid svg {
+      max-height: 280px !important;
+      width: auto !important;
+      max-width: 100% !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-toolbar">
+    <div>
+      <strong>📄 AP暗記ノート（inbox）</strong>
+      <span style="font-size: 12px; color: #94a3b8; margin-left: 10px;">（全 22 問収録・A4両面印刷最適化）</span>
+    </div>
+    <button onclick="window.print()">🖨️ 今すぐ印刷 / PDF保存 (Ctrl+P)</button>
+  </div>
+
+  <main>
+    <div class="question-sheet" id="q_1">
+  <h1 class="print-h1">3Dセキュア2.0：怪しいクレカ決済のときだけ追加認証する「ネット買い物のボディガード」！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: 従来の3Dセキュア1.0（毎回パスワード入力）と最新の3Dセキュア2.0の違いを知らない文系受験者<br><strong>省いたもの</strong>: ACS（Access Control Server）と3DSサーバ間のEMVCoメッセージフォーマット詳細<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 令和6年春期 問35</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】令和6年春期 問35</h2>
+<p><strong>【問題】</strong><br>3Dセキュア2.0(EMV 3-Dセキュア)は，オンラインショッピングにおけるクレジットカード決済時に，不正取引を防止するための本人認証サービスである。3Dセキュア2.0で利用される本人認証の特徴はどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: 利用者がカード会社による本人認証に用いるパスワードを忘れた場合でも，安全にパスワードを再発行することができる。</div>
+<div class="print-bullet">• <strong>イ</strong>: 利用者の過去の取引履歴や決済に用いているデバイスの情報から不正利用や高リスクと判断される場合に，カード会社が追加の本人認証を行う。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 利用者の過去の取引履歴や決済に用いているデバイスの情報にかかわらず，カード会社がパスワードと生体認証を併用した本人認証を行う。</div>
+<div class="print-bullet">• <strong>エ</strong>: 利用者の過去の取引履歴や決済に用いているデバイスの情報に加えて，操作しているのが人間であることを確認した上で，カード会社が追加の本人認証を行う。</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: イ（利用者の過去の取引履歴や決済に用いているデバイスの情報から不正利用や高リスクと判断される場合に，カード会社が追加の本人認証を行う。）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『過去の取引履歴やデバイス情報から高リスクと判断される場合に、追加の本人認証を行う！』</h2>
+<pre class="mermaid">
+flowchart TD
+    Pay["💳 ネットショップでクレカ決済！"]
+    --> Check{"🤖 3Dセキュア2.0（リスク判定）<br/>購入履歴・配送先・端末情報は普段通り？"}
+    Check -->|"😊 いつもの買い物（低リスク）"| Smooth["✅ パスワード入力なしで即決済完了！<br/>（カゴ落ち防止！）"]
+    Check -->|"🚨 初めての海外サイトで高額時計を購入！<br/>（高リスク・不正利用の疑い）"| Auth["📲 カード会社が追加の本人認証を実施！<br/>（ワンタイムパスワード・生体認証など）"]
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 3Dセキュア2.0の中身は「リスクベース認証」！怪しい取引（高リスク）の時だけ追加認証を発動！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：百貨店の外商カード。常連客が普段通りハンカチを買うときはサイン不要で通し、いきなり換金性の高い金塊を1000万円分買おうとしたときだけ本人確認の電話を入れる！）</h2>
+<p>ネット通販でクレジットカードを使うとき、昔の「3Dセキュア1.0」は、買い物するたびに毎回「カード会社の専用パスワード」を入力させられていました。パスワードを忘れて買い物を諦める人（カゴ落ち）が続出して不評だったのです。</p>
+<p>そこで進化したのが <strong>3Dセキュア2.0（EMV 3-Dセキュア）</strong> です！<br>最大の特徴は、先ほども登場した <strong>「リスクベース認証」</strong> を取り入れたことです！</p>
+<p>決済するときに、裏側で「普段使っているスマホか？」「過去の取引履歴や配送先と同じか？」など数十種類の情報をカード会社が瞬時に採点します。<br><div class="print-bullet">• <strong>9割以上の普通の買い物（低リスク）</strong>: 追加パスワードなしで一瞬で決済完了！</div><br><div class="print-bullet">• <strong>不正利用の疑いがある高リスクな取引</strong>: このときだけ、ワンタイムパスワードや生体認証などの <strong>「追加の本人認証」</strong> を行って泥棒をブロックします！</div></p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: パスワードを忘れた場合でも安全に再発行…</strong> → パスワード再発行サービスではありません（×）。</div>
+<div class="print-bullet">• <strong>イ: 過去の取引履歴やデバイスの情報から不正利用や高リスクと判断される場合に，カード会社が追加の本人認証を行う 【正解！】</strong> → 3Dセキュア2.0の中核であるリスクベース認証の正確な説明です（◯）。</div>
+<div class="print-bullet">• <strong>ウ: 情報にかかわらず，常にパスワードと生体認証を併用…</strong> → 低リスク時は追加認証を省略するのが2.0の特徴です（×）。</div>
+<div class="print-bullet">• <strong>エ: 操作しているのが人間であることを確認した上で…</strong> → CAPTCHA（ボット対策）の説明が混ざった引っかけです（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. 従来の3Dセキュア1.0と比較して、3Dセキュア2.0がリスクベース認証を導入したことでECサイト事業者にをもたらすビジネス上の利点は何か？</strong>  </div>
+  → <strong>「低リスク決済時のパスワード入力手間が省けるため、利用者が決済途中で購入を断念する「カゴ落ち」を防止できる。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「イ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_2">
+  <h1 class="print-h1">ボットネットとC&Cサーバ：感染PC軍団（ゾンビ）を裏で操る「悪の司令塔」！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: ボット、ボットネット、C&Cサーバの関係性がイメージできない文系受験者<br><strong>省いたもの</strong>: Fast FluxやDomain Generation Algorithm (DGA) によるC&Cサーバ隠蔽技術<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 令和2年秋期 問43</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】令和2年秋期 問43</h2>
+<p><strong>【問題】</strong><br>ボットネットにおけるC&Cサーバの役割として，適切なものはどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: Webサイトのコンテンツをキャッシュし，本来のサーバに代わってコンテンツを利用者に配信することによって，ネットワークやサーバの負荷を軽減する。</div>
+<div class="print-bullet">• <strong>イ</strong>: 外部からインターネットを経由して社内ネットワークにアクセスする際に，CHAPなどのプロトコルを中継することによって，利用者認証時のパスワードの盗聴を防止する。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 外部からインターネットを経由して社内ネットワークにアクセスする際に，時刻同期方式を採用したワンタイムパスワードを発行することによって，利用者認証時のパスワードの盗聴を防止する。</div>
+<div class="print-bullet">• <strong>エ</strong>: 侵入して乗っ取ったコンピュータに対して，他のコンピュータへの攻撃などの不正な操作をするよう，外部から命令を出したり応答を受け取ったりする。</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: エ（侵入して乗っ取ったコンピュータに対して，他のコンピュータへの攻撃などの不正な操作をするよう，外部から命令を出したり応答を受け取ったりする。）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『C&Cサーバ（Command & Control）は、乗っ取ったPCに外部から攻撃命令を出し応答を受け取る！』</h2>
+<pre class="mermaid">
+flowchart LR
+    Hacker["😈 攻撃者（黒幕）"]
+    --> CC["📡 C&Cサーバ<br/>(Command & Control)<br/>『悪の指令基地』"]
+    CC -->|"📢 命令 (Command):<br/>「一斉に〇〇社を攻撃せよ！」"| Bot1["🧟 乗っ取られたPC 1 (ボット)"]
+    CC -->|"📢 命令 (Command)"| Bot2["🧟 乗っ取られたPC 2 (ボット)"]
+    Bot1 & Bot2 -->|"💥 一斉DDoS攻撃・情報窃取"| Target["🏢 標的の企業サーバ"]
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 C&C ＝ Command & Control（命令と制御）！ゾンビPC軍団に「攻撃せよ！」と指令を出す基地！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：映画の悪の組織の司令室。洗脳したロボット兵（ボット）に無線機（C&Cサーバ）で「総攻撃せよ！」と命令を送る！）</h2>
+<p>ウイルスに感染して、悪魔（攻撃者）の言いなりになってしまったパソコンのことを <strong>「ボット（Bot＝ロボット）」</strong> と呼びます。<br>そして、世界中で何千台・何万台も感染させて作ったゾンビPC軍団のネットワークを <strong>「ボットネット」</strong> と呼びます。</p>
+<p>では、黒幕の攻撃者はどうやってこの何万台ものゾンビPCに「明日の昼12時に、〇〇銀行のサイトを一斉に攻撃しろ！」と指示を出すのでしょうか？<br>そのために使われる指令基地が <strong>C&Cサーバ（Command and Control サーバ：命令・制御サーバ）</strong> です！</p>
+<p>乗っ取られたPC（ボット）は、定期的にC&Cサーバへ「ご主人様、次の命令は何ですか？」と問い合わせに行き、C&Cサーバからの命令に従って一斉攻撃（DDoS）やスパムメール送信を行います。</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: コンテンツをキャッシュし負荷を軽減する</strong> → CDNやキャッシュサーバ（プロキシ）の説明です（×）。</div>
+<div class="print-bullet">• <strong>イ: CHAPなどのプロトコルを中継し盗聴を防止…</strong> → 認証サーバ（RADIUS等）の説明です（×）。</div>
+<div class="print-bullet">• <strong>ウ: ワンタイムパスワードを発行…</strong> → トークンサーバ（OTPサーバ）の説明です（×）。</div>
+<div class="print-bullet">• <strong>エ: 侵入して乗っ取ったコンピュータに対して，外部から命令を出したり応答を受け取ったりする 【正解！】</strong> → Command & Control（命令と制御）を行うC&Cサーバの役割そのものです（◯）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. 社内PCがマルウェアに感染しボット化した際、外部のC&Cサーバとの通信を遮断するためにネットワーク境界で導入される対策機器・仕組みは何か？</strong>  </div>
+  → <strong>「プロキシサーバや次世代ファイアウォールによる不正通信先（ブラックリスト/レピュテーション）のURL・IPフィルタリング。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「エ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_3">
+  <h1 class="print-h1">CC（Common Criteria / ISO 15408）：IT製品のセキュリティ性能を測る「世界共通の通知表」！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: CC（ISO/IEC 15408）とISMS（ISO/IEC 27001）の違いが区別できない文系受験者<br><strong>省いたもの</strong>: PP（プロテクションプロファイル）、ST（セキュリティターゲット）、EAL（評価保証レベル1〜7）の策定手順<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 平成18年秋期 問79</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】平成18年秋期 問79</h2>
+<p><strong>【問題】</strong><br>米国で運用されたTCSECや欧州政府調達用のITSECを統合して，標準化が進められたCC(Common Criteria)の内容はどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: 暗号アルゴリズムの標準</div>
+<div class="print-bullet">• <strong>イ</strong>: 情報技術に関するセキュリティの評価基準</div>
+<div class="print-bullet">• <strong>ウ</strong>: 情報セキュリティ管理の実施基準</div>
+<div class="print-bullet">• <strong>エ</strong>: セキュリティ管理のプロトコルの標準</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: イ（情報技術に関するセキュリティの評価基準）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『CC（Common Criteria）は、情報技術（IT製品）に関するセキュリティの評価基準！』</h2>
+<pre class="mermaid">
+flowchart LR
+    subgraph Diff["混同注意！2大セキュリティ国際規格の違い"]
+        CC["👑 CC (Common Criteria / ISO 15408)<br/>対象: 【モノ（IT製品・システム）】<br/>『このファイアウォール製品やICカードは安全か？』を評価する基準！"]
+        ISMS["🏢 ISMS (ISO/IEC 27001)<br/>対象: 【組織・会社の管理体制】<br/>『この会社の情報管理ルールや運用は適切か？』の基準！"]
+    end
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 「CC（15408）＝ モノ（IT製品）の評価基準」、「ISMS（27000）＝ 会社（組織）の管理基準」！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：自動車の「衝突安全性能テスト（★5つ）」がCC。タクシー会社の「安全運行管理マニュアル」がISMS！）</h2>
+<p>役所や銀行が「新しいファイアウォール機器」や「マイナンバーカード用のICチップ」を買うとき、営業マンが口先だけで「うちの製品は絶対安全ですよ！」と言っても信用できませんよね。</p>
+<p>そこで、アメリカ（TCSEC）やヨーロッパ（ITSEC）の基準を一つにまとめて、<strong>「IT製品やシステムにちゃんとセキュリティ機能が備わっているかを、公平にテスト・評価するための世界共通のモノサシ（評価基準）」</strong> を作りました。<br>これが <strong>CC（Common Criteria：コモンクライテリア、国際規格名 ISO/IEC 15408）</strong> です！</p>
+<div class="print-bullet">• <strong>モノ（IT製品・ハード・ソフト）のセキュリティ評価基準</strong> ＝ <strong>CC（ISO/IEC 15408）</strong></div>
+<div class="print-bullet">• <strong>会社・組織の情報セキュリティ管理基準</strong> ＝ <strong>ISMS（ISO/IEC 27001 / 27002）</strong></div>
+この2つの対比は超頻出なのでセットで押さえましょう！
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: 暗号アルゴリズムの標準</strong> → CRYPTRECやNIST FIPSなどの説明です（×）。</div>
+<div class="print-bullet">• <strong>イ: 情報技術に関するセキュリティの評価基準 【正解！】</strong> → IT製品やシステムのセキュリティ機能・保証度を評価する国際基準（ISO/IEC 15408）です（◯）。</div>
+<div class="print-bullet">• <strong>ウ: 情報セキュリティ管理の実施基準</strong> → ISO/IEC 27002（ISMS実践のための規範）の説明です（×）。</div>
+<div class="print-bullet">• <strong>エ: セキュリティ管理のプロトコルの標準</strong> → プロトコル規格ではありません（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. ISO/IEC 15408（CC）に基づき、日本国内においてIT製品のセキュリティ機能が適切に実装されているかを評価・認証する制度の名称は何か？</strong>  </div>
+  → <strong>「JISEC（ITセキュリティ評価及び認証制度）。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「イ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_4">
+  <h1 class="print-h1">情報セキュリティのCIA（完全性）：Webページの改ざんは「完全性」への攻撃！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: 機密性（C）・完全性（I）・可用性（A）のどれがどの攻撃に対応するのか一瞬迷う文系受験者<br><strong>省いたもの</strong>: 真正性・責任追跡性・否認防止・信頼性を加えたJIS Q 27000の7要素の詳細分類<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 平成24年秋期 問40</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】平成24年秋期 問40</h2>
+<p><strong>【問題】</strong><br>完全性を脅かす攻撃はどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: Webページの改ざん</div>
+<div class="print-bullet">• <strong>イ</strong>: システム内に保管されているデータの持出しを目的とした不正コピー</div>
+<div class="print-bullet">• <strong>ウ</strong>: システムを過負荷状態にするDoS攻撃</div>
+<div class="print-bullet">• <strong>エ</strong>: 通信内容の盗聴</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: ア（Webページの改ざん）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『完全性（Integrity）＝ データが書き換えられておらず正確であること！』</h2>
+<pre class="mermaid">
+flowchart TD
+    subgraph CIA["セキュリティの3大要素（CIA）と代表的な攻撃"]
+        C["🔒 機密性 (Confidentiality)<br/>『秘密を守る・漏らさない』<br/>⚡ 攻撃: 盗聴・不正コピー・情報持出し"]
+        I["👑 完全性 (Integrity)<br/>『正確さを守る・書き換えさせない』<br/>⚡ 攻撃: Webページの改ざん！【ア: 正解】"]
+        A["🚀 可用性 (Availability)<br/>『いつでも使える・止めない』<br/>⚡ 攻撃: DoS攻撃（過負荷でダウン）"]
+    end
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 「盗み見＝機密性(C)」「書き換え（改ざん）＝完全性(I)」「邪魔して止める＝可用性(A)」！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：お店のメニュー表。勝手に値段を0円に書き換えられる（改ざん）のが「完全性」の侵害！）</h2>
+<p>レストランの運営に例えると、セキュリティの3要素（CIA）は一発で区別できます！</p>
+<p>1. <strong>機密性（Confidentiality）＝ レシピを盗まれないこと</strong><br>   秘伝のタレのレシピをスパイに盗み見（盗聴）されたり、コピーして持ち出されたりしたら「機密性」が破られています。</p>
+<p>2. <strong>完全性（Integrity）＝ メニューが勝手に書き換えられないこと</strong><br>   いたずら客にメニュー表の「ステーキ 3,000円」を「ステーキ 10円」に書き換えられたら、正しい商売ができませんよね！<br>   このように「データが正確で、改ざん・破壊されていないこと」を <strong>完全性</strong> と呼びます。したがって、<strong>「Webページの改ざん」は完全性を脅かす攻撃</strong> です！</p>
+<p>3. <strong>可用性（Availability）＝ お店がいつでも営業していること</strong><br>   イタズラ電話を1万件かけられて電話回線がパンク（DoS攻撃）し、本当のお客さんが予約できなくなったら「可用性」の侵害です。</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: Webページの改ざん 【正解！】</strong> → 情報が勝手に書き換えられ正確さが失われるため、「完全性」を脅かす攻撃です（◯）。</div>
+<div class="print-bullet">• <strong>イ: データの持出しを目的とした不正コピー</strong> → 許可されていない人に情報が漏洩するため、「機密性」を脅かす攻撃です（×）。</div>
+<div class="print-bullet">• <strong>ウ: システムを過負荷状態にするDoS攻撃</strong> → システムを使えなくするため、「可用性」を脅かす攻撃です（×）。</div>
+<div class="print-bullet">• <strong>エ: 通信内容の盗聴</strong> → 秘密の通信内容を盗み見られるため、「機密性」を脅かす攻撃です（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. 情報セキュリティの3要素（CIA）のうち、データの改ざんや消去を防ぎ、情報が正確かつ最新の状態に保たれている特性を何と呼ぶか？</strong>  </div>
+  → <strong>「完全性（Integrity）。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ア」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_5">
+  <h1 class="print-h1">クラウド責任共有モデル：IaaSは「ゲストOS」まで自分で守る賃貸マンション！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: IaaS、PaaS、SaaSの境界線（どこまでがクラウド業者でどこからが利用者か）が曖昧な文系受験者<br><strong>省いたもの</strong>: コンテナサービス（CaaS）やFaaS（サーバレス）における細かい責任分界点<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 平成28年春期 問42</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】平成28年春期 問42</h2>
+<p><strong>【問題】</strong><br>クラウドのサービスモデルをNISTの定義に従ってIaaS，PaaS，SaaSに分類したとき，パブリッククラウドサービスの利用企業が行うシステム管理作業において，PaaSとSaaSでは実施できないが，IaaSでは実施できるものはどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: アプリケーションの利用者ID管理</div>
+<div class="print-bullet">• <strong>イ</strong>: アプリケーションログの取得と分析</div>
+<div class="print-bullet">• <strong>ウ</strong>: 仮想サーバのゲストOSに係るセキュリティの設定</div>
+<div class="print-bullet">• <strong>エ</strong>: ハイパーバイザに係るセキュリティの設定</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: ウ（仮想サーバのゲストOSに係るセキュリティの設定）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『PaaS・SaaSではできないが、IaaSなら利用企業が「ゲストOSのセキュリティ設定」を実施できる！』</h2>
+<pre class="mermaid">
+flowchart TD
+    subgraph Layers["建物の階層で覚える管理責任（上が自分、下が業者）"]
+        L1["🛋️ アプリ設定・利用者ID・ログ分析<br/>👉 SaaS / PaaS / IaaS すべて利用者が実施可能"]
+        L2["👑 仮想サーバのゲストOS設定（Linux/Windowsのパッチ等）<br/>👉 【IaaSのみ】利用者が実施！（PaaS/SaaSは業者任せ）"]
+        L3["🏗️ ハイパーバイザ・物理サーバ・データセンター設備<br/>👉 すべてクラウド事業者が管理（利用者は触れない！）"]
+    end
+    L1 --- L2 --- L3
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 IaaSは「空っぽの部屋（インフラだけ借りる）」だから、OS（壁紙や内装）は自分で設定できる！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：住宅の借り方。SaaS＝ホテル、PaaS＝家具付きマンスリー、IaaS＝スケルトン賃貸（内装・OSは自分持ち）！）</h2>
+<p>クラウドの3形態は「部屋の借り方」に例えると絶対に忘れません！</p>
+<div class="print-bullet">• <strong>SaaS（ホテル）</strong>: 家具もベッドも全部揃っていて、掃除もホテル側がやってくれます。利用者は自分の荷物（データとID管理）だけ管理します。</div>
+<div class="print-bullet">• <strong>PaaS（家具・家電付きマンション）</strong>: エアコンや冷蔵庫（OSやミドルウェア）までは大家さんが管理してくれます。利用者は自分の料理（自作アプリ）に集中します。</div>
+<div class="print-bullet">• <strong>IaaS（コンクリ打ちっぱなしの空き部屋）</strong>: 柱と床（仮想マシンと回線）だけ貸してくれます。<strong>「どんなOS（WindowsやLinux）を入れて、どうセキュリティ設定するか」は借りた自分（利用企業）の自由であり責任</strong> です！</div>
+<p>※ちなみに一番下の「ハイパーバイザ（建物の基礎・土台）」は、IaaSであっても大家さん（AWSやAzureなどのクラウド業者）が管理するため、利用企業は触れません。</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: アプリケーションの利用者ID管理</strong> → SaaSやPaaSでも利用企業側で実施できます（×）。</div>
+<div class="print-bullet">• <strong>イ: アプリケーションログの取得と分析</strong> → PaaSやSaaSでも機能として実施可能です（×）。</div>
+<div class="print-bullet">• <strong>ウ: 仮想サーバのゲストOSに係るセキュリティの設定 【正解！】</strong> → PaaS/SaaSではクラウド事業者側で管理され隠蔽されていますが、IaaSでは利用企業が管理者権限を持って実施します（◯）。</div>
+<div class="print-bullet">• <strong>エ: ハイパーバイザに係るセキュリティの設定</strong> → IaaSであってもクラウド事業者（プロバイダ）の管轄であり、利用企業は実施できません（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. IaaSを利用する企業が、PaaSやSaaSを利用する場合と比較して追加で負うことになる代表的なセキュリティ管理責任は何か？</strong>  </div>
+  → <strong>「仮想サーバ上のゲストOSおよびミドルウェアの脆弱性対策（パッチ適用や設定管理）。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ウ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_6">
+  <h1 class="print-h1">CVE識別子：世界中のソフトの「弱点（脆弱性）」に付けられた共通マイナンバー！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: CVE、CCE、CPE、CVSSなどCから始まる脆弱性管理用語が混乱する文系受験者<br><strong>省いたもの</strong>: MITRE社によるCNA（CVE採番機関）の階層構造とJSON 5.0フォーマット仕様<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 令和6年秋期 問41</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】令和6年秋期 問41</h2>
+<p><strong>【問題】</strong><br>JVNなどの脆弱性情報サイトで採用されているCVE(Common Vulnerabilities and Exposures)識別子の説明はどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: コンピュータで必要なセキュリティ設定項目を識別するための識別子</div>
+<div class="print-bullet">• <strong>イ</strong>: 脆弱性が悪用されて改ざんされたWebサイトのスクリーンショットを識別するための識別子</div>
+<div class="print-bullet">• <strong>ウ</strong>: 製品に含まれる脆弱性を識別するための識別子</div>
+<div class="print-bullet">• <strong>エ</strong>: セキュリティ製品の種別を識別するための識別子</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: ウ（製品に含まれる脆弱性を識別するための識別子）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『CVEは製品に含まれる「脆弱性」を世界共通で識別するための番号！』</h2>
+<pre class="mermaid">
+flowchart LR
+    Bug["🐛 ソフトの脆弱性発見！<br/>（例: Log4jの深刻なバグ）"]
+    --> CVE["🏷️ 世界共通の番号を付与！<br/>『CVE-2021-44228』"]
+    --> Share["🌍 世界中のベンダー・JVNで共有<br/>「あのCVE番号のバグ、対策終わった？」<br/>と一発で話が通じる！"]
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 CVEのVは「Vulnerability（脆弱性）」！世界中のバグに付ける指名手配ナンバー！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：指名手配犯の全国共通手配番号。A警察署でもB警察署でも同じ番号で犯人（脆弱性）を特定できる！）</h2>
+<p>世界中で毎日たくさんのソフトウェアの弱点（脆弱性）が見つかります。<br>もしマイクロソフトが「バグA」、日本のIPAが「欠陥105号」のようにバラバラな名前で呼んでいたら、「それって同じバグのこと？」と大混乱してしまいますよね。</p>
+<p>そこで、見つかった脆弱性1つ1つに <strong><code>CVE-2024-12345</code></strong> のような <strong>世界共通のシリアル番号（マイナンバー）</strong> を振るようにしました。これが <strong>CVE（Common Vulnerabilities and Exposures：共通脆弱性識別子）</strong> です！</p>
+<div class="print-bullet">• <strong>CVE</strong>: 脆弱性の番号（<strong>V</strong>ulnerability ＝ 脆弱性）</div>
+<div class="print-bullet">• <strong>CCE</strong>: セキュリティ設定項目の番号（<strong>C</strong>onfiguration ＝ 設定）</div>
+<div class="print-bullet">• <strong>CPE</strong>: 製品名の番号（<strong>P</strong>latform ＝ 製品）</div>
+<div class="print-bullet">• <strong>CVSS</strong>: 脆弱性の深刻度スコア（<strong>S</strong>coring <strong>S</strong>ystem ＝ 点数）</div>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: セキュリティ設定項目を識別するための識別子</strong> → CCE（Common Configuration Enumeration）の説明です（×）。</div>
+<div class="print-bullet">• <strong>イ: 改ざんされたWebサイトのスクリーンショットを識別…</strong> → そのような識別子ではありません（×）。</div>
+<div class="print-bullet">• <strong>ウ: 製品に含まれる脆弱性を識別するための識別子 【正解！】</strong> → CVE（共通脆弱性識別子）の正確な説明です（◯）。</div>
+<div class="print-bullet">• <strong>エ: セキュリティ製品の種別を識別するための識別子</strong> → CPE（共通プラットフォーム一覧）などに近い引っかけです（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. 複数のセキュリティ機関やベンダー間で脆弱性情報を共有・参照しやすくするために、個々の脆弱性に付与される世界共通の識別子を何と呼ぶか？</strong>  </div>
+  → <strong>「CVE（共通脆弱性識別子）。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ウ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_7">
+  <h1 class="print-h1">サイバーセキュリティ基本法：内閣官房に設置された日本の司令塔は「NISC / NCO」！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: IPA、JIPDEC、JPCERT/CC、NISC(NCO)の所属省庁・役割が区別できない文系受験者<br><strong>省いたもの</strong>: サイバーセキュリティ戦略本部とNISC/NCOの組織改編に関する法改正条文詳細<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 平成30年秋期 問36</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】平成30年秋期 問36</h2>
+<p><strong>【問題】</strong><br>サイバーセキュリティ基本法に基づき，内閣官房に設置された機関はどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: IPA</div>
+<div class="print-bullet">• <strong>イ</strong>: JIPDEC</div>
+<div class="print-bullet">• <strong>ウ</strong>: JPCERT/CC</div>
+<div class="print-bullet">• <strong>エ</strong>: NCO</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: エ（NCO）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『サイバーセキュリティ基本法に基づき、内閣官房に設置された機関は NCO（旧NISC）！』</h2>
+<pre class="mermaid">
+flowchart TD
+    subgraph Gov["🏛️ 日本のセキュリティ4大機関のすみ分け"]
+        NCO["👑 NCO / NISC（内閣サイバーセキュリティセンター）<br/>👉 【内閣官房】に設置！国の司令塔！（エ: 正解）"]
+        IPA["🏢 IPA（情報処理推進機構）<br/>👉 【経済産業省】所管！応用情報試験の実施・セキュリティ普及"]
+        JIPDEC["📜 JIPDEC（日本情報経済社会推進協会）<br/>👉 プライバシーマーク（Pマーク）・ISMS認定"]
+        JPCERT["🚑 JPCERT/CC（JPCERTコーディネーションセンター）<br/>👉 民間・中立のインシデント対応窓口（CSIRTの親玉）"]
+    end
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 「内閣官房」と言ったら </strong>N<strong>ational（国の）</strong>C<strong>ybersecurityの「NCO（旧NISC）」！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：国の防衛組織。内閣直属の総合司令部（NCO/NISC）、資格試験や啓発を行う経産省の機関（IPA）、救急救命窓口（JPCERT/CC）！）</h2>
+<p>日本のセキュリティ関連団体は、この4つだけキャラ付けして覚えれば午前試験は無敵です！</p>
+<p>1. <strong>NCO / NISC（内閣サイバーセキュリティセンター）</strong>:<br>   問題文に <strong>「サイバーセキュリティ基本法に基づき、内閣官房に設置」</strong> と出たら100%これです！日本政府全体のサイバー防衛の総司令塔です。<br>2. <strong>IPA（情報処理推進機構）</strong>:<br>   経済産業省の管轄で、いま皆さんが勉強している <strong>「応用情報技術者試験」を実施している団体</strong> です！「情報セキュリティ10大脅威」の発表でも有名です。<br>3. <strong>JIPDEC（日本情報経済社会推進協会）</strong>:<br>   <strong>「プライバシーマーク（Pマーク）」</strong> やISMSの認定を行っている団体です。<br>4. <strong>JPCERT/CC</strong>:<br>   政府から独立した中立の立場で、国内外のサイバー攻撃の連絡調整（インシデントハンドリング）を行う救急窓口です。</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: IPA</strong> → 経済産業省所管の独立行政法人（情報処理推進機構）です（×）。</div>
+<div class="print-bullet">• <strong>イ: JIPDEC</strong> → プライバシーマーク制度などを運営する一般財団法人です（×）。</div>
+<div class="print-bullet">• <strong>ウ: JPCERT/CC</strong> → インシデント対応支援を行う一般社団法人です（×）。</div>
+<div class="print-bullet">• <strong>エ: NCO（旧NISC） 【正解！】</strong> → サイバーセキュリティ基本法に基づき内閣官房に設置された機関です（◯）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. 企業や組織内でセキュリティインシデントが発生した際、被害拡大防止やJPCERT/CC等の外部機関との連携を担当する専門チームを何と呼ぶか？</strong>  </div>
+  → <strong>「CSIRT（Computer Security Incident Response Team）。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「エ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_8">
+  <h1 class="print-h1">DNSキャッシュポイズニングの被害：偽の住所録を掴まされて「詐欺サイトへ強制連行」！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: DNSキャッシュポイズニングが起きた「結果」として何が起きるのかピンとこない文系受験者<br><strong>省いたもの</strong>: トランザクションIDとソースポートランダマイゼーションによる防御の確率計算<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 令和6年春期 問36</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】令和6年春期 問36</h2>
+<p><strong>【問題】</strong><br>企業のDMZ上で1台のDNSサーバを，インターネット公開用と，社内のPC及びサーバからの名前解決の問合せに対応する社内用とで共用している。このDNSサーバが，DNSキャッシュポイズニングの被害を受けた結果，直接引き起こされ得る現象はどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: DNSサーバのハードディスク上に定義されているDNSサーバ名が書き換わり，インターネットからDNSサーバに接続できなくなる。</div>
+<div class="print-bullet">• <strong>イ</strong>: DNSサーバのメモリ上にワームが常駐し，DNS参照元に対して不正プログラムを送り込む。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 社内の利用者が，インターネット上の特定のWebサーバにアクセスしようとすると，本来とは異なるWebサーバに誘導される。</div>
+<div class="print-bullet">• <strong>エ</strong>: 社内の利用者間の電子メールについて，宛先メールアドレスが書き換えられ，送信ができなくなる。</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: ウ（社内の利用者が，インターネット上の特定のWebサーバにアクセスしようとすると，本来とは異なるWebサーバに誘導される。）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『社内PCがWebサイトにアクセスしようとすると、本来とは異なる偽Webサーバに誘導される！』</h2>
+<pre class="mermaid">
+flowchart LR
+    Poison["😈 攻撃者<br/>DNSサーバのキャッシュ（記憶）に<br/>『銀行サイト ＝ 詐欺サイトのIP』<br/>という嘘の情報を注入！"]
+    --> DNS["🗂️ 社内共用のDNSサーバ<br/>（嘘の住所を信じ込む）"]
+    --> Victim["😱 社員のPC<br/>正しいURLを打ったのに、<br/>偽のWebサーバへ誘導される！"]
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 DNSに毒（偽のIPアドレス）を盛られたら、正しいURLを入れても「偽サイトに誘導される」（ファーミング）！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：カーナビの地図データを書き換えるイタズラ。「東京銀行」を選んだのに、泥棒のアジトへ案内されてしまう！）</h2>
+<p>DNSサーバは、インターネットの「電話帳（またはカーナビの住所録）」です。<br>社員がブラウザで <code>https://www.ginko.co.jp</code> にアクセスするとき、まず社内のDNSサーバに「<code>ginko.co.jp</code> のIPアドレス（番地）はどこ？」と尋ねます。</p>
+<p>ここで <strong>DNSキャッシュポイズニング（DNSキャッシュ毒入れ攻撃）</strong> を受けるとどうなるでしょうか？<br>DNSサーバのメモ帳（キャッシュ）に、「<code>ginko.co.jp</code> の番地は、攻撃者が作った偽サイト（66.66.66.66）だよ」という <strong>嘘の住所</strong> が書き込まれてしまいます！</p>
+<p>その結果、社員はブラウザに正しいURLを入力しているにもかかわらず、<strong>「本来とは異なる偽のWebサーバに勝手に誘導されてしまう」</strong> という恐ろしい被害（ファーミング）が発生します！</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: DNSサーバ名が書き換わり接続できなくなる</strong> → ハードディスク上のホスト定義を破壊する攻撃ではありません（×）。</div>
+<div class="print-bullet">• <strong>イ: メモリ上にワームが常駐し不正プログラムを送り込む</strong> → DNS応答はIPアドレスを返すだけであり、直接ワームを送り込むものではありません（×）。</div>
+<div class="print-bullet">• <strong>ウ: インターネット上の特定のWebサーバにアクセスしようとすると，本来とは異なるWebサーバに誘導される 【正解！】</strong> → 偽のIPアドレスが返されることで偽サイトへ誘導されます（◯）。</div>
+<div class="print-bullet">• <strong>エ: 社内利用者間のメールの宛先メールアドレスが書き換えられる</strong> → メールアドレス文字列そのものを書き換える攻撃ではありません（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. インターネット公開用の権威DNSサーバと、社内PCからの再帰的な問い合わせを受け付けるキャッシュDNSサーバを別々のサーバに分離する理由を述べよ。</strong>  </div>
+  → <strong>「キャッシュポイズニング攻撃等により偽の情報が混入し、社内利用者が不正なサイトへ誘導される被害を防ぐため。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ウ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_9">
+  <h1 class="print-h1">楕円曲線暗号（ECC）：短い鍵でRSA並みに超頑丈！TLSでも大活躍の「次世代公開鍵暗号」</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: 楕円曲線暗号が「共通鍵」なのか「公開鍵」なのか、何の問題を利用しているか忘れる文系受験者<br><strong>省いたもの</strong>: ワイエルシュトラス標準形方程式と楕円曲線上の点加算（群演算）の代数幾何学的定義<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 平成30年秋期 問37</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】平成30年秋期 問37</h2>
+<p><strong>【問題】</strong><br>楕円曲線暗号に関する記述のうち，適切なものはどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: AESに代わる共通鍵暗号方式としてNISTが標準化している。</div>
+<div class="print-bullet">• <strong>イ</strong>: 共通鍵暗号方式であり，デジタル署名にも利用されている。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 公開鍵暗号方式であり，TLSにも利用されている。</div>
+<div class="print-bullet">• <strong>エ</strong>: 素因数分解問題の困難性を利用している。</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: ウ（公開鍵暗号方式であり，TLSにも利用されている。）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『楕円曲線暗号は「公開鍵暗号方式」であり、TLSやデジタル署名にも利用されている！』</h2>
+<pre class="mermaid">
+flowchart TD
+    subgraph Public["🔑 3大『公開鍵暗号』の数学的根拠と比較"]
+        RSA["RSA暗号: 『素因数分解の困難性』<br/>（鍵長が2048ビット以上と長くて処理が重い）"]
+        ECC["👑 楕円曲線暗号 (ECC): 『楕円曲線上の離散対数問題の困難性』<br/>（わずか256ビットの短い鍵でRSA 3072ビット相当の強度！TLSでも主力！）"]
+    end
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 楕円曲線暗号は「公開鍵暗号」！短い鍵で超強力だからスマホ時代のTLSに引っ張りだこ！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：最新のチタン合金ロック。昔の巨大な鉄の鎖（RSA）と同じ強度を、わずか1/10の軽さ・小ささ（短い鍵長）で実現！）</h2>
+<p>昔からの公開鍵暗号の王様といえば「RSA暗号（素因数分解の難しさを利用）」でした。<br>しかし、コンピュータの計算能力が上がるにつれて、RSA暗号を安全に保つには「2048ビット」や「3072ビット」という非常に長い鍵が必要になり、スマホやIoT機器には計算が重くなってきました。</p>
+<p>そこで現在、主役の座を奪っているのが <strong>楕円曲線暗号（ECC：Elliptic Curve Cryptography）</strong> です！</p>
+<p>押さえるべきポイントは3つだけです：<br>1. <strong>分類</strong>: AESのような共通鍵ではなく、RSAと同じ <strong>「公開鍵暗号方式」</strong> の仲間です！<br>2. <strong>メリット</strong>: わずか <strong>256ビット程度の短い鍵長</strong> で、RSAの3072ビットに匹敵する圧倒的な強度を持ち、処理が軽くて高速です。<br>3. <strong>用途</strong>: Web通信を守る <strong>TLS（HTTPS）</strong> や、ビットコインなどの電子署名に幅広く使われています！</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: AESに代わる共通鍵暗号方式として…</strong> → 共通鍵暗号ではなく「公開鍵暗号方式」です（×）。</div>
+<div class="print-bullet">• <strong>イ: 共通鍵暗号方式であり，デジタル署名にも…</strong> → デジタル署名に使われるのは「公開鍵暗号方式」です（×）。</div>
+<div class="print-bullet">• <strong>ウ: 公開鍵暗号方式であり，TLSにも利用されている 【正解！】</strong> → 短い鍵長で高い安全性を持つ公開鍵暗号であり、TLS（ECDHEやECDSA）で標準利用されています（◯）。</div>
+<div class="print-bullet">• <strong>エ: 素因数分解問題の困難性を利用している</strong> → 素因数分解はRSA暗号です。楕円曲線暗号は「楕円曲線上の離散対数問題」の困難性を利用しています（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. 楕円曲線暗号（ECC）が従来のRSA暗号と比較してスマートフォンやIoT機器、TLS通信で好んで採用される理由を鍵長と処理負荷の観点から述べよ。</strong>  </div>
+  → <strong>「RSA暗号と同等の安全性をより短い鍵長で実現でき、計算処理負荷や通信データ量を小さく抑えられるため。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ウ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_10">
+  <h1 class="print-h1">ファイアウォールのルール判定：「上から順番」に見て最初に合致した1行で即決（ファーストマッチ）！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: ファイアウォールのルール表が複数行あるとき、どの行が適用されるか迷う文系受験者<br><strong>省いたもの</strong>: ステートフルインスペクションにおける動的セッションテーブルの戻りパケット判定<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 平成20年春期 問75</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】平成20年春期 問75</h2>
+<p><strong>【問題】</strong><br>パケットフィルタリング型ファイアウォールがルール一覧に示したアクションに基づいてパケットを制御する場合，パケットAに対する処理はどれか。ここで，ファイアウォールでの処理は，ルール一覧に示す番号の1から順に行い，一つのルールが適用された場合には残りのルールは適用されない。</p>
+<div class="print-bullet">• <strong>ア</strong>: 番号1によって，通過が禁止される。</div>
+<div class="print-bullet">• <strong>イ</strong>: 番号2によって，通過が許可される。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 番号3によって，通過が許可される。</div>
+<div class="print-bullet">• <strong>エ</strong>: 番号4によって，通過が禁止される。</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: ア（番号1によって，通過が禁止される。）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『番号1から順に照合し、条件にすべて合致した最初のルール（番号1）で即座に処理が決まる！』</h2>
+<pre class="mermaid">
+flowchart TD
+    Pkt["📦 到着したパケットA"]
+    --> R1{"【ルール番号1】と照合！<br/>送信元・宛先・ポートは合致するか？"}
+    R1 -->|"⚡ ピタッと合致！"| Act1["🚫 ルール1の『禁止』を即実行！<br/>（番号2以降は一切見ない！＝ ファーストマッチ）"]
+    R1 -->|"合致しない"| R2["【ルール番号2】へ進む..."]
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 ファイアウォールは「上から順番（番号1から）の早い者勝ち」！1行目で引っかかったら即終了！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：クラブの入り口のドレスコード審査。1つ目の条件「サンダル履きは入場禁止」に引っかかったら、その下の「VIP会員はOK」を見るまでもなく即門前払い！）</h2>
+<p>パケットフィルタリング型ファイアウォールの問題が出たら、見るべきルールはたった1つです。</p>
+<p><strong>「上から順番（番号1 → 番号2 → 番号3…）にチェックして、条件にピッタリ当てはまった最初の行の命令を実行し、残りの行は無視する！」</strong></p>
+<p>これを専門用語で <strong>ファーストマッチ（First Match）</strong> と呼びます。<br>今回の問題では、パケットAの送信元・宛先・ポート番号を「番号1」のルールと照らし合わせると、1行目の条件にそのまま合致してしまいます（<code>*</code> は「何でも該当するワイルドカード」の意味）。<br>2行目や3行目に「許可」と書いてあっても、<strong>1行目で「禁止」に引っかかった瞬間に試合終了（通過禁止）</strong> となります！</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: 番号1によって，通過が禁止される 【正解！】</strong> → 上から順に評価し、番号1の条件にすべて一致するため即座に禁止されます（◯）。</div>
+<div class="print-bullet">• <strong>イ: 番号2によって，通過が許可される</strong> → 番号1で既に一致して処理が終了しているため、番号2は評価されません（×）。</div>
+<div class="print-bullet">• <strong>ウ: 番号3によって，通過が許可される</strong> → 同様に番号3まで到達しません（×）。</div>
+<div class="print-bullet">• <strong>エ: 番号4によって，通過が禁止される</strong> → 番号1の時点で禁止が確定します（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. パケットフィルタリング型ファイアウォールにおいて、どの許可ルールにも合致しなかったパケットを最終的にすべて遮断するために、ルール一覧の最下部に設定するルールを何と呼ぶか？</strong>  </div>
+  → <strong>「暗黙のDeny（デフォルト拒否ルール）。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ア」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_11">
+  <h1 class="print-h1">HTTPSで実現できること：「暗号化」だけじゃない！電子証明書による「本物のサーバ証明」！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: HTTPS＝暗号化するだけだと思っていて「サーバ認証」を見落とす文系受験者<br><strong>省いたもの</strong>: TLS 1.3におけるECDHE鍵交換と0-RTTハンドシェイクの暗号学的詳細<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 平成19年春期 問76</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】平成19年春期 問76</h2>
+<p><strong>【問題】</strong><br>HTTPSを用いて実現できるものはどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: Webサーバ上のファイルの改ざん検知</div>
+<div class="print-bullet">• <strong>イ</strong>: クライアント上のウイルス検査</div>
+<div class="print-bullet">• <strong>ウ</strong>: クライアントに対する侵入検知</div>
+<div class="print-bullet">• <strong>エ</strong>: 電子証明書によるサーバ認証</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: エ（電子証明書によるサーバ認証）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『HTTPSは「通信の暗号化」と「電子証明書によるサーバ認証」を実現する！』</h2>
+<pre class="mermaid">
+flowchart LR
+    Browser["💻 ブラウザ"]
+    <-->|"🔒 HTTPS (HTTP over TLS)<br/>① 通信の暗号化（盗聴防止）<br/>② 改ざん検知（MAC/署名）<br/>👑 ③ 電子証明書によるサーバ認証（なりすまし防止！）"| Server["🏢 Webサーバ<br/>（サーバ証明書を提示）"]
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 HTTPSの3大パワーは「暗号化・改ざん検知・証明書によるサーバ認証」！ウイルス検査はできない！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：銀行窓口の身分証提示。声をひそめて話す（暗号化）だけでなく、相手が本物の銀行員か名札（電子証明書）を確かめる！）</h2>
+<p>「通信が暗号化されていても、そもそも通信相手が詐欺師（偽サイト）だったら意味がない！」と思いませんか？<br>どんなに厳重な金庫にお金を入れて送っても、送り先が泥棒の家だったらお金は盗まれてしまいます。</p>
+<p>だから <strong>HTTPS（HTTP over SSL/TLS）</strong> には、通信を暗号化するだけでなく、最初に必ず <strong>「接続先のWebサーバが本当に本物かどうかを、電子証明書（サーバ証明書）を使って確認する（サーバ認証）」</strong> という超重要な機能が備わっています！</p>
+<p>※逆に、HTTPSはあくまで「通信経路（土管の中）」を守る技術なので、Webサーバの中のファイル監視や、パソコンの中のウイルス検査まではしてくれません。</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: Webサーバ上のファイルの改ざん検知</strong> → ホスト型IDS（Tripwireなど）の役割であり、通信プロトコルのHTTPSでは実現できません（×）。</div>
+<div class="print-bullet">• <strong>イ: クライアント上のウイルス検査</strong> → ウイルス対策ソフト（EDR/アンチウイルス）の役割です（×）。</div>
+<div class="print-bullet">• <strong>ウ: クライアントに対する侵入検知</strong> → パーソナルファイアウォールやIDSの役割です（×）。</div>
+<div class="print-bullet">• <strong>エ: 電子証明書によるサーバ認証 【正解！】</strong> → SSL/TLSのサーバ証明書を用いて通信先サーバの正当性を確認できます（◯）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. HTTPS通信において、通信内容の暗号化以外にSSL/TLSサーバ証明書を用いることで防止できる脅威は何か？</strong>  </div>
+  → <strong>「悪意ある第三者が正規のWebサーバになりすますフィッシング等の脅威。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「エ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_12">
+  <h1 class="print-h1">HTTPSの正体：HTTPに「SSL/TLS」の鎧を着せて、暗号化とサーバ認証を実現！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: HTTPS、SSL/TLS、S/MIME、Cookieの役割分担が整理できていない文系受験者<br><strong>省いたもの</strong>: TLSレコードプロトコルとハンドシェイクプロトコルのパケットヘッダ構造<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 平成25年春期 問36</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】平成25年春期 問36</h2>
+<p><strong>【問題】</strong><br>HTTPS通信において，暗号化とサーバ認証に使用されるものはどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: Cookie</div>
+<div class="print-bullet">• <strong>イ</strong>: S/MIME</div>
+<div class="print-bullet">• <strong>ウ</strong>: SSL/TLS</div>
+<div class="print-bullet">• <strong>エ</strong>: ダイジェスト認証</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: ウ（SSL/TLS）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『HTTPS通信において、暗号化とサーバ認証に使用されるプロトコルは SSL/TLS！』</h2>
+<pre class="mermaid">
+flowchart LR
+    HTTP["📄 HTTP<br/>（平文のWeb通信）"]
+    --> Plus["➕ 合体！"]
+    --> TLS["🛡️ SSL / TLS<br/>・通信の暗号化<br/>・サーバ認証（電子証明書）<br/>・改ざん検知"]
+    --> HTTPS["👑 HTTPS<br/>（安全なWeb通信！）"]
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 HTTP ＋ SSL/TLS ＝ HTTPS！Webの暗号化とサーバ認証はSSL/TLSの仕事！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：現金（HTTP）をそのまま送るのではなく、現金輸送車（SSL/TLS）に乗せて安全に運ぶのがHTTPS！）</h2>
+<p>WebサイトのURLが <code>https://...</code> で始まる <strong>HTTPS</strong> 通信。<br>最後の <strong>「S」</strong> は Secure（安全）の意味ですが、具体的に裏側で何という技術が働いているのでしょうか？</p>
+<p>それが <strong>SSL/TLS（Secure Sockets Layer / Transport Layer Security）</strong> です！<br>普通のWeb通信（HTTP）の下に、SSL/TLSというセキュリティの土台を挟み込むことで：<br>1. <strong>暗号化</strong>（盗聴防止）<br>2. <strong>サーバ認証</strong>（偽サイトへのなりすまし防止）<br>3. <strong>改ざん検知</strong>（途中の書き換え防止）<br>の3つをまるごと提供してくれます！</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: Cookie</strong> → ブラウザに状態やセッションIDを保存する仕組みであり、暗号化機能はありません（×）。</div>
+<div class="print-bullet">• <strong>イ: S/MIME</strong> → 「電子メール」を暗号化・電子署名する規格であり、HTTPS（Web）ではありません（×）。</div>
+<div class="print-bullet">• <strong>ウ: SSL/TLS 【正解！】</strong> → HTTPS通信の暗号化およびサーバ認証を担うプロトコルです（◯）。</div>
+<div class="print-bullet">• <strong>エ: ダイジェスト認証</strong> → パスワードだけをハッシュ化して送るHTTP認証方式であり、通信全体の暗号化やサーバ証明書の認証は行いません（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. Webサーバとブラウザ間の通信を暗号化するHTTPSが標準で使用するウェルノウンポート番号は何番か？</strong>  </div>
+  → <strong>「443番。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ウ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_13">
+  <h1 class="print-h1">JIS Q 27000の用語定義：「許可されていない者に見せない・使わせない」＝ 機密性！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: 機密性、真正性、認証、否認防止のJIS定義文の言い回しで迷う文系受験者<br><strong>省いたもの</strong>: ISO/IEC 27000ファミリー規格の改訂履歴と各附属書の構成<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 令和5年秋期 問40</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】令和5年秋期 問40</h2>
+<p><strong>【問題】</strong><br>JIS Q 27000:2019(情報セキュリティマネジメントシステム用語)において，認可されていない個人，エンティティ又はプロセスに対して，情報を使用させず，また，開示しない特性として定義されているものはどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: 機密性</div>
+<div class="print-bullet">• <strong>イ</strong>: 真正性</div>
+<div class="print-bullet">• <strong>ウ</strong>: 認証</div>
+<div class="print-bullet">• <strong>エ</strong>: 否認防止</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: ア（機密性）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『認可されていない個人・エンティティに情報を使用させず、開示しない特性 ＝ 機密性！』</h2>
+<pre class="mermaid">
+flowchart TD
+    subgraph JIS["📜 JIS Q 27000 セキュリティ用語の1対1対応"]
+        C["🔒 機密性 (Confidentiality)<br/>『認可されていない者に使用させず、開示しない！』【ア: 正解】"]
+        Au["🪪 真正性 (Authenticity)<br/>『主張どおりの本物・本人であること！』"]
+        At["🔍 認証 (Authentication)<br/>『真正性（本物かどうか）を検証して確かめる行為！』"]
+        NR["📝 否認防止 (Non-repudiation)<br/>『あとから「やってない・知らない」とシラを切らせない！』"]
+    end
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 「開示しない（秘密にする）」と書いてあったら1秒で『機密性』！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：社外秘の封筒。「関係者以外、開封・閲覧厳禁（認可されていない者に開示しない）」というハンコが機密性！）</h2>
+<p>問題文の日本語をそのまま読めば、1秒で解けるボーナス問題です！</p>
+<p>問題文：<strong>「認可されていない個人，エンティティ又はプロセスに対して，情報を使用させず，また，開示しない特性」</strong><br>つまり、「許可されていない部外者には、絶対に見せないし（開示しない）、使わせない（秘密を守る）」ということです。</p>
+<p>秘密を守る特性といえば、情報セキュリティ3大要素（CIA）の筆頭である <strong>「機密性（Confidentiality）」</strong> ですね！</p>
+<p>他の3つの用語もセットで整理しておきましょう：<br><div class="print-bullet">• <strong>真正性</strong>: エンティティ（人やシステム）が「主張どおりの本物である」という特性。</div><br><div class="print-bullet">• <strong>認証</strong>: その真正性が正しいかどうかを「確かめる手続き」。</div><br><div class="print-bullet">• <strong>否認防止</strong>: 起きた事象や行動を後から「私はやっていません！」と否定（否認）できないように証明する能力（デジタル署名やログなど）。</div></p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: 機密性 【正解！】</strong> → 認可されていない者に対して情報を使用させず、開示しない特性です（◯）。</div>
+<div class="print-bullet">• <strong>イ: 真正性</strong> → 主張どおりの本物であるという特性です（×）。</div>
+<div class="print-bullet">• <strong>ウ: 認証</strong> → 主張された特性が正しいことを保証する手続きです（×）。</div>
+<div class="print-bullet">• <strong>エ: 否認防止</strong> → 事象や行動が起きたことを証明し、後から否認できないようにする能力です（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. デジタル署名やアクセスログの保全によって実現される、「後から送信や操作の事実を否定できなくする」セキュリティ特性を何と呼ぶか？</strong>  </div>
+  → <strong>「否認防止（Non-repudiation）。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ア」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_14">
+  <h1 class="print-h1">メールの第三者中継（オープンリレー）：接続元も送信者も宛先も「全部よその会社」のログを探せ！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: IPアドレスやドメイン名の条件文が長くて、表のどの行を選べばいいか混乱する文系受験者<br><strong>省いたもの</strong>: Postfix等におけるmynetworksおよびrelay_domainsの設定構文<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 令和5年秋期 問38</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】令和5年秋期 問38</h2>
+<p><strong>【問題】</strong><br>自社の中継用メールサーバで，接続元IPアドレス，電子メールの送信者のメールアドレスのドメイン名，及び電子メールの受信者のメールアドレスのドメイン名から成るログを取得するとき，外部ネットワークからの第三者中継と判断できるログはどれか。ここで，AAA.168.1.5 と AAA.168.1.10 は自社のグローバルIPアドレスとし，BBB.45.67.89 と BBB.45.67.90 は社外のグローバルIPアドレスとする。a.b.c は自社のドメイン名とし，a.b.d と a.b.e は他社のドメイン名とする。また，IPアドレスとドメイン名は詐称されていないものとする。</p>
+<div class="print-bullet">• <strong>ア</strong>: 接続元: 自社IP、送信者: 自社ドメイン、受信者: 他社ドメイン（通常の社外への送信）</div>
+<div class="print-bullet">• <strong>イ</strong>: 接続元: 社外IP、送信者: 他社ドメイン、受信者: 自社ドメイン（通常の社外からの受信）</div>
+<div class="print-bullet">• <strong>ウ</strong>: 接続元: 社外IP、送信者: 他社ドメイン、受信者: 他社ドメイン（完全無関係な第三者中継！）</div>
+<div class="print-bullet">• <strong>エ</strong>: 接続元: 自社IP、送信者: 自社ドメイン、受信者: 自社ドメイン（通常の社内メール）</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: ウ（接続元: 社外IP、送信者: 他社ドメイン、受信者: 他社ドメイン（完全無関係な第三者中継！））</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『接続元IP・送信者ドメイン・受信者ドメインの3つすべてが「社外（他社）」になっている行が第三者中継！』</h2>
+<pre class="mermaid">
+flowchart LR
+    Spammer["😈 外部のスパム業者<br/>・接続元IP: 【社外】<br/>・送信者: 【他社ドメイン】"]
+    -->|"自社のメールサーバを<br/>勝手に踏み台（タダ乗り）！"| MyServer["🏢 自社のメールサーバ<br/>（設定ミスで中継してしまう）"]
+    -->|"そのまま転送"| Victim["😱 よその会社の被害者<br/>・受信者: 【他社ドメイン】"]
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 第三者中継は「自社と1ミリも関係ないメール」！3項目すべてが『社外・他社』の行を選べば一発正解！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：自分の家のポストを、見知らぬ他人Aが見知らぬ他人Bへの手紙の中継ボックスとして勝手に使っている状態！）</h2>
+<p>「自社のメールサーバ」が、どういうメールを扱うのが正常か考えてみましょう。</p>
+<p>1. <strong>社員がよその会社にメールを送る</strong>: 送信者が「自社」<br>2. <strong>よその会社から社員にメールが届く</strong>: 受信者が「自社」<br>3. <strong>社員同士でメールする</strong>: 送信者も受信者も「自社」</p>
+<p>つまり、まっとうなメールなら <strong>「接続元・送信者・受信者のどれかには、必ず『自社』が入っている」</strong> はずです！</p>
+<p>では、<strong>「第三者中継（オープンリレー）」</strong> とは何でしょうか？<br>よその悪いスパム業者（社外IP・他社ドメイン）が、別のよその人（他社ドメイン）へ迷惑メールを送るときに、うちの会社のメールサーバを勝手に中継地点（踏み台）としてタダ乗りすることです！</p>
+<p>だから解き方は超簡単！<br>問題文の数字を「自社」か「社外（他社）」かに置き換えて、<strong>【接続元：社外】【送信者：他社】【受信者：他社】と3つ全部が「よその人」になっている行（ウ）</strong> を探すだけです！</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: 自社が含まれるログ</strong> → 社員からの正常なメール送信などです（×）。</div>
+<div class="print-bullet">• <strong>イ: 受信者が自社ドメインのログ</strong> → 外部から自社社員宛てに届いた正常な受信メールです（×）。</div>
+<div class="print-bullet">• <strong>ウ: 接続元IP・送信者ドメイン・受信者ドメインのすべてが社外（他社）であるログ 【正解！】</strong> → 自社と全く無関係な第三者から第三者への不正な中継（オープンリレー）です（◯）。</div>
+<div class="print-bullet">• <strong>エ: 自社が含まれるログ</strong> → 社内関係の正常な通信です（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. 自社のメールサーバが第三者中継（オープンリレー）を許可する設定になっていた場合、自社が被る具体的な不利益を説明せよ。</strong>  </div>
+  → <strong>「迷惑メール（スパム）の踏み台に悪用され、自社メールサーバのIPアドレスがブラックリスト（RBL）に登録されて正規のメールが送信できなくなる。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ウ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_15">
+  <h1 class="print-h1">リスクベース認証：「いつもと違う怪しいログイン」だけ追加質問する賢い警備員！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: 二要素認証とリスクベース認証の違いが曖昧な文系受験者<br><strong>省いたもの</strong>: 機械学習によるアノマリ検知スコアリングアルゴリズムの内部計算<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 令和3年春期 問39</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】令和3年春期 問39</h2>
+<p><strong>【問題】</strong><br>リスクベース認証の特徴はどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: いかなる利用条件でのアクセスの要求においても，ハードウェアトークンとパスワードを併用するなど，常に二つの認証方式を併用することによって，不正アクセスに対する安全性を高める。</div>
+<div class="print-bullet">• <strong>イ</strong>: いかなる利用条件でのアクセスの要求においても認証方法を変更せずに，同一の手順によって普段どおりにシステムにアクセスできるようにし，可用性を高める。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 普段と異なる利用条件でのアクセスと判断した場合には，追加の本人認証をすることによって，不正アクセスに対する安全性を高める。</div>
+<div class="print-bullet">• <strong>エ</strong>: 利用者が認証情報を忘れ，かつ，Webブラウザに保存しているパスワード情報も使用できないリスクを想定して，緊急と判断した場合には，認証情報を入力せずに，利用者は普段どおりにシステムを利用できるようにし，可用性を高める。</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: ウ（普段と異なる利用条件でのアクセスと判断した場合には，追加の本人認証をすることによって，不正アクセスに対する安全性を高める。）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『普段と異なる利用条件でのアクセスと判断した場合に、追加の本人認証を行う！』</h2>
+<pre class="mermaid">
+flowchart TD
+    Login["👤 ユーザーがID・パスワードでログイン"]
+    --> Check{"🕵️ リスク判定！<br/>場所・端末・時間帯はいつも通り？"}
+    Check -->|"🏠 いつも通り（自宅PC・日本）<br/>【低リスク】"| OK["✅ そのままログイン許可！<br/>（利便性バッチリ）"]
+    Check -->|"✈️ いきなり海外IP・見知らぬ端末<br/>【高リスク！】"| Extra["🚨 追加の本人認証を要求！<br/>（SMSコード・秘密の質問など）"]
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 いつも通りならスルー、怪しい時（高リスク）だけ追加チェックするのが「リスクベース認証」！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：マンションのベテラン管理人。毎日見る住人は挨拶だけで通し、深夜にサングラスで裏口から来た人には身分証を求める！）</h2>
+<p>毎回ログインするたびに「パスワード入れて、SMSの6桁の数字も入れて、秘密の質問も答えて…」とやらされたら、面倒くさくてユーザーは嫌になってしまいますよね。</p>
+<p>そこで生まれた賢い仕組みが <strong>リスクベース認証</strong> です！</p>
+<p>システムが裏側で「いつも使っているスマホか？」「いつもの場所（日本国内）からのアクセスか？」「いつもの時間帯か？」を分析します。<br>1. <strong>普段通り（低リスク）</strong>: パスワードだけでサッと通す！（ストレスフリー）<br>2. <strong>普段と違う（高リスク）</strong>: 「あれ？5分前まで東京にいたのに、急に海外のIPアドレスから初めてのPCでログインしてきたぞ！？」と検知したときだけ、<strong>追加の本人認証（ワンタイムパスワードや合言葉など）</strong> を要求して不正アクセスをブロックします！</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: いかなる利用条件でも常に二つの認証方式を併用…</strong> → 常時二要素認証（多要素認証）の説明であり、リスクに応じた切り替えではありません（×）。</div>
+<div class="print-bullet">• <strong>イ: いかなる利用条件でも認証方法を変更せずに…</strong> → リスク評価を行っていません（×）。</div>
+<div class="print-bullet">• <strong>ウ: 普段と異なる利用条件でのアクセスと判断した場合には，追加の本人認証をする 【正解！】</strong> → リスクの高さに応じて追加認証を求めるリスクベース認証の特徴です（◯）。</div>
+<div class="print-bullet">• <strong>エ: 緊急と判断した場合には，認証情報を入力せずに…</strong> → セキュリティが崩壊するため不適切です（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. リスクベース認証を導入することで、常時追加認証を行う方式と比較して得られる利用者側のメリットは何か？</strong>  </div>
+  → <strong>「通常の利用環境からのアクセス時には追加認証が省略されるため、利便性を損なわずにセキュリティを高められる。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ウ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_16">
+  <h1 class="print-h1">SBOM（ソフトウェア部品表）：ソフトの中身を丸裸にする「食品の原材料ラベル」！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: 最新トレンド用語であるSBOM（エスボム）が何をするものかイメージできない文系受験者<br><strong>省いたもの</strong>: SPDXやCycloneDXといったSBOM記述フォーマットの構文仕様<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 令和7年春期 問40</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】令和7年春期 問40</h2>
+<p><strong>【問題】</strong><br>ソフトウェアの情報セキュリティ対策のうち，SBOM(Software Bill Of Materials)管理ツールを用いることができるものはどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: ソフトウェアでの利用者認証に用いるアカウントの一元管理</div>
+<div class="print-bullet">• <strong>イ</strong>: ソフトウェアについての脆弱性管理</div>
+<div class="print-bullet">• <strong>ウ</strong>: ソフトウェアのソースコードについてのバージョン管理，アクセス制御及び改ざん防止</div>
+<div class="print-bullet">• <strong>エ</strong>: ソフトウェアのソースコードのバックアップとマルウェア混入防止</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: イ（ソフトウェアについての脆弱性管理）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『SBOM（ソフトウェア部品表）は、ソフトウェアの「脆弱性管理」に用いる！』</h2>
+<pre class="mermaid">
+flowchart LR
+    App["📦 自社開発ソフトウェア"]
+    --> SBOM["📋 SBOM（ソフトウェア部品表）<br/>・OSS部品A (v1.2)<br/>・ライブラリB (v3.0)<br/>・フレームワークC (v2.1)"]
+    --> Alert["🚨 ニュース: 『部品B v3.0に脆弱性発見！』<br/>👉 SBOMを見れば『うちのソフトに入ってる！』と<br/>1秒で特定してパッチ対応できる！"]
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 SBOM（Software Bill Of Materials）＝ ソフトの「原材料表示ラベル」！入ってる部品が分かれば脆弱性管理が爆速！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：お菓子の裏の「原材料名ラベル（卵・小麦・乳）」。アレルギー情報（脆弱性）が出たとき、その成分が入っているかすぐ分かる！）</h2>
+<p>現代のソフトウェア開発では、ゼロから全部自分でプログラムを書くことはなく、世の中にある無料の部品（オープンソースソフトウェア：OSS）を何十個・何百個も組み合わせて作ります。</p>
+<p>すると、ある日ニュースで「〇〇という部品に危険な脆弱性（バグ）が見つかりました！」と報じられたとき、<br>「えっ、うちの会社のシステムにその部品使ってたっけ…？部品のさらに孫部品として紛れ込んでない…？」と調べるのに何週間もかかってしまいます。</p>
+<p>そこで作られたのが <strong>SBOM（Software Bill Of Materials：ソフトウェア部品表）</strong> です！<br>食品のパッケージ裏にある「原材料ラベル」のように、<strong>「このソフトには、どの部品のバージョンいくつが組み込まれているか」を一覧表にして管理</strong> します。<br>これがあれば、新しい脆弱性情報が出た瞬間に「うちのシステムが影響を受けるか」を即座に突き止めて <strong>脆弱性管理</strong> ができるようになります！</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: アカウントの一元管理</strong> → ID管理システム（IAM）やシングルサインオンの説明です（×）。</div>
+<div class="print-bullet">• <strong>イ: ソフトウェアについての脆弱性管理 【正解！】</strong> → 構成部品を把握することで、脆弱性発見時に影響範囲を迅速に特定・管理できます（◯）。</div>
+<div class="print-bullet">• <strong>ウ: ソースコードについてのバージョン管理…</strong> → Gitなどのバージョン管理システムの説明です（×）。</div>
+<div class="print-bullet">• <strong>エ: バックアップとマルウェア混入防止</strong> → バックアップソフトやアンチウイルスソフトの役割です（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. ソフトウェアサプライチェーン攻撃やOSSの脆弱性対応において、SBOMを作成・管理する主な目的を説明せよ。</strong>  </div>
+  → <strong>「ソフトウェアに含まれる構成部品や依存関係を可視化し、脆弱性が公表された際の影響有無を迅速に特定するため。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「イ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_17">
+  <h1 class="print-h1">ログアウト時のセッション対策：ブラウザだけでなく「Webサーバ側の台帳」から無効化せよ！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: ログアウト処理でサーバ側とブラウザ側のどちらで何を消すべきか迷う文系受験者<br><strong>省いたもの</strong>: JWT（JSON Web Token）等のステートレス認証におけるブラックリスト失効管理の課題<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 令和3年春期 問44</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】令和3年春期 問44</h2>
+<p><strong>【問題】</strong><br>Webシステムにおいて，セッションの乗っ取りの機会を減らすために，利用者のログアウト時にWebサーバ又はWebブラウザにおいて行うべき処理はどれか。ここで，利用者は自分専用のPCにおいて，Webブラウザを利用しているものとする。</p>
+<div class="print-bullet">• <strong>ア</strong>: WebサーバにおいてセッションIDを内蔵ストレージに格納する。</div>
+<div class="print-bullet">• <strong>イ</strong>: WebサーバにおいてセッションIDを無効にする。</div>
+<div class="print-bullet">• <strong>ウ</strong>: WebブラウザにおいてキャッシュしているWebページをクリアする。</div>
+<div class="print-bullet">• <strong>エ</strong>: WebブラウザにおいてセッションIDを内蔵ストレージに格納する。</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: イ（WebサーバにおいてセッションIDを無効にする。）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『ログアウト時には、Webサーバ側においてセッションIDを無効にする！』</h2>
+<pre class="mermaid">
+flowchart LR
+    User["👤 利用者<br/>『ログアウト』ボタンを押す"]
+    --> Server["🏢 Webサーバ<br/>👑 セッション管理台帳から<br/>『セッションID: XYZ を無効化（破棄）！』"]
+    --> Thief["😈 攻撃者<br/>盗んだID『XYZ』でアクセスしても<br/>サーバ側で無効だから門前払い！"]
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 ログアウトしたら「サーバ側のセッションIDを無効化」！手元の通行証を捨てるだけじゃダメ、受付の台帳から抹消せよ！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：ホテルのチェックアウト。客がカードキーをゴミ箱に捨てるだけでなく、フロントのパソコン側で「そのカードキーではドアが開かないように無効化」するのが絶対条件！）</h2>
+<p>ホテルからチェックアウト（ログアウト）するときのことを考えてみてください。</p>
+<p>もしフロント（Webサーバ）がカードキーの有効期限を切らずに放置していたら、あなたが帰った後に誰かがそのカードキー（セッションID）を拾って、勝手に部屋に入り込めてしまいますよね！</p>
+<p>Webシステムでも全く同じです。<br>利用者が「ログアウト」ボタンを押したとき、ブラウザ側の画面を消すだけでは不十分です。すでに通信途中でセッションIDを盗み見られているかもしれないからです。<br>最も確実で必須な処理は、<strong>「Webサーバ側において、そのセッションIDを即座に無効化する（破棄する）」</strong> ことです！こうすれば、万が一セッションIDが盗まれていても、攻撃者は二度と使えません。</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: WebサーバにおいてセッションIDを内蔵ストレージに格納する</strong> → 保存し続けたら乗っ取りの危険が残ります。破棄（無効化）すべきです（×）。</div>
+<div class="print-bullet">• <strong>イ: WebサーバにおいてセッションIDを無効にする 【正解！】</strong> → サーバ側でセッションを破棄・無効化することで、盗まれたセッションIDの悪用を完全に防げます（◯）。</div>
+<div class="print-bullet">• <strong>ウ: WebブラウザにおいてキャッシュしているWebページをクリアする</strong> → 画面キャッシュを消しても、サーバ側でセッションIDが有効なままなら通信の乗っ取りは防げません（×）。</div>
+<div class="print-bullet">• <strong>エ: WebブラウザにおいてセッションIDを内蔵ストレージに格納する</strong> → 格納して残してはいけません（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. 利用者が明示的にログアウト操作を行わずにブラウザを閉じた場合に備え、Webサーバ側でセッション乗っ取りリスクを低減するために設定すべき仕組みは何か？</strong>  </div>
+  → <strong>「一定時間通信がないセッションIDを自動的に無効化するセッションタイムアウトの設定。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「イ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_18">
+  <h1 class="print-h1">SMTP-AUTH：メールを送る前に「まずIDとパスワードを見せて！」と確認する門番！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: SMTP-AUTH、POP before SMTP、S/MIME、APOPの違いがごちゃ混ぜになる文系受験者<br><strong>省いたもの</strong>: SASL（Simple Authentication and Security Layer）におけるCRAM-MD5やPLAINのコマンドシーケンス<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 平成26年秋期 問37</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】平成26年秋期 問37</h2>
+<p><strong>【問題】</strong><br>SMTP-AUTHにおける認証の動作を説明したものはどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: SMTPサーバは，クライアントがアクセスしてきた場合に利用者認証を行い，認証が成功したとき電子メールを受け付ける。</div>
+<div class="print-bullet">• <strong>イ</strong>: サーバは認証局のデジタル証明書をもち，クライアントから送信された認証局の署名付きクライアント証明書の妥当性を確認する。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 電子メールを受信した際にパスワード認証が成功したクライアントのIPアドレスは，一定時間だけSMTPサーバへの電子メールの送信が許可される。</div>
+<div class="print-bullet">• <strong>エ</strong>: パスワードを秘匿するために，パスワードからハッシュ値を計算して，その値で利用者が電子メールを受信する際の利用者認証を行う。</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: ア（SMTPサーバは，クライアントがアクセスしてきた場合に利用者認証を行い，認証が成功したとき電子メールを受け付ける。）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『SMTPサーバはクライアント接続時に利用者認証を行い、成功したときだけメール送信を受け付ける！』</h2>
+<pre class="mermaid">
+flowchart LR
+    Client["💻 メール送信者（メーラー）"]
+    -->|"① ID・パスワードで認証要求 (AUTH)"| SMTP["📮 SMTPサーバ（メール送信サーバ）"]
+    SMTP -->|"② 認証OKならメール送信を受け付ける！<br/>（スパム業者のタダ乗り中継をブロック！）"| Dest["🌐 宛先メールサーバへ配送"]
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 SMTP-AUTHは「SMTP（送信）でそのままAUTH（認証）する」！受信用POPを使わない直球勝負！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：会員制の宅配便受付。荷物を預かる窓口（SMTPサーバ）で、直接「会員証と暗証番号」をチェックしてから荷物を受け取る！）</h2>
+<p>昔、メールを送るプロトコル（SMTP）には「誰が送ってきたか確認する（認証する）機能」がありませんでした。そのため、スパム業者が他人のメールサーバを勝手に使って迷惑メールを大量送信する「第三者中継」が大問題になりました。</p>
+<p>これを防ぐために作られた現在の標準方式が <strong>SMTP-AUTH（エスエムティーピー・オース）</strong> です！<br>名前の通り、<strong>「SMTPサーバ（送信サーバ）自身が、アクセスしてきたクライアントに対してID・パスワード等で利用者認証を行い、認証に成功した人のメールだけを受け付ける」</strong> という、とてもシンプルで真っ当な仕組みです。</p>
+<p>※他の選択肢との見分け方：<br><div class="print-bullet">• 「先にメールを受信（POP）させて、そのIPアドレスを一定時間だけ送信許可する」→ <strong>POP before SMTP</strong>（昔の方式）</div><br><div class="print-bullet">• 「受信時にパスワードのハッシュ値を送る」→ <strong>APOP</strong></div></p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: SMTPサーバは，クライアントがアクセスしてきた場合に利用者認証を行い，認証が成功したとき電子メールを受け付ける 【正解！】</strong> → SMTP-AUTHの正確な動作説明です（◯）。</div>
+<div class="print-bullet">• <strong>イ: クライアント証明書の妥当性を確認する</strong> → TLSクライアント認証の説明です（×）。</div>
+<div class="print-bullet">• <strong>ウ: 受信した際に認証成功したIPアドレスを一定時間だけ送信許可する</strong> → POP before SMTPの説明です（×）。</div>
+<div class="print-bullet">• <strong>エ: パスワードからハッシュ値を計算して電子メールを受信する際の認証を行う</strong> → APOP（POP3受信時の認証）の説明です（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. 外部のネットワークから自社のSMTPサーバを利用してメールを送信する際、従来使われていた25番ポートに代わり、SMTP-AUTHと組み合わせて利用される専用ポート（587番）を何と呼ぶか？</strong>  </div>
+  → <strong>「サブミッションポート（Submission Port）。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ア」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_19">
+  <h1 class="print-h1">SSL/TLSとプロキシ：途中に中継所（プロキシ）があっても、トンネルの中身は絶対に見えない！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: プロキシサーバを通るとSSLの暗号化が解けて中身が見られてしまうと誤解している文系受験者<br><strong>省いたもの</strong>: HTTP CONNECTメソッドによるトンネリング確立シーケンスと企業内SSLインスペクションの例外構成<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 平成17年秋期 問76</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】平成17年秋期 問76</h2>
+<p><strong>【問題】</strong><br>ブラウザからWebサーバにアクセスするシステムのセキュリティに関する記述のうち，適切なものはどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: CGI又はサーブレットによって生成されたHTML文書は動的に変化するので，プロキシサーバでのキャッシュの内容が，本来の利用者以外に開示されることはない。</div>
+<div class="print-bullet">• <strong>イ</strong>: SSLを使用すれば，通信経路上にプロキシサーバが存在していても，各利用者とWebサーバとの間での参照情報が，本来の利用者以外に開示されることはない。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 複数の利用者が同一のパソコンを利用する場合，最初にHTTP基本認証を利用したログイン操作を行うようにすれば，ブラウザを起動したまま利用者が交代しても，本来の利用者以外に情報が開示されることはない。</div>
+<div class="print-bullet">• <strong>エ</strong>: リバースプロキシは静的コンテンツのキャッシュができないので，それを使ってもクライアントへの応答時間が改善されることはない。</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: イ（SSLを使用すれば，通信経路上にプロキシサーバが存在していても，各利用者とWebサーバとの間での参照情報が，本来の利用者以外に開示されることはない。）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『SSL/TLSを使えば、経路上にプロキシサーバがあっても参照情報が他人に漏れることはない！』</h2>
+<pre class="mermaid">
+flowchart LR
+    PC["💻 利用者ブラウザ"]
+    ====>|"🔒 SSL/TLSの頑丈な鉄パイプ（End-to-End暗号化）<br/>（プロキシはパイプの外側を中継するだけ！中身は一切読めない！）"| Web["🏢 目的のWebサーバ"]
+    subgraph Mid["通信経路上の中継点"]
+        Proxy["🔄 プロキシサーバ<br/>（キャッシュも盗み見も不可能）"]
+    end
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 SSL/TLSは「ブラウザからWebサーバまで直通の暗号トンネル」！途中のプロキシにも中身は一切見えない！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：鍵付きのアタッシュケース。途中の郵便局（プロキシ）はケースを運ぶだけで、中の手紙を読むこともコピーすることもできない！）</h2>
+<p>社内やプロバイダに「プロキシサーバ（代理中継サーバ）」がある環境で、Webサイトを見る場面です。</p>
+<p>普通の暗号化されていない通信（HTTP）だと、プロキシサーバは中身を丸見えで読めるため、ページを勝手に保存（キャッシュ）して別の人に見せてしまう事故が起きることがあります。</p>
+<p>しかし、<strong>SSL/TLS（HTTPS）</strong> を使うとどうなるでしょうか？<br>SSLは、プロキシサーバに対して「<code>CONNECT</code>（ただ土管を繋いでくれ！）」と命じ、<strong>利用者のブラウザと最終目的地のWebサーバの間で直接、鍵のかかった暗号化トンネル</strong> を作ります。<br>途中にいるプロキシサーバは、暗号化されたデータの塊を右から左へ受け流すだけで、中身を復号する鍵を持っていません。<br>だから、<strong>プロキシサーバ上に情報がキャッシュされて他人に漏れることは絶対にありません！</strong></p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: CGIやサーブレットで生成された文書はプロキシで開示されることはない</strong> → ヘッダ設定によっては動的ページでもプロキシにキャッシュされ、他人に開示される危険があります（×）。</div>
+<div class="print-bullet">• <strong>イ: SSLを使用すれば，プロキシサーバが存在していても，参照情報が本来の利用者以外に開示されることはない 【正解！】</strong> → エンドツーエンドで暗号化されるため、プロキシでも中身は読めずキャッシュもされません（◯）。</div>
+<div class="print-bullet">• <strong>ウ: 最初にHTTP基本認証を行えば，ブラウザを起動したまま交代しても開示されない</strong> → ブラウザを閉じずに交代すると、認証情報がメモリに残り前任者の権限で閲覧されてしまいます（×）。</div>
+<div class="print-bullet">• <strong>エ: リバースプロキシは静的コンテンツのキャッシュができない</strong> → リバースプロキシは静的コンテンツのキャッシュによる応答高速化が得意です（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. 通常のプロキシサーバを経由してHTTPS通信を行う際、プロキシサーバ上で通信内容が盗聴・キャッシュされない理由を説明せよ。</strong>  </div>
+  → <strong>「クライアントとWebサーバ間でエンドツーエンドのSSL/TLS暗号化通信が行われ、プロキシは暗号化されたデータをそのまま中継するだけであるため。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「イ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_20">
+  <h1 class="print-h1">水飲み場型攻撃：獲物（標的社員）が毎日見に行く「行きつけのWebサイト」に罠を張る！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: 標的型メール攻撃、やり取り型攻撃、水飲み場型攻撃の区別がつかない文系受験者<br><strong>省いたもの</strong>: ドライブバイダウンロード攻撃におけるブラウザ脆弱性エクスプロイトキットの動作詳細<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 平成29年春期 問40</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】平成29年春期 問40</h2>
+<p><strong>【問題】</strong><br>水飲み場型攻撃(Watering Hole Attack)の手口はどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: アイコンを文書ファイルのものに偽装した上で，短いスクリプトを埋め込んだショートカットファイル(LNKファイル)を電子メールに添付して標的組織の従業員に送信する。</div>
+<div class="print-bullet">• <strong>イ</strong>: 事務連絡などのやり取りを行うことで，標的組織の従業員の気を緩めさせ，信用させた後，攻撃コードを含む実行ファイルを電子メールに添付して送信する。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 標的組織の従業員が頻繁にアクセスするWebサイトに攻撃コードを埋め込み，標的組織の従業員がアクセスしたときだけ攻撃が行われるようにする。</div>
+<div class="print-bullet">• <strong>エ</strong>: ミニブログのメッセージにおいて，ドメイン名を短縮してリンク先のURLを分かりにくくすることによって，攻撃コードを埋め込んだWebサイトに標的組織の従業員を誘導する。</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: ウ（標的組織の従業員が頻繁にアクセスするWebサイトに攻撃コードを埋め込み，標的組織の従業員がアクセスしたときだけ攻撃が行われるようにする。）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『標的組織の従業員が頻繁にアクセスするWebサイトを改ざんして攻撃コードを埋め込む手口！』</h2>
+<pre class="mermaid">
+flowchart LR
+    Lion["🦁 攻撃者（ライオン）<br/>「あの会社（シマウマ）は直接の守りが堅いな…<br/>よし、社員がよく見る『業界団体サイト』に毒を仕込もう！」"]
+    --> Hole["💧 行きつけのWebサイト（水飲み場）<br/>攻撃コードをこっそり埋め込んで待ち伏せ！"]
+    Victim["🦓 標的組織の従業員<br/>「いつものサイトを見に行こうっと」<br/>👉 アクセスした瞬間にマルウェア感染！"]
+    --> Hole
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 ライオンが水飲み場でシマウマを待ち伏せするように、「標的がよく行くWebサイト」に罠を仕掛けるのが水飲み場型攻撃！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：サバンナの狩り。警戒心の強いシマウマを追いかけ回すのではなく、シマウマが必ず水を飲みに来るオアシス（よく見るサイト）で待ち伏せする！）</h2>
+<p>なぜ「水飲み場型攻撃（Watering Hole Attack）」という面白い名前がついているのでしょうか？<br>アフリカのサバンナで、ライオン（攻撃者）がシマウマ（標的の会社）を狩るときの様子をイメージしてください。</p>
+<p>大企業はメールの警戒が厳しく、怪しい添付ファイル付きメール（標的型メール）を送ってもなかなか開いてくれません。<br>そこで攻撃者は考えました。<br>「あの会社の社員たちが、仕事で毎日必ず見に行く『業界団体のホームページ』や『行きつけの専門サイト（＝水飲み場）』があるはずだ！そのWebサイトの方を先にハッキングして、ウイルスを仕込んでおこう！」</p>
+<p>すると、標的の社員が「いつものサイトを見よう」とアクセスしただけで、自動的にウイルスに感染してしまいます。<br>このように <strong>「標的が頻繁にアクセスするWebサイトに攻撃コードを埋め込んで待ち伏せする手口」</strong> が水飲み場型攻撃です！</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: ショートカットファイル(LNK)をメールに添付して送信…</strong> → 標的型攻撃メールの手口です（×）。</div>
+<div class="print-bullet">• <strong>イ: 事務連絡などのやり取りで信用させた後，実行ファイルをメール添付…</strong> → やり取り型（対話型）の標的型攻撃メールの手口です（×）。</div>
+<div class="print-bullet">• <strong>ウ: 標的組織の従業員が頻繁にアクセスするWebサイトに攻撃コードを埋め込み… 【正解！】</strong> → 水飲み場（よく訪れるサイト）で待ち伏せする水飲み場型攻撃の手口です（◯）。</div>
+<div class="print-bullet">• <strong>エ: ドメイン名を短縮してURLを分かりにくくし誘導…</strong> → 短縮URLを悪用したフィッシングやSNS誘導の手口です（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. 水飲み場型攻撃によるマルウェア感染を防ぐために、標的となる企業側のクライアントPCおよびネットワークで実施すべき対策を答えよ。</strong>  </div>
+  → <strong>「OSやWebブラウザ・プラグインの脆弱性パッチを最新に保つこと、およびWebプロキシ等での不正プログラム検知・遮断。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ウ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_21">
+  <h1 class="print-h1">無線LANの暗号規格：最強タッグは「WPA2 ＋ AES（CCMP）＋ 鍵長128ビット以上」！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: WEP、WPA、WPA2とRC4、TKIP、CCMP、AESの組み合わせ表で頭がパンクする文系受験者<br><strong>省いたもの</strong>: WPA3におけるSAE（Simultaneous Authentication of Equals）ハンドシェイクの数理<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 平成30年秋期 問45</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】平成30年秋期 問45</h2>
+<p><strong>【問題】</strong><br>無線LANのセキュリティプロトコル，暗号アルゴリズム，暗号鍵の鍵長の組合せのうち，適切なものはどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: プロトコル: WPA、アルゴリズム: AES、鍵長: 64ビット</div>
+<div class="print-bullet">• <strong>イ</strong>: プロトコル: WPA、アルゴリズム: RC4、鍵長: 256ビット</div>
+<div class="print-bullet">• <strong>ウ</strong>: プロトコル: WPA2、アルゴリズム: AES、鍵長: 128ビット</div>
+<div class="print-bullet">• <strong>エ</strong>: プロトコル: WPA2、アルゴリズム: RC4、鍵長: 64ビット</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: ウ（プロトコル: WPA2、アルゴリズム: AES、鍵長: 128ビット）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『WPA2-AES（CCMP）は暗号アルゴリズムに「AES」を使い、鍵長は「128ビット（以上）」！』</h2>
+<pre class="mermaid">
+flowchart TD
+    subgraph Old["❌ 昔・過渡期の規格（RC4ベース）"]
+        WEP["WEP: RC4（鍵長 64 / 128ビット）→ 簡単に破られる！"]
+        WPA["WPA (TKIP): RC4（鍵長 128ビット）→ 一時しのぎ"]
+    end
+    subgraph Modern["👑 現代の標準規格（AESベース）"]
+        WPA2["🏆 WPA2 (CCMP): アルゴリズムは【AES】！<br/>鍵長は【128ビット】（192/256も可）！【ウ: 正解】"]
+    end
+    Old --> Modern
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 「WEP・TKIPは古いRC4」「WPA2（CCMP）は最強のAES（128ビット）」！AESで64ビットは存在しない！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：家の鍵の進化。針金で開く古い南京錠（WEP/RC4）から、ピッキング不可能なディンプルキー（WPA2/AES 128ビット）へ！）</h2>
+<p>Wi-Fi（無線LAN）の暗号化の歴史は、3ステップで整理するとスッキリ頭に入ります！</p>
+<p>1. <strong>第1世代：WEP（ウェップ）</strong><br>   <code>RC4</code> という古い暗号方式を使っていました（鍵長64ビットまたは128ビット）。今は数分で解読されるため使用厳禁です。</p>
+<p>2. <strong>第2世代：WPA（TKIP）</strong><br>   機械を買い替えずにWEPの弱点を応急処置した規格です。中身は相変わらず <code>RC4</code>（鍵長128ビット）です。</p>
+<p>3. <strong>第3世代：WPA2（CCMP）</strong><br>   ここから暗号方式がガラッと変わり、アメリカ政府標準の超強力な共通鍵暗号 <strong><code>AES</code></strong> が採用されました！<br>   <strong>AESの鍵長は「128ビット・192ビット・256ビット」の3種類</strong> と決まっています（64ビットなんて短い鍵はAESには存在しません！）。</p>
+<p>したがって、正しい組み合わせは <strong>「WPA2 － AES － 128ビット」</strong> です！</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: WPA / AES / 64ビット</strong> → AESの鍵長は128/192/256ビットであり、64ビットは存在しません（×）。</div>
+<div class="print-bullet">• <strong>イ: WPA / RC4 / 256ビット</strong> → WPA(TKIP)のRC4暗号鍵は128ビットです（×）。</div>
+<div class="print-bullet">• <strong>ウ: WPA2 / AES / 128ビット 【正解！】</strong> → WPA2(CCMP)はAESを採用し、128ビットの鍵長を使用します（◯）。</div>
+<div class="print-bullet">• <strong>エ: WPA2 / RC4 / 64ビット</strong> → WPA2の標準(CCMP)はRC4ではなくAESです（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. 無線LANのセキュリティ規格であるWPA2（CCMP）において採用されている共通鍵暗号アルゴリズムの名称を答えよ。</strong>  </div>
+  → <strong>「AES。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ウ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_22">
+  <h1 class="print-h1">クロスサイトスクリプティング（XSS）対策：悪意あるスクリプトを無害化する「毒抜き調理」！</h1>
+<blockquote class="print-quote"><strong>想定読者</strong>: XSS、SQLインジェクション、バッファオーバーフローの対策がごちゃ混ぜになる文系受験者<br><strong>省いたもの</strong>: DOM Based XSSにおけるJavaScriptフレームワーク内部の仮想DOMエスケープ機構<br><strong>所要時間</strong>: 6〜8分<br><strong>対象過去問</strong>: 応用情報技術者 平成18年秋期 問76</blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">【対象過去問】平成18年秋期 問76</h2>
+<p><strong>【問題】</strong><br>クロスサイトスクリプティングによる攻撃へのセキュリティ対策はどれか。</p>
+<div class="print-bullet">• <strong>ア</strong>: OSのセキュリティパッチを適用することによって，Webサーバへの侵入を防止する。</div>
+<div class="print-bullet">• <strong>イ</strong>: Webアプリケーションで，クライアントに入力データを再表示する場合，情報内のスクリプトを無効にする処理を行う。</div>
+<div class="print-bullet">• <strong>ウ</strong>: WebサーバにSNMPプログラムを常駐稼動させることによって，攻撃を検知する。</div>
+<div class="print-bullet">• <strong>エ</strong>: 許容範囲を超えた大きさのデータの書き込みを禁止し，Webサーバへの侵入を防止する。</div>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+<p><strong>正解: イ（Webアプリケーションで，クライアントに入力データを再表示する場合，情報内のスクリプトを無効にする処理を行う。）</strong></p>
+<p></details></p>
+<hr class="print-hr">
+<h2 class="print-h2">0. 一枚で：『入力データを画面に再表示する際、スクリプト（HTML特殊文字）を無効化する処理を行う！』</h2>
+<pre class="mermaid">
+flowchart LR
+    Attacker["😈 攻撃者<br/>掲示板に `&lt;script&gt;罠&lt;/script&gt;` を投稿"]
+    --> Server["🛡️ Webアプリ（対策済！）<br/>サニタイジング（エスケープ処理）<br/>`&lt;` を `&amp;lt;` に変換して無害化！"]
+    --> User["😊 一般ユーザーのブラウザ<br/>プログラムとして動かず、<br/>ただの文字として安全に表示！"]
+</pre>
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 XSSは「画面表示時のスクリプト発火」！対策は「表示する時にタグを無効化（サニタイジング）」！ 』</strong></blockquote>
+<hr class="print-hr">
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：フグの毒抜き調理。お客さんのテーブル（ブラウザ）に出す直前に、毒（スクリプトタグ）を無害な文字に取り除く！）</h2>
+<p>掲示板や検索画面で、ユーザーが入力した文字をそのまま「〇〇を検索しました」と画面に再表示するWebサイトがありますよね。</p>
+<p>もし悪い人が、検索窓に普通の言葉ではなく <strong><code><script>クッキーを盗む命令</script></code></strong> というプログラムの呪文を入力したらどうなるでしょうか？<br>何も対策していないと、それを見た他の人のブラウザが「あ、プログラムの命令だ！」と勘違いして実行してしまい、個人情報が盗まれてしまいます。これが <strong>クロスサイトスクリプティング（XSS）</strong> です。</p>
+<p>対策はシンプルです！<br>ブラウザに文字を再表示する際、<code><</code> や <code>></code> といったタグ記号をただの文字（<code>&lt;</code> や <code>&gt;</code>）に変換して、<strong>「スクリプトとして動かないように無効化（エスケープ／サニタイジング）」</strong> してあげれば、ただの文字列として安全に表示されます！</p>
+<hr class="print-hr">
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+<div class="print-bullet">• <strong>ア: OSのセキュリティパッチを適用…</strong> → OSの脆弱性対策であり、Webアプリ固有のXSS対策にはなりません（×）。</div>
+<div class="print-bullet">• <strong>イ: クライアントに入力データを再表示する場合，情報内のスクリプトを無効にする処理を行う 【正解！】</strong> → エスケープ（サニタイジング）処理と呼ばれるXSSの王道対策です（◯）。</div>
+<div class="print-bullet">• <strong>ウ: SNMPプログラムを常駐稼動…</strong> → SNMPはネットワーク機器監視用であり、XSS検知とは無関係です（×）。</div>
+<div class="print-bullet">• <strong>エ: 許容範囲を超えた大きさのデータの書き込みを禁止…</strong> → バッファオーバーフロー攻撃への対策です（×）。</div>
+<hr class="print-hr">
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+<div class="print-bullet">• [ ] <strong>Q. クロスサイトスクリプティング（XSS）を防ぐため、Webページに入力値を出力する際に <code><</code> や <code>></code> などの特殊文字を文字参照に変換する処理を何と呼ぶか？</strong>  </div>
+  → <strong>「エスケープ処理（またはサニタイジング処理）。」</strong>
+<hr class="print-hr">
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+<div class="print-bullet">• [ ] <strong>画面の一番上に戻り、正解を隠した状態で正解肢「イ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+  </main>
+</body>
+</html>
