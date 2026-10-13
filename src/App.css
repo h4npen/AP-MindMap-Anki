@@ -155,6 +155,29 @@ button {
   box-shadow: 3px 3px 0 var(--border-color);
 }
 
+.guide-header-btn {
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 5px 12px;
+  background: #e0e7ff;
+  color: #3730a3;
+  border: 1.5px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 2px 2px 0 var(--border-color);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.guide-header-btn:hover {
+  transform: translate(-1px, -1px);
+  background: #c7d2fe;
+  box-shadow: 3px 3px 0 var(--border-color);
+}
+
 /* Header Progress Bar */
 .header-progress-track {
   width: 100%;
@@ -259,6 +282,53 @@ button {
 
 .schedule-banner:hover .schedule-banner-arrow {
   background: var(--accent-yellow);
+}
+
+.guide-banner {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-style);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  user-select: none;
+  gap: 12px;
+}
+
+.guide-banner:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--border-color);
+}
+
+.guide-banner:active {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 var(--border-color);
+}
+
+.guide-banner .schedule-banner-sub {
+  color: #1e40af;
+}
+
+.guide-banner-arrow {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  background: #ffffff;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 14px;
+  box-shadow: 2px 2px 0 var(--border-color);
+  white-space: nowrap;
+  transition: background 0.1s;
+}
+
+.guide-banner:hover .guide-banner-arrow {
+  background: #bfdbfe;
 }
 
 /* ========================================================

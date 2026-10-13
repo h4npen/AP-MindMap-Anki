@@ -114,9 +114,13 @@ export function App() {
     }
   }, [daysLeft]);
 
-  // Find schedule note
+  // Find schedule note and guide note
   const scheduleNote = useMemo(() => {
-    return allNotes.find((n) => n.id.includes('schedule') || n.categoryNumber === '00') || null;
+    return allNotes.find((n) => n.filename === 'ap-exam-schedule-roadmap.md') || null;
+  }, [allNotes]);
+
+  const guideNote = useMemo(() => {
+    return allNotes.find((n) => n.filename === 'textbook-study-guide.md') || null;
   }, [allNotes]);
 
   return (
@@ -133,6 +137,15 @@ export function App() {
           </div>
 
           <div className="header-stats">
+            {guideNote && (
+              <button
+                className="guide-header-btn"
+                onClick={() => setActiveNoteId(guideNote.id)}
+                title="手持ちテキスト（合格教本・石田本）の重点学習ガイドを見る"
+              >
+                📖 テキスト重点箇所
+              </button>
+            )}
             {scheduleNote && (
               <button
                 className="schedule-header-btn"
@@ -243,6 +256,28 @@ export function App() {
                   </div>
                 </div>
                 <span className="schedule-banner-arrow">週別詳細を見る →</span>
+              </div>
+            )}
+
+            {/* Textbook Study Guide Banner */}
+            {guideNote && (
+              <div
+                className="guide-banner"
+                onClick={() => setActiveNoteId(guideNote.id)}
+                title="手持ちテキストで重点的に読むべき単元・ページを見る"
+              >
+                <div className="schedule-banner-left">
+                  <span className="schedule-banner-icon">📖</span>
+                  <div className="schedule-banner-text">
+                    <div className="schedule-banner-title">
+                      【自宅学習用】誤答分析に基づく「重点テキスト基礎学習ガイド」
+                    </div>
+                    <div className="schedule-banner-sub">
+                      📘 石田宏実テキスト ＆ 📗 応用情報 合格教本（令和07年）の読むべき章・節・ページ目安
+                    </div>
+                  </div>
+                </div>
+                <span className="guide-banner-arrow">該当ページを見る →</span>
               </div>
             )}
 
