@@ -92,25 +92,23 @@ export function App() {
   // Progress percentage
   const progressPercent = allNotes.length > 0 ? Math.round((completedIds.size / allNotes.length) * 100) : 0;
 
-  // Exam countdown for 科目A (2026-11-07)
+  // Exam countdown for 科目A (2026-11-05)
   const daysLeft = useMemo(() => {
-    const examDate = new Date('2026-11-07T12:00:00+09:00');
+    const examDate = new Date('2026-11-05T12:00:00+09:00');
     const now = new Date();
     const diff = examDate.getTime() - now.getTime();
     return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
   }, []);
 
   const currentPhaseText = useMemo(() => {
-    if (daysLeft > 25) {
-      return '【第1週: 10/6〜10/12】テクノロジ系集中（NW・セキュリティ）＆ミス問登録';
-    } else if (daysLeft > 18) {
-      return '🔥【第2週: 10/13〜10/19】DB攻略 ＆ マネジメント・ストラテジ系で得点源を作る！（NW・セキュ完了済）';
-    } else if (daysLeft > 11) {
-      return '🔥【第3週: 10/20〜10/26】過去問年別演習（直近5年分周回）＆ 苦手プリント完全消化';
-    } else if (daysLeft > 4) {
-      return '🔥【第4週: 10/27〜11/2】本番シミュレーション（80問・150分通し）目標70%突破';
+    if (daysLeft >= 16) {
+      return '🔥【Phase 1: 10/16〜10/20】基礎の穴埋め（セキュ・NW・DB・システム構成）＋ 石田本20分下読み';
+    } else if (daysLeft >= 10) {
+      return '🔥【Phase 2: 10/21〜10/26】得点源の「マネジメント・ストラテジ・開発」で合格ラインへの貯金を作る！';
+    } else if (daysLeft >= 3) {
+      return '🔥【Phase 3: 10/27〜11/2】年度別（回別）過去問通し演習 ＆ ミス問即答ループ';
     } else {
-      return '🎓【直前総仕上げ: 11/3〜11/7】A4プリント＆アプリ総ざらい！新規問題は解かず記憶定着！';
+      return '🎓【Phase 4: 11/3〜11/5】直前総仕上げ！ミス問・暗記系をテスト形式で総ざらい！';
     }
   }, [daysLeft]);
 
@@ -248,14 +246,14 @@ export function App() {
                   <span className="schedule-banner-icon">🎯</span>
                   <div className="schedule-banner-text">
                     <div className="schedule-banner-title">
-                      11/7(土) 科目A 受験まで あと <strong>{daysLeft}日</strong>
+                      11/5 科目A 受験まで あと <strong>{daysLeft}日</strong>
                     </div>
                     <div className="schedule-banner-sub">
                       {currentPhaseText}
                     </div>
                   </div>
                 </div>
-                <span className="schedule-banner-arrow">週別詳細を見る →</span>
+                <span className="schedule-banner-arrow">毎日計画を見る →</span>
               </div>
             )}
 
@@ -264,7 +262,7 @@ export function App() {
               <div
                 className="guide-banner"
                 onClick={() => setActiveNoteId(guideNote.id)}
-                title="手持ちテキストで重点的に読むべき単元・ページを見る"
+                title="手持ちテキストで重点的に読むべき単元・早見表を見る"
               >
                 <div className="schedule-banner-left">
                   <span className="schedule-banner-icon">📖</span>
@@ -273,11 +271,11 @@ export function App() {
                       【自宅学習用】誤答分析に基づく「重点テキスト基礎学習ガイド」
                     </div>
                     <div className="schedule-banner-sub">
-                      📘 石田宏実テキスト ＆ 📗 応用情報 合格教本（令和07年）の読むべき章・節・ページ目安
+                      🔑 公開鍵・OSI早見シート ＆ 📘石田本・📗合格教本の読むべき章・節まとめ
                     </div>
                   </div>
                 </div>
-                <span className="guide-banner-arrow">該当ページを見る →</span>
+                <span className="guide-banner-arrow">ガイドを見る →</span>
               </div>
             )}
 
