@@ -441,7 +441,7 @@ def run_pipeline(csv_file, no_push=False, dry_run=False, include_unanswered=True
     # ビルド検証とPush
     if not dry_run and generated_count > 0:
         print("\n📦 Running build verification (npm run build)...")
-        res = subprocess.run(["npm", "run", "build"], cwd=ROOT_DIR, capture_output=True, text=True)
+        res = subprocess.run(["npm", "run", "build"], cwd=ROOT_DIR, capture_output=True, text=True, shell=True)
         if res.returncode != 0:
             print(f"❌ Build failed!\n{res.stderr}")
             sys.exit(1)
@@ -449,9 +449,9 @@ def run_pipeline(csv_file, no_push=False, dry_run=False, include_unanswered=True
 
         if not no_push:
             print("\n🚀 Pushing changes to GitHub...")
-            subprocess.run(["git", "add", "."], cwd=ROOT_DIR, check=True)
-            subprocess.run(["git", "commit", "-m", f"feat: 自動パイプラインによる過去問解説{generated_count}問の追加と目次更新"], cwd=ROOT_DIR, check=True)
-            subprocess.run(["git", "push", "origin", "main"], cwd=ROOT_DIR, check=True)
+            subprocess.run(["git", "add", "."], cwd=ROOT_DIR, check=True, shell=True)
+            subprocess.run(["git", "commit", "-m", f"feat: 自動パイプラインによる過去問解説{generated_count}問の追加と目次更新"], cwd=ROOT_DIR, check=True, shell=True)
+            subprocess.run(["git", "push", "origin", "main"], cwd=ROOT_DIR, check=True, shell=True)
             print("🎉 Successfully pushed to main! GitHub Pages will be updated in ~1 minute.")
 
 

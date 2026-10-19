@@ -114,6 +114,16 @@
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :---: |
+| [db-distributed-two-phase-commit.md](./inbox/09_データベース/db-distributed-two-phase-commit.md) | **2相コミット**<br>（[平成22年秋期 問30](https://www.ap-siken.com/kakomon/22_aki/q30.html)） | 『全員OKなら一斉実行！』<br>結婚式の神父。「全員準備は良いですか？（第1相）」→全員がYESなら「では誓いなさい（第2相）」と指示する | inbox |
+| [db-sql-outer-join-group-by.md](./inbox/09_データベース/db-sql-outer-join-group-by.md) | **SQL外部結合と集約**<br>（[平成28年秋期 問29](https://www.ap-siken.com/kakomon/28_aki/q29.html)） | 『0件の人を名簿から消さない！』<br>スタンプラリー。スタンプを1個も押していない人も、外部結合なら「0個」として全員表に載せられる | inbox |
+| [db-sql-not-exists-correlated-subquery.md](./inbox/09_データベース/db-sql-not-exists-correlated-subquery.md) | **NOT EXISTS相関副問合せ**<br>（[平成19年春期 問66](https://www.ap-siken.com/kakomon/19_haru/q66.html)） | 『未提出者リストのあぶり出し！』<br>全校生徒名簿から、提出済みボックスに名前が「存在しない（NOT EXISTS）」人だけを呼び出す | inbox |
+| [db-er-model-foreign-key-mapping.md](./inbox/09_データベース/db-er-model-foreign-key-mapping.md) | **E-R図と外部キー**<br>（[平成25年春期 問28](https://www.ap-siken.com/kakomon/25_haru/q28.html)） | 『多の側に親の番号を持たせる！』<br>社員（多）と部署（1）。社員証の裏に「所属部署番号」を書けば全員迷わない | inbox |
+| [db-relational-algebra-difference-projection.md](./inbox/09_データベース/db-relational-algebra-difference-projection.md) | **関係代数の演算**<br>（[平成25年秋期 問31](https://www.ap-siken.com/kakomon/25_aki/q31.html)） | 『名簿の引き算！』<br>全組み合わせ（直積）から実際に売れたものを引き算して「一度も売れてない組み合わせ」を見つける | inbox |
+| [db-functional-dependency-derivation.md](./inbox/09_データベース/db-functional-dependency-derivation.md) | **関数従属の導出**<br>（[平成24年秋期 問26](https://www.ap-siken.com/kakomon/24_aki/q26.html)） | 『矢印のドミノ倒し！』<br>Aが決まればBが決まり、Bが決まればCが決まるなら、Aが決まれば当然Cも決まる | inbox |
+| [db-normalization-partial-functional-dependency.md](./inbox/09_データベース/db-normalization-partial-functional-dependency.md) | **正規形の判定**<br>（[令和3年秋期 問28](https://www.ap-siken.com/kakomon/03_aki/q28.html)） | 『主キーの一部で決まる列を探せ！』<br>合体キーの一部だけで特定できる項目が混ざっているなら、まだ第1正規形の段階 | inbox |
+| [db-normalization-2nd-normal-form.md](./inbox/09_データベース/db-normalization-2nd-normal-form.md) | **第2正規形**<br>（[平成29年春期 問27](https://www.ap-siken.com/kakomon/29_haru/q27.html)） | 『居候を別居させるのが第2正規形！』<br>注文番号＋商品コードで決まるはずなのに、商品コードだけで決まる「商品名」を別テーブルに独立させる | inbox |
+| [db-acid-not-include-availability.md](./inbox/09_データベース/db-acid-not-include-availability.md) | **ACID特性**<br>（[令和4年秋期 問30](https://www.ap-siken.com/kakomon/04_aki/q30.html)） | 『可用性はACIDの仲間じゃない！』<br>銀行ATMの送金処理に必要な4大性質。いつでも動く（可用性）はシステムの性質であってトランザクションの性質ではない | inbox |
+| [db-sql-self-join-duplicate-check.md](./inbox/09_データベース/db-sql-self-join-duplicate-check.md) | **SQL自己結合**<br>（[平成18年秋期 問66](https://www.ap-siken.com/kakomon/18_aki/q66.html)） | 『自己結合で同姓同名チェック！』<br>同じ名簿のコピーを2枚並べて、名前が同じなのに学籍番号が違う行を探す | inbox |
 | [db-acid-properties.md](./inbox/09_データベース/db-acid-properties.md) | **トランザクションのACID特性**<br>（[R2秋 問30](https://www.ap-siken.com/kakomon/02_aki/q30.html)） | 銀行のATM1万円送金<br>A:全か無か、C:矛盾なし、I:一人ずつ隔離、D:落雷停電でも消えない耐久力（Durability） | inbox |
 | [db-three-schema-architecture.md](./inbox/09_データベース/db-three-schema-architecture.md) | **3層スキーマ構造と内部設計**<br>（[H31春 問26](https://www.ap-siken.com/kakomon/31_haru/q26.html)） | 3段のお重イメージ<br>上段:外部（画面）、中段:概念（テーブル設計）、下段:内部（記録媒体・インデックス） | inbox |
 
@@ -121,6 +131,15 @@
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :---: |
+| [net-mtu-mss-transmission-efficiency.md](./inbox/10_ネットワーク/net-mtu-mss-transmission-efficiency.md) | **回線伝送効率**<br>（[平成28年春期 問32](https://www.ap-siken.com/kakomon/28_haru/q32.html)） | 『データと梱包材の比率計算！』<br>トラックで運ぶとき、荷物そのもの（MSS）と段ボール箱＋緩衝材（ヘッダ・プリアンブル）を足した総重量で効率を割る | inbox |
+| [net-napt-ip-port-translation.md](./inbox/10_ネットワーク/net-napt-ip-port-translation.md) | **NAPTの役割**<br>（[平成23年特別 問34](https://www.ap-siken.com/kakomon/23_toku/q34.html)） | 『IP＋ポート番号をセットで変換！』<br>マンション全体の代表電話番号を、内線番号で各世帯に振り分ける仕組み | inbox |
+| [net-majority-voting-error-rate-calc.md](./inbox/10_ネットワーク/net-majority-voting-error-rate-calc.md) | **多数決方式の伝送誤り率**<br>（[平成25年秋期 問33](https://www.ap-siken.com/kakomon/25_aki/q33.html)） | 『多数決の失敗＝過半数のミス！』<br>3人に同じ伝言を伝えたとき、2人または3人全員が聞き間違えたら全体の判断が狂う | inbox |
+| [net-reverse-proxy-dmz-role.md](./inbox/10_ネットワーク/net-reverse-proxy-dmz-role.md) | **リバースプロキシ**<br>（[令和7年秋期 問31](https://www.ap-siken.com/kakomon/07_aki/q31.html)） | 『外からのアクセスを代理受付する影武者！』<br>ホテルのフロント係。客（ネット利用者）を奥の厨房（実Webサーバ）に入らせず、窓口で料理を取り次ぐ | inbox |
+| [net-napt-packet-header-rewrite.md](./inbox/10_ネットワーク/net-napt-packet-header-rewrite.md) | **NAPT書き換え**<br>（[令和3年秋期 問33](https://www.ap-siken.com/kakomon/03_aki/q33.html)） | 『書き換わるのは送信元のIPとポート！』<br>手紙を出すとき、差出人欄を会社の代表住所・内線番号に書き換えて投函するイメージ | inbox |
+| [net-packet-vs-atm-cell-multiplexing.md](./inbox/10_ネットワーク/net-packet-vs-atm-cell-multiplexing.md) | **パケット交換 vs ATM交換**<br>（[平成17年春期 問56](https://www.ap-siken.com/kakomon/17_haru/q56.html)） | 『パケットは可変・ATMは固定53バイト！』<br>大きさバラバラな郵便段ボールと、ベルトコンベア専用の小型規格コンテナ | inbox |
+| [net-tcp-connection-4tuple-identification.md](./inbox/10_ネットワーク/net-tcp-connection-4tuple-identification.md) | **TCPコネクション識別**<br>（[平成17年秋期 問51](https://www.ap-siken.com/kakomon/17_aki/q51.html)） | 『コネクション識別は4点セット！』<br>電話番号（IP）＋内線番号（ポート）を相手と自分の両方揃えることで混線を防ぐ | inbox |
+| [net-ipsec-ike-key-exchange.md](./inbox/10_ネットワーク/net-ipsec-ike-key-exchange.md) | **IPsecと鍵交換**<br>（[平成20年秋期 問58](https://www.ap-siken.com/kakomon/20_aki/q58.html)） | 『IPsecの鍵交換はIKE！』<br>手紙を暗号化して送る前に、合鍵の受け渡し方法を安全に決める事前交渉 | inbox |
+| [net-route-aggregation-h30-q35.md](./inbox/10_ネットワーク/net-route-aggregation-h30-q35.md) | **ルート集約（CIDR計算パズル）**<br>（[平成30年春期 問35](https://www.ap-siken.com/kakomon/30_haru/q35.html)） | 『変わる場所だけ2進数！右側ゼロリセットで即完成！』<br>郵便番号の集約。32個の箱パズルで解くネットワーク合体法 | inbox |
 | [network-ipv6-notation.md](./inbox/10_ネットワーク/network-ipv6-notation.md) | **IPv6アドレス表記ルール**<br>（[R4春 問31](https://www.ap-siken.com/kakomon/04_haru/q31.html)） | 小学生の引き算パズル<br>「::」は1回だけ！2回あると引き算が壊れて復元不能。ドット混入は即消去 | inbox |
 | [network-osi-7layers-protocols.md](./inbox/10_ネットワーク/network-osi-7layers-protocols.md) | **OSI参照モデルとプロトコル**<br>（[R5春 問34](https://www.ap-siken.com/kakomon/05_haru/q34.html)） | 7階建てマンションの住人<br>4階（トランスポート層）の住人は「TCP」と「UDP」だけ！HTTPは7階、IPは3階 | inbox |
 | [network-wifi-80211ac.md](./inbox/10_ネットワーク/network-wifi-80211ac.md) | **無線LAN規格（11acと周波数帯）**<br>（[R3春 問33](https://www.ap-siken.com/kakomon/03_haru/q33.html)） | 『あっ（a）、クリア（ac）な5GHz！』<br>電子レンジの邪魔が入らない5GHz専用。無線は衝突回避（CA）なのでCDは即消去 | inbox |
