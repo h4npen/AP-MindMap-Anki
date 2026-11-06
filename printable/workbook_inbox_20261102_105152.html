@@ -1,0 +1,2145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>AP実戦問題集（inbox）</title>
+  <style>
+    /* ========================================================
+       別冊・赤ペン3秒テスト問題集（前半：問題＋記述欄 ／ 後半：解答解説）
+       ======================================================== */
+    @page {
+      size: A4 portrait;
+      margin: 12mm 14mm 12mm 14mm;
+      @bottom-right {
+        content: counter(page);
+        font-size: 8.5pt;
+        color: #64748b;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans JP', sans-serif;
+      font-size: 10pt;
+      line-height: 1.55;
+      color: #0f172a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .screen-toolbar {
+      background: #3b0764;
+      color: #ffffff;
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+    }
+
+    .screen-toolbar button {
+      background: #fde047;
+      color: #0f172a;
+      border: none;
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: 800;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    @media print {
+      .screen-toolbar {
+        display: none !important;
+      }
+    }
+
+    .section-cover-banner {
+      border: 2.5px solid #0f172a;
+      background: #f8fafc;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+    }
+
+    .section-cover-title {
+      font-size: 13pt;
+      font-weight: 800;
+      margin: 0 0 4px 0;
+    }
+
+    .section-cover-sub {
+      font-size: 9pt;
+      color: #334155;
+      margin: 0;
+    }
+
+    /* 問題カード（1ページに2問程度収まるコンパクト設計、途中で切れないようbreak-inside: avoid） */
+    .wb-question-card {
+      border: 2px solid #0f172a;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .wb-q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1.5px solid #cbd5e1;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+    }
+
+    .wb-q-num {
+      font-size: 11pt;
+      font-weight: 800;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 2px 9px;
+      border-radius: 4px;
+    }
+
+    .wb-q-meta {
+      font-size: 9pt;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .wb-self-check {
+      font-size: 8.5pt;
+      font-weight: 700;
+      border: 1px solid #94a3b8;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: #f8fafc;
+    }
+
+    .wb-q-body p {
+      margin: 4px 0 8px 0;
+      font-weight: 600;
+    }
+
+    .wb-q-body .print-bullet {
+      margin: 4px 0;
+      padding-left: 14px;
+      text-indent: -14px;
+    }
+
+    /* 赤ペン3秒テスト記述欄 */
+    .wb-recall-box {
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: #fffbeb;
+      border: 1.5px dashed #d97706;
+      border-radius: 6px;
+      font-size: 8.8pt;
+    }
+
+    .wb-recall-grid {
+      display: grid;
+      grid-template-columns: 95px 1fr;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .wb-answer-circle {
+      border: 1.5px solid #0f172a;
+      background: #ffffff;
+      border-radius: 6px;
+      padding: 6px;
+      text-align: center;
+      font-weight: 800;
+      height: 52px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .wb-memo-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .wb-memo-line {
+      border-bottom: 1px dotted #94a3b8;
+      padding-bottom: 3px;
+      color: #475569;
+      font-weight: 700;
+    }
+
+    table.print-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 8.5pt;
+      line-height: 1.35;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    table.print-table th, table.print-table td {
+      border: 1px solid #cbd5e1;
+      padding: 4px 8px;
+      vertical-align: top;
+    }
+
+    table.print-table th {
+      background: #f1f5f9;
+      color: #1e293b;
+      font-weight: 700;
+    }
+
+    table.print-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    /* 巻末・解答解説セクション（改ページして開始） */
+    .wb-answers-section {
+      page-break-before: always;
+      break-before: page;
+    }
+
+    .wb-answer-card {
+      border: 1.5px solid #cbd5e1;
+      border-left: 5px solid #16a34a;
+      border-radius: 6px;
+      padding: 9px 12px;
+      margin-bottom: 10px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+      background: #ffffff;
+    }
+
+    .wb-ans-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px dashed #e2e8f0;
+      padding-bottom: 4px;
+      margin-bottom: 6px;
+    }
+
+    .wb-ans-title {
+      font-size: 10pt;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .wb-ans-correct {
+      font-size: 9.5pt;
+      font-weight: 800;
+      color: #15803d;
+      background: #dcfce7;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin: 4px 0;
+    }
+
+    .wb-ans-point {
+      font-size: 9pt;
+      margin: 3px 0;
+      color: #1e293b;
+    }
+
+    .wb-ans-traps {
+      margin-top: 5px;
+      padding-top: 5px;
+      border-top: 1px dotted #cbd5e1;
+      font-size: 8.8pt;
+      color: #334155;
+    }
+
+    .wb-ans-traps .print-bullet {
+      margin: 2px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-toolbar">
+    <div>
+      <strong>📝 AP実戦問題集（inbox）（別冊・白紙テスト問題集 ＋ 巻末解答編）</strong>
+      <span style="font-size: 12px; color: #e9d5ff; margin-left: 10px;">（全 36 問・通常解説ノートとは別ファイル）</span>
+    </div>
+    <button onclick="window.print()">🖨️ 問題集を印刷 / PDF保存 (Ctrl+P)</button>
+  </div>
+
+  <main>
+    <!-- 前半：問題編 -->
+    <div class="section-cover-banner">
+      <div class="section-cover-title">📝 【前半：問題編】 AP実戦問題集（inbox） （全 36 問）</div>
+      <p class="section-cover-sub">
+        💡 <strong>脳に定着させる赤ペン3秒ルール</strong>：①正解記号を書く前に「どんな日常のたとえ話だったか」をメモ欄に1語で書く → ②残りの選択肢がなぜ×かを1語で書く → ③巻末の解答編で答え合わせ！
+      </p>
+    </div>
+
+    <div class="wb-question-card" id="wb_q_1">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 1</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">タイトル ／ 応用情報技術者 [令和6年春期 午前問6](https://www.ap-siken.com/kakomon/06_haru/q6.html)</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>各ノードがもつデータを出力する再帰処理 f(ノードn) を定義した。この処理を，図の2分木の根(最上位のノード)から始めたときの出力はどれか。</p>
+
+<p>〔f(ノードn)の定義〕<br>1. ノードnの右に子ノードrがあれば，f(ノードr)を実行<br>2. ノードnの左に子ノードlがあれば，f(ノードl)を実行<br>3. 再帰処理 f(ノードr)，f(ノードl) を未実行の子ノード，又は子ノードがなければ，ノード自身がもつデータを出力<br>4. 終了</p>
+
+<p>⚠️ <strong>図について</strong>: 元の図は取得できませんが、公式解説の再帰トレースから木の形は次のように復元できます（図の右＝R、左＝L）。</p>
+
+<pre class="mermaid">
+flowchart TD
+    P["＋"] -->|"左"| A["A"]
+    P -->|"右"| DIV["÷"]
+    DIV -->|"左"| MUL["×"]
+    DIV -->|"右"| MINUS["－"]
+    MUL -->|"左"| B["B"]
+    MUL -->|"右"| C["C"]
+    MINUS -->|"左"| D["D"]
+    MINUS -->|"右"| E["E"]
+</pre>
+
+<div class="print-bullet">• <strong>ア</strong>: ＋÷－ED×CBA</div>
+<div class="print-bullet">• <strong>イ</strong>: ABC×DE－÷＋</div>
+<div class="print-bullet">• <strong>ウ</strong>: E－D＋C×B＋A</div>
+<div class="print-bullet">• <strong>エ</strong>: ED－CB×÷A＋</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_2">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 2</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">ハッシュ表の探索時間 ／ 応用情報技術者 令和5年春期 午前問19</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>ハッシュ表の理論的な探索時間を示すグラフはどれか。ここで，複数のデータが同じハッシュ値になることはないものとする。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: （グラフ。取得データでは選択肢が空のため復元不可）</div>
+<div class="print-bullet">• <strong>イ</strong>: （グラフ。同上）</div>
+<div class="print-bullet">• <strong>ウ</strong>: （グラフ。同上）</div>
+<div class="print-bullet">• <strong>エ</strong>: 「表中のデータ数が増えても探索時間が変わらない」ことを示すグラフ（公式解説より。横軸＝データ数、縦軸＝探索時間と読めるが、軸ラベルの正確な表記は未復元）</div>
+
+<blockquote class="print-quote">📝 <strong>復元に関する注記</strong>: 選択肢は図（グラフ）で、取得データには含まれていません。ア〜ウの具体的な形は復元できませんでした。公式解説から、正解エは「データ数に関係なく探索時間が一定（定数時間）」のグラフです。</blockquote>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_3">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 3</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">クイックソート ／ 応用情報技術者 令和5年春期 問7</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>配列に格納されたデータ2，3，5，4，1に対して，クイックソートを用いて昇順に並べ替える。2回目の分割が終わった状態はどれか。ここで，分割は基準値より小さい値と大きい値のグループに分けるものとする。また，分割のたびに基準値はグループ内の配列の左端の値とし，グループ内の配列の値の順番は元の配列と同じとする。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 1，2，3，5，4</div>
+<div class="print-bullet">• <strong>イ</strong>: 1，2，5，4，3</div>
+<div class="print-bullet">• <strong>ウ</strong>: 2，3，1，4，5</div>
+<div class="print-bullet">• <strong>エ</strong>: 2，3，4，5，1</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_4">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 4</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">キャッシュのライトバック ／ 応用情報技術者 平成20年秋期 問19</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>キャッシュメモリの書込み制御方式の一つであるライトバック方式の特徴はどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: キャッシュメモリからデータを追い出すときに，主記憶を更新する必要がない。</div>
+<div class="print-bullet">• <strong>イ</strong>: キャッシュメモリのデータとそれに対応する主記憶のデータとの間で不一致が生じない。</div>
+<div class="print-bullet">• <strong>ウ</strong>: データを書き込むとき，キャッシュメモリにあるかどうかにかかわらず，主記憶に書き込む。</div>
+<div class="print-bullet">• <strong>エ</strong>: 同一番地に繰り返して書き込む場合は，主記憶へのアクセス回数が少なくて済む。</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_5">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 5</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">M/M/1待ち行列 ／ 応用情報技術者 令和4年春期 問3</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>M/M/1の待ち行列モデルにおいて，窓口の利用率が25%から40%に増えると，平均待ち時間は何倍になるか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 1.25</div>
+<div class="print-bullet">• <strong>イ</strong>: 1.60</div>
+<div class="print-bullet">• <strong>ウ</strong>: 2.00</div>
+<div class="print-bullet">• <strong>エ</strong>: 3.00</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_6">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 6</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">CPU利用率とMIPS ／ 応用情報技術者 平成28年秋期 問15</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>オンライントランザクション処理システムにおいて，1分当たりの平均トランザクション数が1,200件であり，1件のトランザクション処理で100万命令を実行する場合，CPU性能が100MIPSのコンピュータを使用したときのCPUの平均利用率は何%か。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 5</div>
+<div class="print-bullet">• <strong>イ</strong>: 10</div>
+<div class="print-bullet">• <strong>ウ</strong>: 15</div>
+<div class="print-bullet">• <strong>エ</strong>: 20</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_7">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 7</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">タイトル ／ 応用情報技術者 [平成27年秋期 午前問10](https://www.ap-siken.com/kakomon/27_aki/q10.html)</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>MMU(Memory Management Unit)の説明として，適切なものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: CPUからのページフォールトを受けて，物理ページのスワップを行う。</div>
+<div class="print-bullet">• <strong>イ</strong>: CPUが指定した仮想アドレスを物理アドレスに対応させる。</div>
+<div class="print-bullet">• <strong>ウ</strong>: OSの一部分であり，キャッシュ制御機能及びバス調整機能を有する。</div>
+<div class="print-bullet">• <strong>エ</strong>: 主記憶のデータの一部を保持し，CPUと主記憶の速度差を吸収する。</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_8">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 8</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">カルノー図と論理式 ／ 応用情報技術者 令和4年秋期 問2</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>A，B，C，Dを論理変数とするとき，次のカルノー図と等価な論理式はどれか。ここで，・は論理積，＋は論理和，Xの上線はXの否定を表す。</p>
+
+<blockquote class="print-quote">⚠️ <strong>復元に関する注意</strong>: 問題のカルノー図（画像）と、選択肢中の否定を表す上線は取得データに残っていません。選択肢の変数名と項の構造だけが残っています。そのため、どの変数に否定がつくかは復元できません。</blockquote>
+<div class="print-bullet">• <strong>ア</strong>: A・B・C・D ＋ B・D　（否定の位置は復元不可）</div>
+<div class="print-bullet">• <strong>イ</strong>: A・B・C・D ＋ B・D　（否定の位置は復元不可）</div>
+<div class="print-bullet">• <strong>ウ</strong>: A・B・D ＋ B・D　（否定の位置は復元不可）</div>
+<div class="print-bullet">• <strong>エ</strong>: A・B・D ＋ B・D　（否定の位置は復元不可）</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_9">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 9</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">NoSQLの種類 ／ 応用情報技術者 令和6年春期 問29</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>ビッグデータの基盤技術として利用されるNoSQLに分類されるデータベースはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 関係データモデルをオブジェクト指向データモデルに拡張し，操作の定義や型の継承関係の定義を可能としたデータベース</div>
+<div class="print-bullet">• <strong>イ</strong>: 経営者の意思決定を支援するために，ある主題に基づくデータを現在の情報とともに過去の情報も蓄積したデータベース</div>
+<div class="print-bullet">• <strong>ウ</strong>: 様々な形式のデータを一つのキーに対応付けて管理するキーバリュー型データベース</div>
+<div class="print-bullet">• <strong>エ</strong>: データ項目の名称，形式など，データそのものの特性を表すメタ情報を管理するデータベース</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_10">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 10</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">タイトル ／ 応用情報技術者 [平成28年秋期 午前問30](https://www.ap-siken.com/kakomon/28_aki/q30.html)</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>DBMSをシステム障害発生後に再立上げするとき，ロールフォワードすべきトランザクションとロールバックすべきトランザクションの組合せとして，適切なものはどれか。ここで，トランザクションの中で実行される処理内容は次のとおりとする。</p>
+
+<blockquote class="print-quote">⚠️ <strong>復元できなかった部分</strong>: 元問題の「タイムチャート図（T1〜T6 とチェックポイント・障害発生の位置）」と「各トランザクションの処理内容の表」、およびイ〜エの選択肢は取得データに含まれていません。以下は <strong>公式解説の記述から復元できる事実のみ</strong> を使っています。<br><br>公式解説から読み取れる状況：<br>- T1：チェックポイント前にコミット済み<br>- T2・T5：チェックポイント後〜障害発生前にコミット済み<br>- T3・T4・T6：障害発生時に実行中（未コミット）。ただし T3・T4 はデータベースへの書込み処理が無い</blockquote>
+<div class="print-bullet">• <strong>ア</strong>: ロールフォワード = T2，T5 ／ ロールバック = T6（解説より復元。取得データの選択肢欄は「イ ウ エ」と記載されており、ア〜エの本来の表記は不明）</div>
+<div class="print-bullet">• <strong>イ〜エ</strong>: 取得データでは空（復元不可）</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_11">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 11</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">SQLのUNIONとUNION ALL ／ 応用情報技術者 令和2年秋期 午前問29</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>"東京在庫"表と"大阪在庫"表に対して，SQL文を実行して得られる結果はどれか。ここで，実線の下線は主キーを表す。</p>
+
+<pre><code>SELECT 商品コード，在庫数 FROM 東京在庫
+UNION ALL
+SELECT 商品コード，在庫数 FROM 大阪在庫</code></pre>
+
+<blockquote class="print-quote">⚠️ <strong>復元に関する注記</strong>: 原問題の2つの表（東京在庫・大阪在庫）と選択肢ア〜エの結果表は図表で、取得データには含まれていません。公式解説から分かる事実は次のとおりです。<br>- 両表には共通するレコード <strong>{商品コード: C003, 在庫数: 35}</strong> がある<br>- <strong>エ</strong> は「東京在庫表と大阪在庫表をそのまま統合した結果（重複行も残る）」<br>- <strong>ウ</strong> は「UNION（ALLなし）で結合した場合の結果（重複行が1つに）」<br>- ア・イの内容は復元不可</blockquote>
+<div class="print-bullet">• <strong>ア</strong>: （図表のため復元不可）</div>
+<div class="print-bullet">• <strong>イ</strong>: （図表のため復元不可）</div>
+<div class="print-bullet">• <strong>ウ</strong>: （図表）UNIONで結合した場合の結果（C003, 35 が1行のみ）</div>
+<div class="print-bullet">• <strong>エ</strong>: （図表）東京在庫と大阪在庫をそのまま統合した結果（C003, 35 が2行）</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_12">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 12</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">IPv4のホスト数計算 ／ 応用情報技術者 令和4年春期 問34</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>IPv4で 192.168.30.32/28 のネットワークに接続可能なホストの最大数はどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 14</div>
+<div class="print-bullet">• <strong>イ</strong>: 16</div>
+<div class="print-bullet">• <strong>ウ</strong>: 28</div>
+<div class="print-bullet">• <strong>エ</strong>: 30</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_13">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 13</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">LAN伝送時間の計算 ／ 応用情報技術者 令和5年秋期 午前問31</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>100Mビット／秒のLANを使用し，1件のレコード長が1,000バイトの電文を1,000件連続して伝送するとき，伝送時間は何秒か。ここで，LANの伝送効率は50%とする。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 0.02</div>
+<div class="print-bullet">• <strong>イ</strong>: 0.08</div>
+<div class="print-bullet">• <strong>ウ</strong>: 0.16</div>
+<div class="print-bullet">• <strong>エ</strong>: 1.6</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_14">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 14</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">LAN送信時間の差からパケット数を逆算 ／ 応用情報技術者 令和5年春期 午前問32</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>100Mビット／秒のLANと1Gビット／秒のLANがある。ヘッダーを含めて1,250バイトのパケットをN個送付するときに，100Mビット／秒のLANの送信時間が1Gビット／秒のLANより9ミリ秒多く掛かった。Nは幾らか。ここで，いずれのLANにおいても，パケットの送信間隔(パケットの送信が完了してから次のパケットを送信開始するまでの時間)は1ミリ秒であり，パケット送信間隔も送信時間に含める。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 10</div>
+<div class="print-bullet">• <strong>イ</strong>: 80</div>
+<div class="print-bullet">• <strong>ウ</strong>: 100</div>
+<div class="print-bullet">• <strong>エ</strong>: 800</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_15">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 15</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">タイトル ／ 応用情報技術者 [令和4年秋期 午前問37](https://www.ap-siken.com/kakomon/04_aki/q37.html)</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>サイドチャネル攻撃に該当するものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 暗号アルゴリズムを実装した攻撃対象の物理デバイスから得られる物理量(処理時間，消費電流など)やエラーメッセージから，攻撃対象の秘密情報を得る。</div>
+<div class="print-bullet">• <strong>イ</strong>: 企業などの秘密情報を不正に取得するソーシャルエンジニアリングの手法の一つであり，不用意に捨てられた秘密情報の印刷物をオフィスの紙ごみの中から探し出す。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 通信を行う2者間に割り込み，両者が交換する情報を自分のものとすり替えることによって，その後の通信を気付かれることなく盗聴する。</div>
+<div class="print-bullet">• <strong>エ</strong>: データベースを利用するWebサイトに入力パラメータとしてSQL文の断片を送信することによって，データベースを改ざんする。</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_16">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 16</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">CORBA ／ 応用情報技術者 平成19年春期 問80</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>CORBAを説明したものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: ANSIが制定したオブジェクト指向プログラミング技術の仕様</div>
+<div class="print-bullet">• <strong>イ</strong>: ANSIが制定した分散オブジェクト技術の仕様</div>
+<div class="print-bullet">• <strong>ウ</strong>: OMGが制定したオブジェクト指向プログラミング技術の仕様</div>
+<div class="print-bullet">• <strong>エ</strong>: OMGが制定した分散オブジェクト技術の仕様</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_17">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 17</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">画像フォーマットSVG ／ 応用情報技術者 令和3年春期 午前問27</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>W3Cで仕様が定義され，矩形や円，直線，文字列などの図形オブジェクトをXML形式で記述し，Webページでの図形描画にも使うことができる画像フォーマットはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: OpenGL</div>
+<div class="print-bullet">• <strong>イ</strong>: PNG</div>
+<div class="print-bullet">• <strong>ウ</strong>: SVG</div>
+<div class="print-bullet">• <strong>エ</strong>: TIFF</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_18">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 18</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">開発工数の式と生産性 ／ 応用情報技術者 平成30年春期 午前問54</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>あるソフトウェア開発部門では，開発工数E(人月)と開発規模L(キロ行)との関係を，E＝5.2L^0.98（Lの0.98乗）としている。L＝10としたときの生産性(キロ行／人月)は，およそ幾らか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 0.2</div>
+<div class="print-bullet">• <strong>イ</strong>: 0.5</div>
+<div class="print-bullet">• <strong>ウ</strong>: 1.9</div>
+<div class="print-bullet">• <strong>エ</strong>: 5.2</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_19">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 19</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">可用性管理の保守性指標 ／ 応用情報技術者 令和4年春期 午前問56</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>ITIL 2011 editionでは，可用性管理における重要業績評価指標(KPI)の例として，"保守性を表す指標値"の短縮を挙げている。保守性を表す指標に該当するものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 一定期間内での中断の数</div>
+<div class="print-bullet">• <strong>イ</strong>: 平均故障間隔</div>
+<div class="print-bullet">• <strong>ウ</strong>: 平均サービス・インシデント間隔</div>
+<div class="print-bullet">• <strong>エ</strong>: 平均サービス回復時間</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_20">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 20</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">ITILの7ステップの改善プロセス ／ 応用情報技術者 令和元年秋期 午前問56</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>ITIL 2011 editionによれば，7ステップの改善プロセスにおけるa，b及びcの適切な組合せはどれか。  <br>〔7ステップの改善プロセス〕</p>
+
+<blockquote class="print-quote">⚠️ <strong>復元に関する注記</strong>: 原問題では7ステップの図が提示され、ステップ4〜6にあたる空欄a, b, cを、下の選択肢の組合せから選びます。取得データには図と選択肢ア〜エの各組合せ本文が含まれていません（選択肢欄は「イ ウ エ」とのみ記録）。そのため、ここでは公式解説から「空欄に入る正しい内容」だけを復元しています。</blockquote>
+<div class="print-bullet">• <strong>空欄a（ステップ4）</strong>: 公式解説により「データを処理する」と対応</div>
+<div class="print-bullet">• <strong>空欄b（ステップ5）</strong>: 同じく「情報とデータを分析する」と対応</div>
+<div class="print-bullet">• <strong>空欄c（ステップ6）</strong>: 同じく「情報を提示して利用する」と対応</div>
+<div class="print-bullet">• <strong>ア〜エの選択肢</strong>: 取得データに本文なし（復元不可）</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_21">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 21</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">サービスレベル管理プロセス ／ 応用情報技術者 令和6年春期 午前問56</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>サービスマネジメントにおけるサービスレベル管理プロセスの活動はどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 現在の資源の調整と最適化とを行い，将来の資源要件に関する予測を記載した計画を作成する。</div>
+<div class="print-bullet">• <strong>イ</strong>: サービスの提供に必要な予算に応じて，適切な資金を確保する。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 災害や障害などで事業が中断しても，要求されたサービス機能を合意された期間内に確実に復旧できるように，事業影響度の評価や復旧優先順位を明確にする。</div>
+<div class="print-bullet">• <strong>エ</strong>: 提供するサービス及びサービスレベル目標を決定し，サービス提供者が顧客との間で合意文書を交わす。</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_22">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 22</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">タイトル ／ 応用情報技術者 [令和3年春期 午前問56](https://www.ap-siken.com/kakomon/03_haru/q56.html)</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>ITIL 2011 editionによれば，サービス・ポートフォリオの説明のうち，適切なものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: サービス・プロバイダの約束事項と投資を表すものであって，サービス・プロバイダによって管理されている"検討中か開発中"，"稼働中か展開可能"及び"廃止済み"の全てのサービスが含まれる。</div>
+<div class="print-bullet">• <strong>イ</strong>: サービスの販売と提供の支援に使用され，顧客に公開されるものであって，"検討中か開発中"と"廃止済み"のサービスは含まれず，"稼働中か展開可能"のサービスだけが含まれる。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 投資の機会と実現される価値を含むものであって，"廃止済み"のサービスは含まれず，"検討中か開発中"のサービスと"稼働中か展開可能"のサービスが含まれる。</div>
+<div class="print-bullet">• <strong>エ</strong>: どのようなサービスが提供できたのか，実力を示すものであって，"検討中か開発中"のサービスは含まれず，"稼働中か展開可能"のサービスと"廃止済み"のサービスが含まれる。</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_23">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 23</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">システム監査の「監査手続」 ／ 応用情報技術者 令和4年秋期 問59</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>システム監査における"監査手続"として，最も適切なものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 監査計画の立案や監査業務の進捗管理を行うための手順</div>
+<div class="print-bullet">• <strong>イ</strong>: 監査結果を受けて，監査報告書に監査人の結論や指摘事項を記述する手順</div>
+<div class="print-bullet">• <strong>ウ</strong>: 監査項目について，十分かつ適切な証拠を入手するための手順</div>
+<div class="print-bullet">• <strong>エ</strong>: 監査テーマに合わせて，監査チームを編成する手順</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_24">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 24</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">共通フレーム2013の要件定義プロセス ／ 応用情報技術者 令和元年秋期 午前問65</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>共通フレーム2013によれば，要件定義プロセスで行うことはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: システム化計画の立案</div>
+<div class="print-bullet">• <strong>イ</strong>: システム方式設計</div>
+<div class="print-bullet">• <strong>ウ</strong>: ソフトウェア詳細設計</div>
+<div class="print-bullet">• <strong>エ</strong>: 利害関係者の識別</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_25">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 25</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">EAのTo-Beモデル ／ 応用情報技術者 平成29年秋期 午前問61</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>エンタープライズアーキテクチャにおいて，業務と情報システムの理想を表すモデルはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: EA参照モデル</div>
+<div class="print-bullet">• <strong>イ</strong>: To-Beモデル</div>
+<div class="print-bullet">• <strong>ウ</strong>: ザックマンモデル</div>
+<div class="print-bullet">• <strong>エ</strong>: データモデル</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_26">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 26</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">アンゾフの成長マトリクス ／ 応用情報技術者 平成28年秋期 午前問68</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>アンゾフが提唱する成長マトリクスを説明したものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 自社の強みと弱み，市場における機会と脅威を，分類ごとに列挙して，事業戦略における企業の環境分析を行う。</div>
+<div class="print-bullet">• <strong>イ</strong>: 製品と市場の視点から，事業拡大の方向性を市場浸透・製品開発・市場開拓・多角化に分けて，戦略を検討する。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 製品の市場占有率と市場成長率から，企業がそれぞれの事業に対する経営資源の最適配分を意思決定する。</div>
+<div class="print-bullet">• <strong>エ</strong>: 製品の導入期・成長期・成熟期・衰退期の各段階に応じて，製品の改良，新品種の追加，製品廃棄などを計画する。</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_27">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 27</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">コアコンピタンス ／ 応用情報技術者 平成23年特別 午前問66</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>コアコンピタンスを説明したものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 経営活動における基本精神や行動指針</div>
+<div class="print-bullet">• <strong>イ</strong>: 事業戦略の遂行によって達成すべき到達目標</div>
+<div class="print-bullet">• <strong>ウ</strong>: 自社を取り巻く環境に関するビジネス上の機会と脅威</div>
+<div class="print-bullet">• <strong>エ</strong>: 他社との差別化の源泉となる経営資源</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_28">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 28</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">PPMマトリックス ／ 応用情報技術者 令和3年春期 問67</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>プロダクトポートフォリオマネジメント(PPM)マトリックスのa，bに入れる語句の適切な組合せはどれか。</p>
+
+<blockquote class="print-quote">⚠️ <strong>復元に関する注意</strong>: 原問題は図表問題で、マトリックス図と選択肢の表（a, b の語句の組合せ）は画像のため取得できませんでした。取得データの選択肢は「イ ウ エ」としか残っておらず、各選択肢の具体的な語句は復元できません。以下は公式解説の記述から言える範囲のみを書いています。</blockquote>
+<div class="print-bullet">• 図：4象限のマトリックス（"金のなる木"の位置が a=低，b=高、"問題児"の位置が a=高，b=低 となっている ※公式解説の記述より）</div>
+<div class="print-bullet">• <strong>ア〜エ</strong>: a, b に入れる語句の組合せ（各選択肢の具体的内容は復元不可）</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_29">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 29</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">SCMの目的 ／ 応用情報技術者 平成29年春期 問67</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>SCMの目的はどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 顧客情報や購買履歴，クレームなどを一元管理し，きめ細かな顧客対応を行うことによって，良好な顧客関係の構築を目的とする。</div>
+<div class="print-bullet">• <strong>イ</strong>: 顧客情報や商談スケジュール，進捗状況などの商談状況を一元管理することによって，営業活動の効率向上を目的とする。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 生産，販売，在庫管理，財務会計，人事管理など基幹業務のあらゆる情報を統合管理することによって，経営効率の向上を目的とする。</div>
+<div class="print-bullet">• <strong>エ</strong>: 複数の企業や組織にまたがる調達から販売までの業務プロセス全ての情報を統合的に管理することによって，コスト低減や納期短縮などを目的とする。</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_30">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 30</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">タイトル ／ 応用情報技術者 [令和6年秋期 午前問72](https://www.ap-siken.com/kakomon/06_aki/q72.html)</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>製造業のA社では，NC工作機械を用いて，四つの仕事a～dを行っている。各仕事間の段取り時間は表のとおりである。合計の段取り時間が最小になるように仕事を行った場合の合計段取り時間は何時間か。ここで，仕事はどの順序で行ってもよく，a～dを一度ずつ行うものとし，FROMからTOへの段取り時間で算出する。</p>
+
+<blockquote class="print-quote">⚠️ <strong>復元できなかった部分</strong>: 元問題の「FROM×TO の段取り時間表」は取得データに含まれません。公式解説から分かるのは次の事実のみです。<br>- 段取り時間が最小の <strong>1時間</strong> は「a→c」「b→a」「b→c」の3つ<br>- 仕事 d は「他の作業の後ろ、または作業 c の前」に置くと <strong>2時間</strong><br>- 最適順序の c→d は <strong>2時間</strong></blockquote>
+<div class="print-bullet">• <strong>ア</strong>: 4</div>
+<div class="print-bullet">• <strong>イ</strong>: 5</div>
+<div class="print-bullet">• <strong>ウ</strong>: 6</div>
+<div class="print-bullet">• <strong>エ</strong>: 7</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_31">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 31</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">CIOの役割 ／ 応用情報技術者 平成30年秋期 午前問74</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>CIOが経営から求められる役割はどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 企業経営のための財務戦略の立案と遂行</div>
+<div class="print-bullet">• <strong>イ</strong>: 企業の研究開発方針の立案と実施</div>
+<div class="print-bullet">• <strong>ウ</strong>: 企業の法令遵守の体制の構築と運用</div>
+<div class="print-bullet">• <strong>エ</strong>: ビジネス価値を最大化させるITサービス活用の促進</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_32">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 32</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">系統図法 ／ 応用情報技術者 令和3年春期 午前問76</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>系統図法の活用例はどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 解決すべき問題を端か中央に置き，関係する要因を因果関係に従って矢印でつないで周辺に並べ，問題発生に大きく影響している重要な原因を探る。</div>
+<div class="print-bullet">• <strong>イ</strong>: 結果とそれに影響を及ぼすと思われる要因との関連を整理し，体系化して，魚の骨のような形にまとめる。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 事実，意見，発想を小さなカードに書き込み，カード相互の親和性によってグループ化して，解決すべき問題を明確にする。</div>
+<div class="print-bullet">• <strong>エ</strong>: 目的を達成するための手段を導き出し，更にその手段を実施するための幾つかの手段を考えることを繰り返し，細分化していく。</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_33">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 33</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">デルファイ法 ／ 応用情報技術者 令和4年秋期 問75</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>予測手法の一つであるデルファイ法の説明はどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 現状の指標の中に将来の動向を示す指標があることに着目して予測する。</div>
+<div class="print-bullet">• <strong>イ</strong>: 将来予測のためのモデル化した連立方程式を解いて予測する。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 同時点における複数の観測データの統計比較分析によって将来を予測する。</div>
+<div class="print-bullet">• <strong>エ</strong>: 複数の専門家へのアンケートの繰返しによる回答の収束によって将来を予測する。</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_34">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 34</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">最大利益の価格設定 ／ 応用情報技術者 令和4年春期 問76</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>新製品の設定価格とその価格での予測需要との関係を表にした。最大利益が見込める新製品の設定価格はどれか。ここで，いずれの場合にも，次の費用が発生するものとする。  <br>固定費：1,000,000円  <br>変動費：600円／個</p>
+
+<blockquote class="print-quote">※元の問題の表（設定価格と予測需要）は、公式解説の計算式から以下のように復元しました。</blockquote>
+<table class="print-table">
+  <thead>
+    <tr><th>設定価格（円）</th><th>予測需要（個）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1,000</td><td>80,000</td></tr>
+    <tr><td>1,200</td><td>70,000</td></tr>
+    <tr><td>1,400</td><td>60,000</td></tr>
+    <tr><td>1,600</td><td>50,000</td></tr>
+  </tbody>
+</table>
+
+<div class="print-bullet">• <strong>ア</strong>: 1,000</div>
+<div class="print-bullet">• <strong>イ</strong>: 1,200</div>
+<div class="print-bullet">• <strong>ウ</strong>: 1,400</div>
+<div class="print-bullet">• <strong>エ</strong>: 1,600</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_35">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 35</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">最大利益の価格設定 ／ 応用情報技術者 平成26年秋期 午前問77</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>最大利益が見込める新製品の設定価格はどれか。ここで，いずれの場合にも，次の費用が発生するものとする。  <br>固定費：1,000,000円  <br>変動費：600円／個</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 1,000</div>
+<div class="print-bullet">• <strong>イ</strong>: 1,200</div>
+<div class="print-bullet">• <strong>ウ</strong>: 1,400</div>
+<div class="print-bullet">• <strong>エ</strong>: 1,600</div>
+
+<blockquote class="print-quote">📝 <strong>復元に関する注記</strong>: 原問題には「設定価格ごとの予測販売個数」の表が付いていますが、取得データの問題文には含まれていません。公式解説の計算式から、ア〜エの価格に対応する販売個数は <strong>1,000円→80,000個、1,200円→70,000個、1,400円→60,000個、1,600円→50,000個</strong> と復元できます（表そのものの体裁は未復元）。</blockquote>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wb-question-card" id="wb_q_36">
+  <div class="wb-q-header">
+    <div>
+      <span class="wb-q-num">問 36</span>
+      <span class="wb-q-meta" style="margin-left: 8px;">共通フレーム98 ／ 応用情報技術者 平成18年秋期 午前問78</span>
+    </div>
+    <div class="wb-self-check">自己判定: 🔴要復習 ・ 🟡あやふや ・ 🟢瞬殺</div>
+  </div>
+  <div class="wb-q-body">
+    <p>共通フレーム98(SLCP-JCF98)が規定しているものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 開発プロセスでは，ソフトウェアライフサイクルを構成する作業の時間及び順序を規定している。</div>
+<div class="print-bullet">• <strong>イ</strong>: 顧客と開発ベンダーの受注契約にかかわる取引以外に，社内の部門間取引も対象に規定している。</div>
+<div class="print-bullet">• <strong>ウ</strong>: ハードウェアを含めた業務システムの開発プロセスではなく，ソフトウェア開発のプロセスを対象に規定している。</div>
+<div class="print-bullet">• <strong>エ</strong>: プロセスのくくりとプロセス自体をISO/IEC 12207(JIS X 0160)と同一に規定している。</div>
+  </div>
+  <div class="wb-recall-box">
+    <div class="wb-recall-grid">
+      <div class="wb-answer-circle">
+        <span style="font-size: 7.5pt; color: #64748b;">解答欄</span>
+        <span style="font-size: 9pt; color: #cbd5e1;">ア・イ・ウ・エ</span>
+      </div>
+      <div class="wb-memo-lines">
+        <div class="wb-memo-line">🔑 たとえ話・合言葉メモ：</div>
+        <div class="wb-memo-line">❌ 他選択肢がバツの理由：</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- 後半：解答・解説要約編 -->
+    <div class="wb-answers-section">
+      <div class="section-cover-banner" style="background: #f0fdf4; border-color: #166534;">
+        <div class="section-cover-title">✅ 【巻末：解答・合言葉・ひっかけ理由一覧】 AP実戦問題集（inbox）</div>
+        <p class="section-cover-sub">
+          ※詳しい図解やストーリーを読み直したい問題（🔴要復習）は、通常版解説ノートまたはWebアプリを参照してください。
+        </p>
+      </div>
+
+      <div class="wb-answer-card" id="wb_a_1">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 1：タイトル：【荷物の積み下ろし】で覚える「2分木の後行順（右→左→自分）」</span>
+    <span class="wb-q-meta">応用情報技術者 [令和6年春期 午前問6](https://www.ap-siken.com/kakomon/06_haru/q6.html)</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（ED－CB×÷A＋）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「右へ潜る→左へ潜る→最後に自分」！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話）</div>
+  <div class="wb-ans-traps"><p>公式解説の再帰トレース：</p>
+
+<table class="print-table">
+  <thead>
+    <tr><th>手順</th><th>動き</th><th>出力</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>f(＋)：右に ÷ → f(÷)</td><td></td></tr>
+    <tr><td>2</td><td>f(÷)：右に － → f(－)</td><td></td></tr>
+    <tr><td>3</td><td>f(－)：右に E → f(E)</td><td></td></tr>
+    <tr><td>4</td><td>f(E)：子なし</td><td><strong>E</strong></td></tr>
+    <tr><td>5</td><td>f(－) に戻る：左に D → f(D)：子なし</td><td><strong>D</strong></td></tr>
+    <tr><td>ここで</td><td>先頭が「ED」と確定。これだけで正解肢が絞れる</td><td></td></tr>
+    <tr><td>6</td><td>f(－)：左右実行済み</td><td><strong>－</strong></td></tr>
+    <tr><td>7</td><td>f(÷) に戻る：左に × → f(×)：右に C</td><td><strong>C</strong></td></tr>
+    <tr><td>8</td><td>f(×)：左に B</td><td><strong>B</strong></td></tr>
+    <tr><td>9</td><td>f(×)：左右実行済み</td><td><strong>×</strong></td></tr>
+    <tr><td>10</td><td>f(÷)：左右実行済み</td><td><strong>÷</strong></td></tr>
+    <tr><td>11</td><td>f(＋) に戻る：左に A</td><td><strong>A</strong></td></tr>
+    <tr><td>12</td><td>f(＋)：左右実行済み</td><td><strong>＋</strong></td></tr>
+  </tbody>
+</table>
+
+<p>出力の並び：E D － C B × ÷ A ＋ → 「ED－CB×÷A＋」</p>
+
+<h3 class="print-h3">選択肢の判定</h3>
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ア ＋÷－ED×CBA</td><td>✕</td><td>先頭が「＋」。自分を最初に出す <strong>前行順（自分→右→左）</strong> の並び。本問は自分が最後</td></tr>
+    <tr><td>イ ABC×DE－÷＋</td><td>✕</td><td>自分を最後に出す点は同じだが <strong>左→右→自分</strong> の標準的な後行順。本問は右が先なので左右が逆</td></tr>
+    <tr><td>ウ E－D＋C×B＋A</td><td>✕</td><td>先頭は E だが、途中に「＋」が2回現れるなど、このルールの出力としてあり得ない並び（木に＋は1つだけ、÷も欠落）。トレースの時点で消去できる</td></tr>
+    <tr><td>エ ED－CB×÷A＋</td><td>○</td><td>上のトレースと一致</td></tr>
+  </tbody>
+</table>
+
+<p><strong>ひっかけ</strong>: イは「後行順といえば左→右→自分」と暗記している人が選びがち。<strong>問題文の 1.（右）が 2.（左）より先</strong> であることを必ず確認する。ヒント：トレースの最初の2文字「ED」が決まった時点で、先頭が E の選択肢（ウ・エ）に絞れる。</p></div>
+</div>
+<div class="wb-answer-card" id="wb_a_2">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 2：ハッシュ表の探索時間：ロッカー番号が分かれば、何千個あっても一発で開く！</span>
+    <span class="wb-q-meta">応用情報技術者 令和5年春期 午前問19</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（データ数が増えても探索時間が変わらない＝一定のグラフ）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『ハッシュ表＝計算して一発で場所が分かる。データが増えても時間は横ばい！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：コインロッカー）</div>
+  <div class="wb-ans-traps"><p>選択肢のグラフ本体が取得できていないため、形の記述ではなく<strong>判定の基準</strong>を示します。</p>
+
+<div class="print-bullet">• <strong>ア・イ・ウ: ✗（グラフ形状は未復元）</strong>  </div>
+  → 公式解説では正解は「エ」のみと明示されているため、ア〜ウは「データ数に応じて探索時間が変化する」グラフ（増加・減少・曲線など）であり、定数時間ではないので不適切と判断できます。具体的な形は復元不可。
+<div class="print-bullet">• <strong>エ: ○</strong>  </div>
+  → 「データ数が増えても探索時間は変わらない」＝横ばい（定数時間）のグラフ。公式解説と一致。
+
+<blockquote class="print-quote">⚠️ ひっかけの考え方：問題文の「複数のデータが同じハッシュ値になることはない」が重要。もし衝突が起きると、同じ場所に複数データが並び、追加の探索が必要になって時間が変わります。この条件で「理想状態」の探索時間を問うています。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_3">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 3：クイックソート：クラス替えの「基準の人」で覚える「2回目の分割」</span>
+    <span class="wb-q-meta">応用情報技術者 令和5年春期 問7</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ア（1，2，3，5，4）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「左端が基準 → 小さい組 / 基準 / 大きい組」を2回やる！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：身長順に並ぶ学校の整列）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア 1，2，3，5，4（正解）</strong>: 上の手順そのもの。</div>
+<div class="print-bullet">• <strong>イ 1，2，5，4，3</strong>: 1回目で 3，5，4 の中から「3を最後に回す」並びになっている。基準値より大きい値は元の順番（3，5，4）を保つ約束なので、3が最後に動くことはない。基準を取り違えると出てくる並び。</div>
+<div class="print-bullet">• <strong>ウ 2，3，1，4，5</strong>: 基準の2が先頭のままで、小さい値1が右側にあり、「小さい値は基準の左へ」という分割の定義に反する。</div>
+<div class="print-bullet">• <strong>エ 2，3，4，5，1</strong>: ほぼ元の配列を回した並びで、小さい値1が右端に残っており、1回目の分割すら終わっていない状態。</div>
+
+<blockquote class="print-quote">😈 最大のトラップ：「1回目の分割後」の配列も並べて書くと 1，2，3，5，4 になります。「基準が確定した」回数ではなく、<strong>グループごとに分割した回数</strong>を数えることを忘れずに。[3，5，4] の分割まで進めて、はじめて[3]，[5，4]になることを確認しましょう。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_4">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 4：キャッシュのライトバック：付箋メモで覚える「追い出すときに主記憶へ」</span>
+    <span class="wb-q-meta">応用情報技術者 平成20年秋期 問19</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（同一番地に繰り返して書き込む場合は，主記憶へのアクセス回数が少なくて済む。）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「バック＝あとで戻す」「スルー＝その場で通す」！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：机の上の付箋と、会社の台帳）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア ✕</strong>: 「追い出すとき主記憶を更新する必要がない」は逆。ライトバックは<strong>追い出すときに初めて</strong>主記憶へ書く方式（更新が必要）。「バック＝あとで戻す」を忘れると引っかかります。</div>
+<div class="print-bullet">• <strong>イ ✕</strong>: 不一致が生じないのはライトスルー側の特徴。ライトバックでは主記憶に書き込むのが追い出し時のみなので、<strong>常に内容が一致しているわけではない</strong>（公式解説）。</div>
+<div class="print-bullet">• <strong>ウ ✕</strong>: 「キャッシュにあるかどうかにかかわらず主記憶に書く」「書き込みの都度主記憶にも書く」はライトスルー方式の特徴（公式解説）。</div>
+<div class="print-bullet">• <strong>エ ○</strong>: 主記憶へ書くのは追い出し時のみで、それまでCPUはキャッシュだけに書く。したがって常に両方に書くライトスルーと比べ、主記憶アクセスが少ない（公式解説）。</div>
+
+<blockquote class="print-quote">😈 ひっかけの構造：ア・イ・ウは、ライトスルーの特徴をライトバックの特徴にすり替えたもの。「どちらの方式の特徴か」を意識して読むと消去できます。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_5">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 5：M/M/1待ち行列：ラーメン屋の行列で覚える「利用率÷(1−利用率)」</span>
+    <span class="wb-q-meta">応用情報技術者 令和4年春期 問3</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ウ（2.00）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：公式に入れて「割り算」するだけ！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：ラーメン屋のカウンター）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア 1.25</strong>: 利用率25%の「25」から連想した数字。計算で出る根拠はなく、「なんとなく増えた分」で選ばせる引っかけ。</div>
+<div class="print-bullet">• <strong>イ 1.60</strong>: 利用率の比 40 ÷ 25 ＝ 1.6（利用率をそのまま比べた値）。<strong>これが最大のトラップ</strong>。待ち時間は利用率に比例せず、分母の「1 − 利用率」の効果で増え方が大きくなります。</div>
+<div class="print-bullet">• <strong>ウ 2.00（正解）</strong>: (2/3) ÷ (1/3) ＝ 2。</div>
+<div class="print-bullet">• <strong>エ 3.00</strong>: 利用率25%の値 1/3 の逆数 3 や、2/3 を 1/3 で割る手前の「3」を取り違えた誤り。1/3 や 2/3 の分母「3」に釣られないこと。</div>
+
+<blockquote class="print-quote">利用率が1.6倍になっても、待ち時間は1.6倍ではなく2倍。「利用率の比で答えない」が鉄則です。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_6">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 6：CPU利用率とMIPS：レジの「1秒あたりの処理能力」と「来客数」で割り算する！</span>
+    <span class="wb-q-meta">応用情報技術者 平成28年秋期 問15</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（20）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『必要な命令数 ÷ 出せる命令数、ただし必ず「1秒」にそろえる！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：ラーメン屋の厨房）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア（5）: ✗</strong>  </div>
+  → 「1,200件/分」を秒に直さず、あるいは割り方を誤ると出やすい小さな値。正しい計算では5%にならない。
+<div class="print-bullet">• <strong>イ（10）: ✗</strong>  </div>
+  → 2,000万と1億の比を「0.1」と目分量で読み違えたパターン。2,000万÷1億＝0.2であり、10%ではない。
+<div class="print-bullet">• <strong>ウ（15）: ✗</strong>  </div>
+  → 中途半端な値で、正しい計算の道筋からは出てこない。計算せず勘で選ばせるための選択肢。
+<div class="print-bullet">• <strong>エ（20）: ○</strong>  </div>
+  → 20件/秒 × 100万 ＝ 2,000万命令/秒 ÷ 1億命令/秒 ＝ 20%。公式解説と一致。
+
+<blockquote class="print-quote">⚠️ 最大のワナは<strong>単位（分と秒）の混在</strong>。もし「1,200件 × 100万 ÷ 1億」と分のまま計算すると1200％という異常値になるので、「利用率が100%を超えたら単位ミス」と検算できます。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_7">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 7：タイトル：【マンションの管理人】で覚える「MMU（仮想アドレス→物理アドレスの変換）」</span>
+    <span class="wb-q-meta">応用情報技術者 [平成27年秋期 午前問10](https://www.ap-siken.com/kakomon/27_aki/q10.html)</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: イ（CPUが指定した仮想アドレスを物理アドレスに対応させる）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「MMU＝住所の翻訳係」と覚えて、他の部品の仕事と切り分ける！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話）</div>
+  <div class="wb-ans-traps"><table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説に基づく）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ア</td><td>✕</td><td>MMU はページフォールトを <strong>OS に通知する</strong> 役割まで。スワップを実行するのは OS。「通知する」と「実行する」のすり替えが罠。</td></tr>
+    <tr><td>イ</td><td>○</td><td>MMU（アドレス変換機能）の説明そのもの。</td></tr>
+    <tr><td>ウ</td><td>✕</td><td>MMU は <strong>ハードウェア部品</strong> なので OS の一部ではない。キャッシュ制御・バス調停の機能を持つ点は事実だが、「OSの一部」で誤り。</td></tr>
+    <tr><td>エ</td><td>✕</td><td><strong>キャッシュメモリ</strong> の説明。主記憶の一部を保持し CPU との速度差を吸収する。</td></tr>
+  </tbody>
+</table>
+
+<p><strong>心理トラップ</strong>: ウは前半「キャッシュ制御機能・バス調整機能」が MMU の機能として実在するため、後半の「OSの一部」を見落とすと選んでしまう。<strong>一部が正しい選択肢ほど、全体を最後まで読む</strong>のが鉄則。</p></div>
+</div>
+<div class="wb-answer-card" id="wb_a_8">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 8：カルノー図と論理式：マス目のお引っ越しで覚える「1をグループ化して共通項を取る」</span>
+    <span class="wb-q-meta">応用情報技術者 令和4年秋期 問2</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（A・B・D ＋ B・D の形。第1項は3変数の積、第2項は2変数の積。否定の位置は復元不可）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『1のマスを四角で囲む → 共通項を取る → ＋でつなぐ！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：クラス名簿のまとめ書き）</div>
+  <div class="wb-ans-traps"><p>否定の上線が取得できないため、構造から言える範囲で書きます。</p>
+
+<div class="print-bullet">• <strong>ア ✕</strong>: 「A・B・C・D ＋ B・D」。第1項に<strong>4変数すべて</strong>が入っています。4変数すべてを含む項は<strong>1セルだけ</strong>を表し、囲みが2セルなら共通項は3変数になるはず。→ 公式解説の「赤枠（2セルで3変数）」と一致しません。</div>
+<div class="print-bullet">• <strong>イ ✕</strong>: アと同様に第1項が4変数の積。赤枠が1セルだけ（囲み忘れ・拡張忘れ）の答えになっている。</div>
+<div class="print-bullet">• <strong>ウ ✕</strong>: 項の構造は正解エと同じ（3変数の積＋2変数の積）ですが、<strong>否定のつく変数の位置が正解と違う</strong>。※具体的な位置は復元不可。ここが“一番似ている罠”です。</div>
+<div class="print-bullet">• <strong>エ ◯</strong>: 赤枠（A・B・Dの共通項）＋青枠（B・D）と一致。</div>
+
+<blockquote class="print-quote">💡 作問者の意図：選択肢は「どの変数に否定がつくか」だけが違う、見た目がそっくりな式を並べています。<strong>囲みごとに、各変数が0固定か1固定かを丁寧に読み取り、0なら否定をつける</strong>という手順を一つずつ踏めば、取り違えを避けられます。</blockquote>
+<blockquote class="print-quote">💡 この問題を実戦で解くとき：図から ①囲みごとに「変わらない変数」を探す ②その値が1なら素の変数、0なら否定つきにする ③項を＋でつなぐ、の順で確認してください。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_9">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 9：NoSQLの種類：コインロッカーで覚える「キーバリュー型データベース」</span>
+    <span class="wb-q-meta">応用情報技術者 令和6年春期 問29</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ウ（様々な形式のデータを一つのキーに対応付けて管理するキーバリュー型データベース）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『NoSQLの4タイプ「キー・カラム・ドキュメント・グラフ」を言えたら勝ち！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：駅のコインロッカー）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア ✕: オブジェクト指向データベース</strong>  </div>
+  → 公式解説では「オブジェクト指向データベースの説明」。「関係データモデルを拡張」と書かれているため<strong>関係DBの仲間</strong>と見え、NoSQLではないと判断できます。「操作の定義や型の継承」というオブジェクト指向の言葉がヒントです。
+<div class="print-bullet">• <strong>イ ✕: データウェアハウス（DWH）</strong>  </div>
+  → 「ある主題に基づく」「過去の情報も蓄積」＝DWHの定義（意思決定支援）。ビッグデータという言葉に釣られがちですが、NoSQLの分類ではありません。
+<div class="print-bullet">• <strong>ウ ◯: キーバリュー型データベース</strong>  </div>
+  → 「1つのキーに1つの値を結びつける」NoSQLの代表タイプ（KVS）です。
+<div class="print-bullet">• <strong>エ ✕: データディクショナリ／リポジトリ</strong>  </div>
+  → 「データ項目の名称、形式など、データの特性を表すメタ情報」＝データについてのデータを管理するもの。DBの“辞書”であって、NoSQLではありません。
+
+<blockquote class="print-quote">💡 作問者の意図：「DBの名前らしい説明」を4つ並べ、NoSQLの4分類（特にKVS）を知っているかを見る問題。ア〜エの説明から、それぞれ「何の説明か」を即座に言える状態にしておけば全部消せます。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_10">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 10：タイトル：【ノートの清書と消しゴム】で覚える「ロールフォワード／ロールバック」</span>
+    <span class="wb-q-meta">応用情報技術者 [平成28年秋期 午前問30](https://www.ap-siken.com/kakomon/28_aki/q30.html)</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ア（ロールフォワード：T2，T5 ／ ロールバック：T6）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「コミット済み→進める／実行中で書込みあり→戻す／書込みなし→放置」！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話）</div>
+  <div class="wb-ans-traps"><h3 class="print-h3">判定の手順（公式解説どおり）</h3>
+
+<table class="print-table">
+  <thead>
+    <tr><th>トランザクション</th><th>状況</th><th>結論</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>T1</td><td>チェックポイント前にコミット</td><td>回復不要</td></tr>
+    <tr><td>T2</td><td>チェックポイント後〜障害前にコミット</td><td><strong>ロールフォワード</strong></td></tr>
+    <tr><td>T5</td><td>チェックポイント後〜障害前にコミット</td><td><strong>ロールフォワード</strong></td></tr>
+    <tr><td>T3</td><td>障害時に実行中、<strong>書込み無し</strong></td><td>対象外</td></tr>
+    <tr><td>T4</td><td>障害時に実行中、<strong>書込み無し</strong></td><td>対象外</td></tr>
+    <tr><td>T6</td><td>障害時に実行中、書込みあり</td><td><strong>ロールバック</strong></td></tr>
+  </tbody>
+</table>
+
+<h3 class="print-h3">最大のひっかけ</h3>
+図だけを見ると「障害時に実行中の T3・T4・T6 は全部ロールバック」と答えたくなります。ところが <strong>書込みが無いと更新前後のログ（ジャーナル）が生成されない</strong> ので、チェックポイントの状態まで戻った後に消すべきものが存在しません。よって T3・T4 は対象外。作問者は「処理内容の表」を見落とさせるのが狙いです。
+
+<h3 class="print-h3">選択肢の判定</h3>
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ア</td><td>○</td><td>ロールフォワード T2・T5、ロールバック T6 で解説の結論と一致</td></tr>
+    <tr><td>イ・ウ・エ</td><td>✕</td><td>選択肢の内容は取得できず個別の理由は復元不可。ただし正解がアなので、組合せは上表の結論と異なる（例：T3・T4 をロールバックに含める、T1 を対象にする等が典型的な誤り）。</td></tr>
+  </tbody>
+</table></div>
+</div>
+<div class="wb-answer-card" id="wb_a_11">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 11：SQLのUNIONとUNION ALL：2つの名簿を「そのままホッチキス留め」するか「ダブりを消す」か</span>
+    <span class="wb-q-meta">応用情報技術者 令和2年秋期 午前問29</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（両表をそのまま統合し、C003・35の重複行も残る結果）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『ALLが付いたら、ダブりも全部残す！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：2つの出席名簿）</div>
+  <div class="wb-ans-traps"><p>図表が復元できないため、公式解説で裏づけられる範囲で記載します。</p>
+
+<div class="print-bullet">• <strong>エ → ○（正解）</strong>  </div>
+  UNION ALLは重複を除かないため、両表をそのまま統合した結果になる。C003・35が2行残る。
+<div class="print-bullet">• <strong>ウ → ×（ひっかけ）</strong>  </div>
+  これは<strong>UNION（ALLなし）を使った場合</strong>の結果。重複する {C003, 35} が1行にまとめられる。「ALL」を見落とすと選んでしまう最大の罠です。
+<div class="print-bullet">• <strong>ア・イ → ×</strong>  </div>
+  図表の内容が取得できず、個別の誤り理由は復元不可。公式解説は正解エとウの説明のみです。
+
+<blockquote class="print-quote">💡 <strong>ひっかけ</strong>: 「主キーが下線で示されている」ので、一見「重複はないはず」と思いがちです。しかし、主キーは<strong>各表の内部</strong>での一意性であり、<strong>2つの表の間</strong>では同じ値の行があっても構いません。UNIONの結果表に主キーの制約はかかりません。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_12">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 12：IPv4のホスト数計算：マンションの部屋数で覚える「16－2＝14」</span>
+    <span class="wb-q-meta">応用情報技術者 令和4年春期 問34</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ア（14）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『32－プレフィックス長＝ホスト部のビット数。2のn乗から「－2」！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：マンションの部屋数）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア ◯: 14</strong>  </div>
+  → 16通り − 2（ネットワークアドレスとブロードキャスト）＝14。
+<div class="print-bullet">• <strong>イ ✕: 16</strong>  </div>
+  → ホスト部4ビットの<strong>組合せ数をそのまま答えた</strong>ミス。「−2」を忘れた人用の罠。
+<div class="print-bullet">• <strong>ウ ✕: 28</strong>  </div>
+  → 問題文の「/28」の数字を<strong>そのまま答えにした</strong>もの。28はネットワーク部のビット数で、ホスト数ではありません。
+<div class="print-bullet">• <strong>エ ✕: 30</strong>  </div>
+  → 「2のn乗−2」の形は合っているが、<strong>/27（ホスト部5ビット → 32−2＝30）の答え</strong>。/28 と /27 の取り違えを狙った罠です。ホスト部は 32−28＝4ビットであって5ビットではありません。
+
+<blockquote class="print-quote">💡 作問者の意図：「−2を忘れる（イ）」「プレフィックス長を答えにする（ウ）」「隣のプレフィックス長と混同する（エ）」という3つの典型ミスを並べています。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_13">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 13：LAN伝送時間の計算：高速道路の「渋滞率」で覚える「ビットとバイトの8倍」</span>
+    <span class="wb-q-meta">応用情報技術者 令和5年秋期 午前問31</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ウ（0.16）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「データ量をビットにそろえる → 実効速度を出す → 割る」の3手順！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：高速道路のトラック輸送）</div>
+  <div class="wb-ans-traps"><blockquote class="print-quote">以下の「誤りの原因」は、数値から逆算した<strong>考えられるミスの型</strong>です（公式解説は正解の導出のみ記載）。</blockquote>
+<div class="print-bullet">• <strong>ア: 0.02 → ×</strong>  </div>
+  1Mバイトを、100Mビット/秒の効率50%の速度＝「50M」で割ってしまった型（1 ÷ 50 = 0.02）。<strong>ビットとバイトの単位を混ぜた</strong>ミスです。
+<div class="print-bullet">• <strong>イ: 0.08 → ×</strong>  </div>
+  8Mビット ÷ 100Mビット/秒 = 0.08。<strong>伝送効率50%を掛け忘れた</strong>型。効率を考慮すると所要時間は2倍の0.16になります。
+<div class="print-bullet">• <strong>ウ: 0.16 → ○</strong>  </div>
+  8Mビット ÷ 50Mビット/秒 = 0.16秒。単位換算と効率の両方を正しく処理した唯一の答えです。
+<div class="print-bullet">• <strong>エ: 1.6 → ×</strong>  </div>
+  正解0.16のちょうど10倍。<strong>桁（M/k/1,000倍）の取り違え</strong>に当たる大きすぎる値で、実効速度が5Mビット/秒相当になってしまいます。回線速度100Mビット/秒でこれほど遅いのは不自然だと気づけると消去できます。
+
+<blockquote class="print-quote">💡 <strong>検算のコツ</strong>: 「効率が下がれば時間は延びる」ので、効率を無視した0.08（イ）より必ず大きい。かつ8Mビットを50Mで割るので1未満。この2つで候補はウに絞れます。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_14">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 14：LAN送信時間の差からパケット数を逆算：宅配トラックの速度差と「毎回の休憩」は相殺される！</span>
+    <span class="wb-q-meta">応用情報技術者 令和5年春期 午前問32</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ウ（100）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『差を取れば「休憩（送信間隔）」は消える。残るのは速度差だけ！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：トラックで荷物を運ぶ）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア（10）: ✗</strong>  </div>
+  → 差を「0.9ms/個」と桁を取り違えると9÷0.9＝10になる。ビット換算か秒換算で1桁ずれたときの値。
+<div class="print-bullet">• <strong>イ（80）: ✗</strong>  </div>
+  → バイトとビットの混同（×8、÷8の取り違え）で出やすい値。正しい計算では80にならない。
+<div class="print-bullet">• <strong>ウ（100）: ○</strong>  </div>
+  → 1個あたりの差0.09ms、9ms÷0.09ms＝100。公式解説の方程式の解とも一致。
+<div class="print-bullet">• <strong>エ（800）: ✗</strong>  </div>
+  → ビット（10,000）とバイト（1,250）の混同、つまり8倍ずれた値。バイトのまま計算するなど単位が混ざると出る。
+
+<blockquote class="print-quote">⚠️ ワナは2つ。①<strong>バイト→ビットの×8を忘れる</strong>、②<strong>送信間隔1msを引き算に入れてしまう</strong>（差を取ると両方から消える）。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_15">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 15：タイトル：【金庫破りの聞き耳】で覚える「サイドチャネル攻撃」</span>
+    <span class="wb-q-meta">応用情報技術者 [令和4年秋期 午前問37](https://www.ap-siken.com/kakomon/04_aki/q37.html)</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ア（物理量やエラーメッセージから秘密情報を得る）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「正面（暗号そのもの）ではなく、横（動作の様子）から探る」！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話）</div>
+  <div class="wb-ans-traps"><table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ア</td><td>○</td><td>処理時間・消費電流などの物理量やエラーメッセージから秘密情報を得る、サイドチャネル攻撃の説明。</td></tr>
+    <tr><td>イ</td><td>✕</td><td><strong>スキャベンジング</strong> の説明（ごみ漁り型のソーシャルエンジニアリング）。</td></tr>
+    <tr><td>ウ</td><td>✕</td><td><strong>MITM攻撃（中間者攻撃）</strong> の説明。</td></tr>
+    <tr><td>エ</td><td>✕</td><td><strong>SQLインジェクション</strong> の説明。</td></tr>
+  </tbody>
+</table>
+
+<p><strong>ひっかけ</strong>: イ〜エは、どれもセキュリティ試験の頻出用語で、「攻撃っぽいから」と選びやすい。決め手は <strong>「暗号の実装機器の物理的な様子を観察する」</strong> という一点。ちなみにアの「エラーメッセージ」も、装置から漏れる情報として含まれる点に注意。</p></div>
+</div>
+<div class="wb-answer-card" id="wb_a_16">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 16：CORBA：国連の通訳窓口で覚える「OMGが決めた分散オブジェクトの仕様」</span>
+    <span class="wb-q-meta">応用情報技術者 平成19年春期 問80</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（OMGが制定した分散オブジェクト技術の仕様）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「誰が？（OMG）」×「何の？（分散オブジェクト）」の2軸で消去！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：国際会議の同時通訳ブース）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア ✕</strong>: 制定団体がANSI（米国規格協会）で誤り。さらに「オブジェクト指向プログラミング技術」ではなく「分散オブジェクト技術」なので二重に誤り。</div>
+<div class="print-bullet">• <strong>イ ✕</strong>: 技術内容（分散オブジェクト）は正しいが、制定団体がANSIで誤り。<strong>半分だけ正しいひっかけ</strong>。</div>
+<div class="print-bullet">• <strong>ウ ✕</strong>: 制定団体（OMG）は正しいが、「オブジェクト指向プログラミング技術」が誤り。CORBAは言語の仕様ではなく、分散環境でオブジェクトを相互利用する仕様。</div>
+<div class="print-bullet">• <strong>エ ○</strong>: OMG（団体）＋分散オブジェクト技術（目的）の両方が正しい。</div>
+
+<blockquote class="print-quote">😈 最大のトラップ：イとウは「片方だけ正しい」選択肢。<strong>団体名と技術内容の両方を確認</strong>してから選びましょう。</blockquote>
+<blockquote class="print-quote">※元データの分類は「法務」ですが、内容は分散オブジェクト技術（開発技術）のため、12_システム開発技術に配置しました。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_17">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 17：画像フォーマットSVG：「設計図で描く絵」で覚える「拡大しても荒れないXML画像」</span>
+    <span class="wb-q-meta">応用情報技術者 令和3年春期 午前問27</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ウ（SVG）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「XMLで書く」「図形を命令で描く」＝SVG！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：絵と設計図の違い）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア: OpenGL → ×</strong>  </div>
+  Open Graphics Libraryの略。Linux、FreeBSDなどのUNIXやWindows、Mac OS Xで使えるクロスプラットフォームの、<strong>2D/3DCGを扱うAPI</strong>です。画像フォーマットではありません。
+<div class="print-bullet">• <strong>イ: PNG → ×</strong>  </div>
+  Portable Network Graphicsの略。<strong>圧縮による画質劣化がない可逆圧縮</strong>の画像フォーマットで、GIFより圧縮率が高く、ほぼ全てのブラウザで対応しています。Web画像として使われますが、XMLで図形を記述する形式ではありません（ラスター画像）。
+<div class="print-bullet">• <strong>ウ: SVG → ○</strong>  </div>
+  XML形式で図形を記述する画像フォーマット。
+<div class="print-bullet">• <strong>エ: TIFF → ×</strong>  </div>
+  Tagged Image File Formatの略。解像度・色数・カラーモデルなどが異なる<strong>複数の形式の画像データを1つのファイルに格納</strong>できるファイル形式です。
+
+<blockquote class="print-quote">💡 <strong>ひっかけ</strong>: 「Web」「W3C」という言葉からPNGを選びがち。しかし<strong>「XMLで図形オブジェクトを記述する」がキーワード</strong>。ピクセルを並べるPNGは対象外です。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_18">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 18：開発工数の式と生産性：「べき乗」は怖くない！ほぼ1乗とみなして割るだけ</span>
+    <span class="wb-q-meta">応用情報技術者 平成30年春期 午前問54</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ア（0.2）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『生産性＝規模÷工数。0.98乗は“ほぼ1乗”で近似！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：1人が1か月に書ける原稿の量）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア（0.2）: ○</strong>  </div>
+  → 10÷52 ＝ 0.192… ≒ 0.2。公式解説と一致。
+<div class="print-bullet">• <strong>イ（0.5）: ✗</strong>  </div>
+  → 工数を5.2×L＝52でなく約20程度と誤る、など計算経路が合わない値。10÷52 は0.5にならない。
+<div class="print-bullet">• <strong>ウ（1.9）: ✗</strong>  </div>
+  → 10÷52＝0.192 の<strong>小数点の位置を1桁ずらした</strong>値（0.192 → 1.92）。小数点ミスの罠。
+<div class="print-bullet">• <strong>エ（5.2）: ✗</strong>  </div>
+  → 式の係数5.2を、そのまま答えにしてしまう罠。5.2は係数であり、生産性ではない。
+
+<blockquote class="print-quote">⚠️ 逆数の罠にも注意。「工数÷規模」＝52÷10＝5.2 は“1キロ行あたりの人月”であり、生産性（キロ行/人月）とは<strong>逆</strong>。単位「キロ行／人月」＝「キロ行 ÷ 人月」と読めば間違えません。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_19">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 19：可用性管理の保守性指標：「入院から退院までの日数」で覚える「平均サービス回復時間（MTRS）」</span>
+    <span class="wb-q-meta">応用情報技術者 令和4年春期 午前問56</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（平均サービス回復時間）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「壊れてから直るまで」＝保守性！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：スマホの入院）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア: 一定期間内での中断の数 → ×</strong>  </div>
+  公式解説では<strong>可用性</strong>を表す指標。中断が何回あったかであって、回復の速さではありません。
+<div class="print-bullet">• <strong>イ: 平均故障間隔 → ×</strong>  </div>
+  公式解説では<strong>信頼性</strong>を表す指標（MTBF）。「壊れるまでの長さ」で、直す速さではありません。
+<div class="print-bullet">• <strong>ウ: 平均サービス・インシデント間隔 → ×</strong>  </div>
+  公式解説では<strong>信頼性</strong>を表す指標（MTBSI）。サービスのインシデントが起きる間隔であり、これも「壊れにくさ」側です。
+<div class="print-bullet">• <strong>エ: 平均サービス回復時間 → ○</strong>  </div>
+  停止から利用可能になるまでの平均時間（MTRS）。保守性を測る指標です。
+
+<blockquote class="print-quote">💡 <strong>ひっかけ</strong>: 「間隔（長いほど良い）＝信頼性」と「時間（短いほど良い）＝保守性」。<strong>良くなる方向が逆</strong>である点が問題文の「短縮」にも表れています。「短縮を目標にできるのは回復時間」と気づければ即決です。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_20">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 20：ITILの7ステップの改善プロセス：「家計簿の見直し」で覚える「収集→処理→分析→提示」</span>
+    <span class="wb-q-meta">応用情報技術者 令和元年秋期 午前問56</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ウ</strong>  <br>（a＝データを処理する、b＝情報とデータを分析する、c＝情報を提示して利用する、の組合せ）</p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「特定→定義→収集→処理→分析→提示→実装」の順番を言える！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：家計簿で食費を減らす）</div>
+  <div class="wb-ans-traps"><p>取得データには選択肢ア〜エの本文がないため、<strong>各選択肢ごとの判定理由は復元できません</strong>。公式解説から確実に言える範囲は次のとおりです。</p>
+
+<div class="print-bullet">• <strong>ウ → ○（正解）</strong>  </div>
+  ④処理＝データを処理する、⑤分析＝情報とデータを分析する、⑥提示＝情報を提示して利用する、と順番どおりに対応しているため。
+<div class="print-bullet">• <strong>ア・イ・エ → ×</strong>  </div>
+  公式解説にこれらの内容記載はなく、正解の対応関係と食い違う組合せです（具体的な誤り方は復元不可）。
+
+<blockquote class="print-quote">💡 <strong>ひっかけの一般的な型（推定）</strong>: 「分析」と「処理」の入れ替え、「提示」と「実装」の混同。<strong>収集した後に処理、その後に分析、最後に提示</strong>の順序を固定して覚えれば、並び替え型の選択肢を消せます。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_21">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 21：サービスレベル管理プロセス：お客さんと「ここまで保証します」と契約書を交わす係</span>
+    <span class="wb-q-meta">応用情報技術者 令和6年春期 午前問56</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（提供するサービス及びサービスレベル目標を決定し，サービス提供者が顧客との間で合意文書を交わす。）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『サービスレベル管理＝顧客との約束（SLA）を決めて守る係！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：宅配ピザ店の「30分以内にお届け」保証）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア: ✗（キャパシティ管理の活動）</strong>  </div>
+  → 「資源の調整と最適化」「将来の資源要件の予測」＝ピザ店で言えば「ピザ窯や配達員を何人揃えるか」の計画。約束ではなく、約束を守るための設備計画。
+<div class="print-bullet">• <strong>イ: ✗（サービスの予算及び会計業務の活動）</strong>  </div>
+  → 「予算」「資金」というお金のキーワード。店の経理係の仕事。
+<div class="print-bullet">• <strong>ウ: ✗（サービス継続及び可用性管理の活動）</strong>  </div>
+  → 「災害・障害で中断」「復旧」「事業影響度」「復旧優先順位」＝店が火事になっても営業再開できる備え（BCP的）。
+<div class="print-bullet">• <strong>エ: ○（サービスレベル管理の活動）</strong>  </div>
+  → 「サービスレベル目標を決定」「顧客と合意文書」＝SLAの締結そのもの。
+
+<blockquote class="print-quote">⚠️ ウは「合意された期間内に」と“合意”の語が入っているのがひっかけ。しかし主題は<strong>復旧の備え</strong>であり、合意文書を交わす活動ではない。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_22">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 22：タイトル：【レストランの全メニュー台帳】で覚える「サービス・ポートフォリオ」</span>
+    <span class="wb-q-meta">応用情報技術者 [令和3年春期 午前問56](https://www.ap-siken.com/kakomon/03_haru/q56.html)</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ア（全てのサービスを含む）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「ポートフォリオ＝3つの箱の全部入り」！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話）</div>
+  <div class="wb-ans-traps"><table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ア</td><td>○</td><td>検討中か開発中・稼働中か展開可能・廃止済みの <strong>全て</strong> を含む。ポートフォリオの説明。</td></tr>
+    <tr><td>イ</td><td>✕</td><td>顧客に公開され「稼働中か展開可能」だけを含む → <strong>サービス・カタログ</strong> の説明。</td></tr>
+    <tr><td>ウ</td><td>✕</td><td>「廃止済み」を含まないとしている点が誤り。ポートフォリオには廃止済みも含まれる。</td></tr>
+    <tr><td>エ</td><td>✕</td><td>「検討中か開発中」を含まないとしている点が誤り。ポートフォリオにはパイプラインも含まれる。</td></tr>
+  </tbody>
+</table>
+
+<p><strong>ひっかけ</strong>: ウ・エは「3つの箱のうち1つを抜いた」だけの精巧な偽物。<strong>3つの箱が全て入っているか</strong> を数えて確認すると見破れます。イは「顧客に公開」「販売の支援」という言葉でカタログと見抜く。</p></div>
+</div>
+<div class="wb-answer-card" id="wb_a_23">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 23：システム監査の「監査手続」：裁判の証拠集めで覚える「十分かつ適切な監査証拠」</span>
+    <span class="wb-q-meta">応用情報技術者 令和4年秋期 問59</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ウ（監査項目について，十分かつ適切な証拠を入手するための手順）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『手続＝証拠を集める作業。計画は前、報告は後！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：裁判の証拠集め）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア ✕: 監査計画の立案や進捗管理</strong>  </div>
+  → 公式解説では「<strong>監査計画の策定</strong>」に該当。裁判でいえば「どう捜査するか」の段取りで、証拠集めそのものではありません。「手続」と「手順」という言葉の響きが似ているのが罠です。
+<div class="print-bullet">• <strong>イ ✕: 監査報告書に結論・指摘事項を書く</strong>  </div>
+  → 公式解説では「<strong>監査報告書の作成</strong>」に該当。証拠を集めた<strong>後</strong>の、判決文を書く工程です。
+<div class="print-bullet">• <strong>ウ ◯: 十分かつ適切な証拠を入手する手順</strong>  </div>
+  → 公式解説：「監査手続は、監査の結論を裏付けるための監査証拠を入手するプロセス」。これが定義そのものです。
+<div class="print-bullet">• <strong>エ ✕: 監査テーマに合わせて監査チームを編成する</strong>  </div>
+  → 公式解説では「<strong>監査業務の体制構築</strong>」に該当。捜査本部の人選であり、これも準備段階です。
+
+<blockquote class="print-quote">💡 作問者の意図：日常語の「手続」から「段取り全般」を連想させ、ア・エを選ばせたい。試験用語の「手続＝証拠を入手するための手順」を確実に覚えているかを問うています。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_24">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 24：共通フレーム2013の要件定義プロセス：「家づくりの聞き取り」で覚える「利害関係者の識別」</span>
+    <span class="wb-q-meta">応用情報技術者 令和元年秋期 午前問65</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（利害関係者の識別）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「企画 → 要件定義 → 開発」の流れの中で位置を決める！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：家を建てる前の聞き取り）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア: システム化計画の立案 → ×</strong>  </div>
+  <strong>企画プロセス</strong>で行います。要件定義より前の段階です。
+<div class="print-bullet">• <strong>イ: システム方式設計 → ×</strong>  </div>
+  <strong>システム開発プロセス</strong>で行います。要件が決まった後に、どう作るかを決める工程です。
+<div class="print-bullet">• <strong>ウ: ソフトウェア詳細設計 → ×</strong>  </div>
+  <strong>ソフトウェア実装プロセス</strong>で行います。さらに後工程の細かい設計です。
+<div class="print-bullet">• <strong>エ: 利害関係者の識別 → ○</strong>  </div>
+  要件定義プロセスの最初のアクティビティです。
+
+<blockquote class="print-quote">💡 <strong>ひっかけ</strong>: 「要件定義」と聞いて「計画」「設計」の語が並ぶ選択肢に引っ張られがち。<strong>「何を作るか（要件）」は、「なぜ・いつ（企画）」の後、「どう作るか（設計）」の前</strong>と位置づけましょう。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_25">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 25：EAのTo-Beモデル：旅行の「目的地マップ」で覚える「理想の将来像」</span>
+    <span class="wb-q-meta">応用情報技術者 平成29年秋期 午前問61</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: イ（To-Beモデル）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『As-Is＝今ここ、To-Be＝行きたい未来！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：ダイエット計画）</div>
+  <div class="wb-ans-traps"><table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説に基づく）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>ア</strong> EA参照モデル</td><td>✕</td><td>政府が公開しているEAのひな型のこと。理想の姿そのものではない。</td></tr>
+    <tr><td><strong>イ</strong> To-Beモデル</td><td>◯</td><td>対象の理想的な将来像・目標を表現するモデル。</td></tr>
+    <tr><td><strong>ウ</strong> ザックマンモデル</td><td>✕</td><td>1987年ジョン・A・ザックマンが提唱した、EAの基礎となっているフレームワーク。5種類の異なる立場の視点と、それぞれの5W1H（What、How、Where、Who、When、Why）の側面から分析・記述する手法。</td></tr>
+    <tr><td><strong>エ</strong> データモデル</td><td>✕</td><td>対象業務を、情報システムやDBMSにおける抽象的な形式としてモデル化したもの。EA固有の「理想」の意味はない。</td></tr>
+  </tbody>
+</table>
+
+<div class="print-bullet">• <strong>ひっかけ心理</strong>: 「参照モデル」「ザックマンモデル」はEAの有名語なので、「EA＝正解」と錯覚しやすい。<strong>問われているのは「理想」＝将来像</strong> なので、キーワードは To-Be。</div>
+<div class="print-bullet">• 「データモデル」は名前が似ているだけで、EAの4体系の一つ「データ体系」とも別物。選択肢のモデルの種類が違う点に注意。</div></div>
+</div>
+<div class="wb-answer-card" id="wb_a_26">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 26：アンゾフの成長マトリクス：パン屋の「4つの攻め方」で覚える「市場×製品」</span>
+    <span class="wb-q-meta">応用情報技術者 平成28年秋期 午前問68</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: イ（製品と市場の視点から，市場浸透・製品開発・市場開拓・多角化に分けて戦略を検討する）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『アンゾフ＝製品×市場の2×2、既存か新規か！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：駅前のパン屋の作戦会議）</div>
+  <div class="wb-ans-traps"><table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説に基づく）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>ア</strong> 強み・弱み・機会・脅威を列挙して環境分析</td><td>✕</td><td><strong>SWOT分析</strong> の説明。内部（強み・弱み）と外部（機会・脅威）の4要素。</td></tr>
+    <tr><td><strong>イ</strong> 市場浸透・製品開発・市場開拓・多角化</td><td>◯</td><td><strong>アンゾフの成長マトリクス</strong> の説明。</td></tr>
+    <tr><td><strong>ウ</strong> 市場占有率と市場成長率から経営資源を配分</td><td>✕</td><td><strong>プロダクトポートフォリオマネジメント（PPM）</strong> の説明。</td></tr>
+    <tr><td><strong>エ</strong> 導入期・成長期・成熟期・衰退期に応じた計画</td><td>✕</td><td><strong>プロダクトライフサイクル</strong> の説明。</td></tr>
+  </tbody>
+</table>
+
+<div class="print-bullet">• <strong>ひっかけ心理</strong>: どれも「2軸のマトリクスや段階で戦略を考える」フレームワークで似て見える。<strong>4つの名前（浸透・開発・開拓・多角化）が出ればアンゾフ</strong> と決め打ちできる。</div>
+<div class="print-bullet">• 見分けキーワード：強み/弱み → SWOT、占有率/成長率 → PPM、導入〜衰退 → PLC。</div></div>
+</div>
+<div class="wb-answer-card" id="wb_a_27">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 27：コアコンピタンス：老舗うなぎ屋の「秘伝のタレ」で覚える「差別化の源泉」</span>
+    <span class="wb-q-meta">応用情報技術者 平成23年特別 午前問66</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（他社との差別化の源泉となる経営資源）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『コア（核）＋コンピタンス（能力）＝他社が真似できない核の力！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：老舗うなぎ屋の秘伝のタレ）</div>
+  <div class="wb-ans-traps"><table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説に基づく）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>ア</strong> 基本精神や行動指針</td><td>✕</td><td><strong>経営理念</strong> の説明。うなぎ屋なら「まごころを込めて焼く」という店訓。</td></tr>
+    <tr><td><strong>イ</strong> 到達すべき目標</td><td>✕</td><td><strong>経営ビジョン</strong> の説明。「5年後に全国展開」のような目指す姿。</td></tr>
+    <tr><td><strong>ウ</strong> 機会と脅威</td><td>✕</td><td><strong>外部環境要因</strong> の説明（SWOTの O と T）。自社の能力ではなく、周りの状況。</td></tr>
+    <tr><td><strong>エ</strong> 差別化の源泉となる経営資源</td><td>◯</td><td><strong>コアコンピタンス</strong> の説明。</td></tr>
+  </tbody>
+</table>
+
+<div class="print-bullet">• <strong>ひっかけ心理</strong>: ア・イは「経営の根っこ」っぽく見え、ウは「分析っぽい」ので紛らわしい。<strong>「資源・能力」の話か、「理念・目標・環境」の話か</strong> で分ける。</div>
+<div class="print-bullet">• 「他社との差別化」「模倣困難」が出たら即コアコンピタンス。</div></div>
+</div>
+<div class="wb-answer-card" id="wb_a_28">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 28：PPMマトリックス：果樹園で覚える「縦軸は成長率・横軸は占有率」</span>
+    <span class="wb-q-meta">応用情報技術者 令和3年春期 問67</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ウ（a＝市場成長率，b＝市場占有率）</strong>  <br>※「ウ」の選択肢の具体的な語句は原データにないため、公式解説の結論（aが市場成長率、bが市場占有率）から記載。</p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『“金のなる木”は成長率が低く占有率が高い、を座標に当てはめる！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：果樹園の経営）</div>
+  <div class="wb-ans-traps"><p>各選択肢の具体的な語句は取得できないため、公式解説から言える判定の根拠を示します。</p>
+
+<div class="print-bullet">• <strong>ア・イ・エ ✕（ウ以外）</strong>  </div>
+  → 公式解説は「aが市場成長率、bが市場占有率である組合せがウ」と結論しています。したがってア・イ・エは、この組合せ（a＝成長率, b＝占有率）と異なるもの、つまり a と b を逆にしたもの、または別の語句の組合せです。※具体的な語句は復元不可。
+<div class="print-bullet">• <strong>ウ ◯</strong>  </div>
+  → a＝市場成長率、b＝市場占有率。金のなる木（a=低, b=高）、問題児（a=高, b=低）の両方と整合します。
+
+<blockquote class="print-quote">💡 ひっかけ：<strong>軸の順番</strong>。「占有率が横軸」と覚えこむより、図の“金のなる木”と“問題児”の位置から<strong>毎回その場で軸を決める</strong>ほうが確実です。図のどの象限がどの名前かさえ分かれば、軸の取り違えは起きません。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_29">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 29：SCMの目的：バケツリレーで覚える「企業をまたぐ一気通貫の情報共有」</span>
+    <span class="wb-q-meta">応用情報技術者 平成29年春期 問67</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（複数の企業や組織にまたがる調達から販売までの業務プロセス全ての情報を統合的に管理することによって，コスト低減や納期短縮などを目的とする。）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『SCM＝“サプライチェーン”＝つなぐ相手は“他社も含めた流れ”！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：バケツリレー）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア ✕: CRMの目的</strong>  </div>
+  → 「顧客情報・購買履歴・クレームを一元管理して良好な顧客関係を築く」はCRM（Customer Relationship Management）。キーワードは“顧客”。
+<div class="print-bullet">• <strong>イ ✕: SFAの目的</strong>  </div>
+  → 「商談スケジュール・進捗状況を管理して営業活動を効率化」はSFA（Sales Force Automation）。キーワードは“商談・営業”。
+<div class="print-bullet">• <strong>ウ ✕: ERPの目的</strong>  </div>
+  → 「生産・販売・在庫・財務会計・人事など基幹業務を統合管理して経営効率を向上」はERP（Enterprise Resource Planning）。<strong>社内の</strong>基幹業務が対象。在庫・生産などSCMと重なる語があり紛らわしいですが、企業をまたぐ視点がありません。
+<div class="print-bullet">• <strong>エ ◯: SCMの目的</strong>  </div>
+  → 「複数の企業や組織にまたがる調達から販売まで」「コスト低減や納期短縮」。SCMの定義そのものです。
+
+<blockquote class="print-quote">💡 作問者の意図：4つの「〜を一元管理して〜効率化」という似た文章を並べ、“何を・どの範囲で管理するか”の違いを見抜けるかを問う問題。<strong>対象（顧客／商談／社内基幹／企業間の供給の流れ）</strong>で切り分けましょう。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_30">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 30：タイトル：【お掃除の段取り】で覚える「合計段取り時間を最小にする順序」</span>
+    <span class="wb-q-meta">応用情報技術者 [令和6年秋期 午前問72](https://www.ap-siken.com/kakomon/06_aki/q72.html)</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: ア（4時間）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「1時間の矢印をつなげ、余りの d を最後に回す」！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話）</div>
+  <div class="wb-ans-traps"><h3 class="print-h3">解き方（公式解説どおり）</h3>
+1. 1時間の移動 b→a と a→c を連結すると <strong>b→a→c</strong> が 1 + 1 = 2時間で組める。
+2. 残る d は、他の作業の後ろか c の前なら 2時間。ところが b→a→c の先頭は b なので、d を前に置けない（b の前に d を置くと別の移動が要る）。そこで <strong>c の後ろ</strong> に回す。
+3. 順序は b→a→c→d。段取り合計 = 1（b→a）+ 1（a→c）+ 2（c→d）= <strong>4時間</strong>。
+
+<h3 class="print-h3">選択肢の判定</h3>
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ア 4</td><td>○</td><td>上記の b→a→c→d で達成できる最小値</td></tr>
+    <tr><td>イ 5</td><td>✕</td><td>4時間で達成できる順序がある以上、最小ではない。例えば 1時間の矢印を活かさず 2時間の移動を増やすと届く値</td></tr>
+    <tr><td>ウ 6</td><td>✕</td><td>同上。1時間の矢印をうまく連結できていない順序の結果</td></tr>
+    <tr><td>エ 7</td><td>✕</td><td>同上。最小値ではなく、無駄な段取りの多い順序の値</td></tr>
+  </tbody>
+</table>
+
+<p>※表が取得できないため、イ〜エを実現する具体的な順序までは復元できません。「最小値の問題で、より小さい4が実現できるので、5・6・7は不正解」が確実な根拠です。</p>
+
+<p><strong>ひっかけ</strong>: 「1時間の移動を3本全部使いたい」と欲張ると、b→a と b→c は出発点が同じ b なので同時には使えず、行き詰まります。「最安の矢印は連結できるものだけ」と割り切るのがコツです。</p></div>
+</div>
+<div class="wb-answer-card" id="wb_a_31">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 31：CIOの役割：会社の「IT担当の参謀長」で覚える「ビジネス価値を最大化するIT活用」</span>
+    <span class="wb-q-meta">応用情報技術者 平成30年秋期 午前問74</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（ビジネス価値を最大化させるITサービス活用の促進）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『C◯Oは頭文字の「◯」で担当を当てる！I＝Information＝IT』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：ラーメンチェーンの経営会議）</div>
+  <div class="wb-ans-traps"><table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説に基づく）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>ア</strong> 財務戦略の立案と遂行</td><td>✕</td><td><strong>CFO</strong>（Chief Financial Officer：最高財務責任者）の役割。「お金」＝Financial。</td></tr>
+    <tr><td><strong>イ</strong> 研究開発方針の立案と実施</td><td>✕</td><td><strong>CTO</strong>（Chief Technology Officer：最高技術責任者）の役割。「技術」＝Technology。</td></tr>
+    <tr><td><strong>ウ</strong> 法令遵守の体制の構築と運用</td><td>✕</td><td><strong>CLO</strong>（Chief Legal Officer：最高法務責任者）の役割。「法律」＝Legal。</td></tr>
+    <tr><td><strong>エ</strong> ITサービス活用の促進</td><td>◯</td><td><strong>CIO</strong>の役割。情報戦略の責任者として、ITでビジネス価値を最大化する。</td></tr>
+  </tbody>
+</table>
+
+<div class="print-bullet">• <strong>ひっかけ心理</strong>: 「T（Technology）」と「I（Information）」が似て見えて、技術系の選択肢イに引っ張られやすい。CTOは「研究開発・技術」、CIOは「情報戦略・IT活用」と切り分ける。</div>
+<div class="print-bullet">• 「IT＝技術」という連想で選ばず、<strong>頭文字の英単語で担当を引く</strong> のが確実。</div></div>
+</div>
+<div class="wb-answer-card" id="wb_a_32">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 32：系統図法：お弁当づくりの「目的→手段」ツリーで覚える「系統図法」</span>
+    <span class="wb-q-meta">応用情報技術者 令和3年春期 午前問76</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（目的を達成するための手段を導き出し，更にその手段を細分化していく）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『系統図＝目的を枝分かれさせて手段まで掘り下げる木！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：家系図ならぬ「手段の家系図」）</div>
+  <div class="wb-ans-traps"><table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説に基づく）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>ア</strong> 問題を中央に置き、要因を因果関係の矢印でつなぐ</td><td>✕</td><td><strong>連関図法</strong> の活用事例。「原因と結果が絡み合う」ときに矢印で結ぶ。</td></tr>
+    <tr><td><strong>イ</strong> 結果と要因を整理して魚の骨の形にまとめる</td><td>✕</td><td><strong>特性要因図（フィッシュボーンチャート）</strong> の活用事例。</td></tr>
+    <tr><td><strong>ウ</strong> カードに書いてグループ化する</td><td>✕</td><td><strong>親和図法（KJ法）</strong> の活用事例。バラバラの意見を仲間分けする。</td></tr>
+    <tr><td><strong>エ</strong> 目的から手段を細分化していく</td><td>◯</td><td><strong>系統図法</strong> の活用例。</td></tr>
+  </tbody>
+</table>
+
+<div class="print-bullet">• <strong>ひっかけ心理</strong>: ア・イはどちらも「原因」を探る図なので系統図と混同しやすい。系統図は原因探しではなく <strong>「手段」を出す</strong> ための図。</div>
+<div class="print-bullet">• キーワード対応：矢印で因果 → 連関図／魚の骨 → 特性要因図／カード → 親和図(KJ法)／目的→手段の枝分かれ → 系統図。</div></div>
+</div>
+<div class="wb-answer-card" id="wb_a_33">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 33：デルファイ法：覆面の専門家会議で覚える「アンケートを繰り返して意見を収束」</span>
+    <span class="wb-q-meta">応用情報技術者 令和4年秋期 問75</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（複数の専門家へのアンケートの繰返しによる回答の収束によって将来を予測する。）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「専門家」「アンケート」「繰り返し」「収束」の4語！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：覆面で行う「みんなの予想」会議）</div>
+  <div class="wb-ans-traps"><p>公式解説に基づく各選択肢の正体：</p>
+
+<div class="print-bullet">• <strong>ア ✕（シナリオプランニングの説明）</strong>: 現状の指標の中から将来の動向を示す指標に着目するのは、公式解説ではシナリオプランニングの説明とされています。</div>
+<div class="print-bullet">• <strong>イ ✕（回帰分析の説明）</strong>: モデル化した式を解いて予測するのは、公式解説では回帰分析の説明とされています。</div>
+<div class="print-bullet">• <strong>ウ ✕（統計的予測理論の説明）</strong>: 観測データの統計比較分析による予測は、公式解説では統計的予測理論の説明です。</div>
+<div class="print-bullet">• <strong>エ ○（デルファイ法）</strong>: 専門家・アンケートの繰り返し・回答の収束という3要素がそろっています。</div>
+
+<table class="print-table">
+  <thead>
+    <tr><th>手法</th><th>一言で言うと</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>デルファイ法</td><td>専門家アンケートを繰り返し、意見を収束</td></tr>
+    <tr><td>シナリオプランニング</td><td>将来のシナリオを描き予測する（選択肢アの説明）</td></tr>
+    <tr><td>回帰分析</td><td>式（モデル）を使って予測する（選択肢イの説明）</td></tr>
+  </tbody>
+</table>
+
+<blockquote class="print-quote">😈 ひっかけの構造：ア〜ウはどれも「予測手法の説明文」としてもっともらしい。<strong>「専門家」「アンケート」「繰り返し」のキーワードがあるかどうか</strong>で判断しましょう。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_34">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 34：最大利益の価格設定：屋台のたこ焼きで覚える「価格×個数−固定費−変動費×個数」</span>
+    <span class="wb-q-meta">応用情報技術者 令和4年春期 問76</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（1,600）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：「全部の価格で利益を計算して、一番大きいものを選ぶ」！</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：文化祭のたこ焼き屋）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア 1,000円（利益31,000,000円）✕</strong>: 一番たくさん売れるので「薄利多売で一番儲かりそう」と思わせる罠。1個あたりの儲けが 1,000 − 600 ＝ 400円しかなく、最下位です。</div>
+<div class="print-bullet">• <strong>イ 1,200円（利益41,000,000円）✕</strong>: 真ん中あたりの無難な選択に見えるが、4通り中3位。</div>
+<div class="print-bullet">• <strong>ウ 1,400円（利益47,000,000円）✕</strong>: 売上は1,200円のときと同じ84,000,000円。<strong>売上が同じでも、販売個数が少ない分、変動費が減って利益は増える</strong>ことに注意。ただし最大ではありません。</div>
+<div class="print-bullet">• <strong>エ 1,600円（利益49,000,000円）○</strong>: 1個の儲けが 1,600 − 600 ＝ 1,000円で、売上は80,000,000円と最大ではないが、費用が大きく減るため利益は最大。</div>
+
+<blockquote class="print-quote">😈 最大のトラップ：売上の最大値（1,200円と1,400円の84,000,000円）を見て「売上が大きい＝利益が大きい」と思い込むこと。利益は費用を引いて初めて比較できます。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_35">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 35：最大利益の価格設定：高く売れば儲かる…とは限らない！「価格×個数」の山を探す</span>
+    <span class="wb-q-meta">応用情報技術者 平成26年秋期 午前問77</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: エ（1,600）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『利益＝価格×個数−固定費−変動費×個数。4つ全部計算して比べる！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：文化祭のたこ焼き屋）</div>
+  <div class="wb-ans-traps"><div class="print-bullet">• <strong>ア（1,000円）: ✗</strong>  </div>
+  → 最も売れる（8万個）が1個あたりの儲けは400円と薄く、利益は3,100万円で最下位。「薄利多売で一番儲かりそう」という心理トラップ。
+<div class="print-bullet">• <strong>イ（1,200円）: ✗</strong>  </div>
+  → 利益4,100万円。売上は8,400万円と大きいが、変動費が4,200万円かかり利益はウ・エに届かない。
+<div class="print-bullet">• <strong>ウ（1,400円）: ✗</strong>  </div>
+  → 利益4,700万円。<strong>売上はイと同じ8,400万円</strong>で、個数が減った分だけ変動費が減るため利益が増える。惜しいが最大ではない。
+<div class="print-bullet">• <strong>エ（1,600円）: ○</strong>  </div>
+  → 利益4,900万円で最大。売上は8,000万円と一番低いが、変動費が3,000万円まで下がるため利益は最大になる。
+
+<blockquote class="print-quote">⚠️ 「売上が最大＝利益が最大」ではない！売上最大はイとウ（8,400万円）ですが、利益最大はエ。必ず費用を引いて比べます。</blockquote></div>
+</div>
+<div class="wb-answer-card" id="wb_a_36">
+  <div class="wb-ans-header">
+    <span class="wb-ans-title">問 36：共通フレーム98：取引の「共通の物差し」で覚える「社内取引もOK」</span>
+    <span class="wb-q-meta">応用情報技術者 平成18年秋期 午前問78</span>
+  </div>
+  <div class="wb-ans-correct"><p><strong>正解: イ（顧客と開発ベンダーの受注契約にかかわる取引以外に，社内の部門間取引も対象に規定している）</strong></p></div>
+  <div class="wb-ans-point"><strong>📌 要約:</strong> 一枚で：『共通フレーム＝取得者と供給者の共通の物差し。社内でも社外でも使える！』</div>
+  <div class="wb-ans-point"><strong>💡 たとえ話:</strong> なぜそうなるのか？（日常のたとえ話：引っ越しの「見積書の共通書式」）</div>
+  <div class="wb-ans-traps"><table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説に基づく）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>ア</strong> 作業の時間及び順序を規定</td><td>✕</td><td>工程や時間に依存して定義されたものではない。「何をするか」の作業内容の物差しであり、「いつ・どの順で」を縛るものではない。</td></tr>
+    <tr><td><strong>イ</strong> 社内の部門間取引も対象</td><td>◯</td><td>組織の内部か外部かを問わず、システム・ソフトウェアを取得／供給するときは適用対象。</td></tr>
+    <tr><td><strong>ウ</strong> ソフトウェア開発のみが対象</td><td>✕</td><td>ソフトウェア、ハードウェア、手作業を含むシステム方式設計の工程が含まれる。さらにソフトウェアを中心としたシステム関連作業まで含む。</td></tr>
+    <tr><td><strong>エ</strong> ISO/IEC 12207と同一</td><td>✕</td><td>日本独自の要素が追加されているので同一ではない。</td></tr>
+  </tbody>
+</table>
+
+<div class="print-bullet">• <strong>ひっかけ心理</strong>: 「ISOがベース」という知識から、エの「同一」を選びやすい。<strong>ベース≠同一</strong>（日本独自要素の追加あり）。</div>
+<div class="print-bullet">• ウは「ソフトウェア」という名前に引っ張られる罠。範囲はシステム全体寄り。</div>
+<div class="print-bullet">• アはウォーターフォールの工程順のイメージで「順序も決めている」と思い込む罠。</div></div>
+</div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,3261 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>AP暗記ノート（inbox）</title>
+  <!-- Mermaid.js for Vector Diagram Rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'neutral',
+      securityLevel: 'loose',
+      fontFamily: 'Noto Sans JP, sans-serif',
+      fontSize: 12
+    });
+  </script>
+  <style>
+    /* ========================================================
+       A4用紙・両面印刷（製本）専用組版スタイル
+       ======================================================== */
+    @page {
+      size: A4 portrait;
+      margin: 15mm 15mm 15mm 15mm;
+      @bottom-right {
+        content: counter(page);
+        font-size: 8.5pt;
+        color: #64748b;
+      }
+    }
+
+    @page :left {
+      margin-left: 12mm;
+      margin-right: 18mm;
+    }
+
+    @page :right {
+      margin-left: 18mm;
+      margin-right: 12mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans JP', sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.62;
+      color: #0f172a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .screen-toolbar {
+      background: #1e293b;
+      color: #ffffff;
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .screen-toolbar button {
+      background: #f59e0b;
+      color: #000;
+      border: none;
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .screen-toolbar button:hover {
+      background: #d97706;
+    }
+
+    @media print {
+      .screen-toolbar {
+        display: none !important;
+      }
+    }
+
+    .question-sheet {
+      page-break-before: always;
+      break-before: page;
+      padding: 0;
+      margin: 0 auto;
+    }
+
+    .question-sheet:first-of-type {
+      page-break-before: avoid;
+      break-before: avoid;
+    }
+
+    .print-h1 {
+      font-size: 14pt;
+      font-weight: 800;
+      color: #0f172a;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 5px;
+      margin: 0 0 10px 0;
+      line-height: 1.35;
+    }
+
+    .print-h2 {
+      font-size: 11.5pt;
+      font-weight: 800;
+      color: #1e3a8a;
+      background: #f1f5f9;
+      border-left: 5px solid #2563eb;
+      padding: 4px 10px;
+      margin: 14px 0 8px 0;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    .print-h3 {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 10px 0 6px 0;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    p {
+      margin: 5px 0;
+    }
+
+    .print-quote {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-left: 4px solid #64748b;
+      border-radius: 4px;
+      padding: 8px 12px;
+      margin: 8px 0 12px 0;
+      font-size: 9.5pt;
+      color: #334155;
+      line-height: 1.5;
+    }
+
+    .print-details {
+      background: #faf5ff;
+      border: 1.5px solid #a855f7;
+      border-radius: 6px;
+      margin: 10px 0;
+      padding: 10px 14px;
+    }
+
+    .print-summary {
+      font-weight: 800;
+      color: #6b21a8;
+      font-size: 10.5pt;
+      margin-bottom: 6px;
+      list-style: none;
+    }
+
+    .print-bullet {
+      margin: 4px 0;
+      padding-left: 12px;
+      text-indent: -12px;
+    }
+
+    .print-check {
+      margin: 6px 0;
+      font-size: 10pt;
+      background: #fefce8;
+      border: 1px dashed #ca8a04;
+      padding: 6px 10px;
+      border-radius: 4px;
+    }
+
+    .print-hr {
+      border: none;
+      border-top: 1px dashed #cbd5e1;
+      margin: 14px 0;
+    }
+
+    table.print-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 14px 0;
+      font-size: 9.5pt;
+      line-height: 1.45;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    table.print-table th, table.print-table td {
+      border: 1px solid #cbd5e1;
+      padding: 6px 10px;
+      vertical-align: top;
+    }
+
+    table.print-table th {
+      background: #f1f5f9;
+      color: #1e293b;
+      font-weight: 700;
+      border-bottom: 2px solid #94a3b8;
+    }
+
+    table.print-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    code {
+      font-family: Consolas, Monaco, monospace;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 2px 5px;
+      font-size: 9.5pt;
+      border-radius: 3px;
+    }
+
+    .mermaid, pre.mermaid {
+      text-align: center;
+      margin: 12px auto;
+      background: #ffffff;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+      font-size: inherit;
+      display: flex;
+      justify-content: center;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .mermaid svg, pre.mermaid svg {
+      max-height: 280px !important;
+      width: auto !important;
+      max-width: 100% !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-toolbar">
+    <div>
+      <strong>📄 AP暗記ノート（inbox）（通常解説ノート版）</strong>
+      <span style="font-size: 12px; color: #94a3b8; margin-left: 10px;">（全 36 問収録・A4両面印刷最適化）</span>
+    </div>
+    <button onclick="window.print()">🖨️ 今すぐ印刷 / PDF保存 (Ctrl+P)</button>
+  </div>
+
+  <main>
+    <div class="question-sheet" id="q_1">
+  <h1 class="print-h1">タイトル：【荷物の積み下ろし】で覚える「2分木の後行順（右→左→自分）」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 再帰の「戻ってきたら出力」で順番を見失う文系受験者  <br><strong>省いたもの</strong>: 前行順・中間順の厳密な定義、計算量の議論  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 [令和6年春期 午前問6](https://www.ap-siken.com/kakomon/06_haru/q6.html)  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和6年春期 午前問6</h2>
+
+<p><strong>【問題】</strong>  <br>各ノードがもつデータを出力する再帰処理 f(ノードn) を定義した。この処理を，図の2分木の根(最上位のノード)から始めたときの出力はどれか。</p>
+
+<p>〔f(ノードn)の定義〕<br>1. ノードnの右に子ノードrがあれば，f(ノードr)を実行<br>2. ノードnの左に子ノードlがあれば，f(ノードl)を実行<br>3. 再帰処理 f(ノードr)，f(ノードl) を未実行の子ノード，又は子ノードがなければ，ノード自身がもつデータを出力<br>4. 終了</p>
+
+<p>⚠️ <strong>図について</strong>: 元の図は取得できませんが、公式解説の再帰トレースから木の形は次のように復元できます（図の右＝R、左＝L）。</p>
+
+<pre class="mermaid">
+flowchart TD
+    P["＋"] -->|"左"| A["A"]
+    P -->|"右"| DIV["÷"]
+    DIV -->|"左"| MUL["×"]
+    DIV -->|"右"| MINUS["－"]
+    MUL -->|"左"| B["B"]
+    MUL -->|"右"| C["C"]
+    MINUS -->|"左"| D["D"]
+    MINUS -->|"右"| E["E"]
+</pre>
+
+<div class="print-bullet">• <strong>ア</strong>: ＋÷－ED×CBA</div>
+<div class="print-bullet">• <strong>イ</strong>: ABC×DE－÷＋</div>
+<div class="print-bullet">• <strong>ウ</strong>: E－D＋C×B＋A</div>
+<div class="print-bullet">• <strong>エ</strong>: ED－CB×÷A＋</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（ED－CB×÷A＋）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「右へ潜る→左へ潜る→最後に自分」！</h2>
+
+<p><strong>合言葉：『右・左・自分（みぎ・ひだり・じぶん）で下から出す』</strong></p>
+
+<pre class="mermaid">
+flowchart LR
+    S["あるノードに到着"] --> R["1. 右の子がいれば先に処理"]
+    R --> L["2. 左の子がいれば次に処理"]
+    L --> O["3. 最後に自分を出力"]
+</pre>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話）</h2>
+
+<p>引っ越しで、部屋（ノード）の中にさらに小部屋がある建物を想像します。ルールは <strong>「小部屋が残っているうちは自分の荷物には触らず、右の小部屋→左の小部屋の順に荷物を運び出し、全部終わってから自分の部屋の荷物を出す」</strong>。子から先に空にして、親は最後。これが <strong>後行順（帰りがけ順）</strong> です。</p>
+
+<p>公式解説によれば、この f は「右⇒左⇒中」の順に走査するもので、子がなくなった時点で自身のデータを出力する後行順の深さ優先探索です。一般の図は「左⇒右⇒中」で、本問はそれとは <strong>左右が逆向き</strong> です。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 途中トレース（省略なし）</h2>
+
+<p>公式解説の再帰トレース：</p>
+
+<table class="print-table">
+  <thead>
+    <tr><th>手順</th><th>動き</th><th>出力</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>f(＋)：右に ÷ → f(÷)</td><td></td></tr>
+    <tr><td>2</td><td>f(÷)：右に － → f(－)</td><td></td></tr>
+    <tr><td>3</td><td>f(－)：右に E → f(E)</td><td></td></tr>
+    <tr><td>4</td><td>f(E)：子なし</td><td><strong>E</strong></td></tr>
+    <tr><td>5</td><td>f(－) に戻る：左に D → f(D)：子なし</td><td><strong>D</strong></td></tr>
+    <tr><td>ここで</td><td>先頭が「ED」と確定。これだけで正解肢が絞れる</td><td></td></tr>
+    <tr><td>6</td><td>f(－)：左右実行済み</td><td><strong>－</strong></td></tr>
+    <tr><td>7</td><td>f(÷) に戻る：左に × → f(×)：右に C</td><td><strong>C</strong></td></tr>
+    <tr><td>8</td><td>f(×)：左に B</td><td><strong>B</strong></td></tr>
+    <tr><td>9</td><td>f(×)：左右実行済み</td><td><strong>×</strong></td></tr>
+    <tr><td>10</td><td>f(÷)：左右実行済み</td><td><strong>÷</strong></td></tr>
+    <tr><td>11</td><td>f(＋) に戻る：左に A</td><td><strong>A</strong></td></tr>
+    <tr><td>12</td><td>f(＋)：左右実行済み</td><td><strong>＋</strong></td></tr>
+  </tbody>
+</table>
+
+<p>出力の並び：E D － C B × ÷ A ＋ → 「ED－CB×÷A＋」</p>
+
+<h3 class="print-h3">選択肢の判定</h3>
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ア ＋÷－ED×CBA</td><td>✕</td><td>先頭が「＋」。自分を最初に出す <strong>前行順（自分→右→左）</strong> の並び。本問は自分が最後</td></tr>
+    <tr><td>イ ABC×DE－÷＋</td><td>✕</td><td>自分を最後に出す点は同じだが <strong>左→右→自分</strong> の標準的な後行順。本問は右が先なので左右が逆</td></tr>
+    <tr><td>ウ E－D＋C×B＋A</td><td>✕</td><td>先頭は E だが、途中に「＋」が2回現れるなど、このルールの出力としてあり得ない並び（木に＋は1つだけ、÷も欠落）。トレースの時点で消去できる</td></tr>
+    <tr><td>エ ED－CB×÷A＋</td><td>○</td><td>上のトレースと一致</td></tr>
+  </tbody>
+</table>
+
+<p><strong>ひっかけ</strong>: イは「後行順といえば左→右→自分」と暗記している人が選びがち。<strong>問題文の 1.（右）が 2.（左）より先</strong> であることを必ず確認する。ヒント：トレースの最初の2文字「ED」が決まった時点で、先頭が E の選択肢（ウ・エ）に絞れる。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 定義の1・2行目の「右が先か左が先か」を確認する癖をつける。</div>
+</div>
+
+<div class="question-sheet" id="q_2">
+  <h1 class="print-h1">ハッシュ表の探索時間：ロッカー番号が分かれば、何千個あっても一発で開く！</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 線形探索・2分探索のグラフと混同しやすい文系受験者  <br><strong>省いたもの</strong>: ハッシュ値の衝突（シノニム）処理の詳細  <br><strong>所要時間</strong>: 5〜7分  <br><strong>対象過去問</strong>: 応用情報技術者 令和5年春期 午前問19  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和5年春期 問19</h2>
+
+<p><strong>【問題】</strong>  <br>ハッシュ表の理論的な探索時間を示すグラフはどれか。ここで，複数のデータが同じハッシュ値になることはないものとする。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: （グラフ。取得データでは選択肢が空のため復元不可）</div>
+<div class="print-bullet">• <strong>イ</strong>: （グラフ。同上）</div>
+<div class="print-bullet">• <strong>ウ</strong>: （グラフ。同上）</div>
+<div class="print-bullet">• <strong>エ</strong>: 「表中のデータ数が増えても探索時間が変わらない」ことを示すグラフ（公式解説より。横軸＝データ数、縦軸＝探索時間と読めるが、軸ラベルの正確な表記は未復元）</div>
+
+<blockquote class="print-quote">📝 <strong>復元に関する注記</strong>: 選択肢は図（グラフ）で、取得データには含まれていません。ア〜ウの具体的な形は復元できませんでした。公式解説から、正解エは「データ数に関係なく探索時間が一定（定数時間）」のグラフです。</blockquote>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（データ数が増えても探索時間が変わらない＝一定のグラフ）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『ハッシュ表＝計算して一発で場所が分かる。データが増えても時間は横ばい！』</h2>
+
+<pre class="mermaid">
+flowchart LR
+    K["キー"] --> H["ハッシュ関数で計算<br/>(速度はほぼ一定)"]
+    H --> I["格納場所(インデックス)が決まる"]
+    I --> V["一発で値を取り出す"]
+    V --> R["データ数が増えても<br/>探索時間は一定"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 ハッシュは一発！データが増えても探索時間は横ばい！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：コインロッカー）</h2>
+
+<p>コインロッカーで「あなたの番号は172番」と渡されていれば、ロッカーが100個でも10,000個でも<strong>172番へ直行</strong>できます。他のロッカーを順に開けて探す必要がありません。</p>
+
+<p>ハッシュ表では、キー（名前など）をハッシュ関数に通して「ロッカー番号」（インデックス）を計算します。公式解説のとおり、ハッシュ関数からハッシュ値を計算する速度はほぼ一定なので、表に格納されているデータ数にかかわらず探索時間はほぼ一定（定数時間）です。</p>
+
+<p>対比として、先頭から順に調べる<strong>線形探索</strong>はデータ数に比例して時間が増える、というのが典型的な右上がりのグラフです（これは一般知識であり、本問の公式解説では触れられていません）。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<p>選択肢のグラフ本体が取得できていないため、形の記述ではなく<strong>判定の基準</strong>を示します。</p>
+
+<div class="print-bullet">• <strong>ア・イ・ウ: ✗（グラフ形状は未復元）</strong>  </div>
+  → 公式解説では正解は「エ」のみと明示されているため、ア〜ウは「データ数に応じて探索時間が変化する」グラフ（増加・減少・曲線など）であり、定数時間ではないので不適切と判断できます。具体的な形は復元不可。
+<div class="print-bullet">• <strong>エ: ○</strong>  </div>
+  → 「データ数が増えても探索時間は変わらない」＝横ばい（定数時間）のグラフ。公式解説と一致。
+
+<blockquote class="print-quote">⚠️ ひっかけの考え方：問題文の「複数のデータが同じハッシュ値になることはない」が重要。もし衝突が起きると、同じ場所に複数データが並び、追加の探索が必要になって時間が変わります。この条件で「理想状態」の探索時間を問うています。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. ハッシュ表探索の探索時間がデータ数に依存しない理由を述べよ。</strong>  </div>
+  → <strong>「キーからハッシュ関数で格納場所を直接求めるため、データ数によらず探索時間はほぼ一定となる。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_3">
+  <h1 class="print-h1">クイックソート：クラス替えの「基準の人」で覚える「2回目の分割」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: クイックソートの手順を追うと途中で迷子になる文系受験者  <br><strong>省いたもの</strong>: 計算量（平均 O(n log n)・最悪 O(n²)）の厳密な証明  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和5年春期 問7  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和5年春期 問7</h2>
+
+<p><strong>【問題】</strong>  <br>配列に格納されたデータ2，3，5，4，1に対して，クイックソートを用いて昇順に並べ替える。2回目の分割が終わった状態はどれか。ここで，分割は基準値より小さい値と大きい値のグループに分けるものとする。また，分割のたびに基準値はグループ内の配列の左端の値とし，グループ内の配列の値の順番は元の配列と同じとする。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 1，2，3，5，4</div>
+<div class="print-bullet">• <strong>イ</strong>: 1，2，5，4，3</div>
+<div class="print-bullet">• <strong>ウ</strong>: 2，3，1，4，5</div>
+<div class="print-bullet">• <strong>エ</strong>: 2，3，4，5，1</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ア（1，2，3，5，4）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「左端が基準 → 小さい組 / 基準 / 大きい組」を2回やる！</h2>
+
+<pre class="mermaid">
+flowchart TD
+    S["[2,3,5,4,1] 基準=左端の2"]
+    S --> A["小さい組 [1]"]
+    S --> B["基準 [2]"]
+    S --> C["大きい組 [3,5,4]"]
+    C --> D["2回目: 基準=左端の3"]
+    D --> E["小さい組 なし"]
+    D --> F["基準 [3]"]
+    D --> G["大きい組 [5,4]"]
+    A & B & F & G --> R["並べて 1,2,3,5,4"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 左端を基準に「小さい組・基準・大きい組」。順番はそのまま、組ごとに繰り返す！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：身長順に並ぶ学校の整列）</h2>
+
+<p>先生が「先頭の子（左端）を基準に、その子より低い子は左、高い子は右へ」と指示します。基準の子は<strong>この時点で正しい位置が確定</strong>します。次に、左組・右組それぞれで同じことを繰り返します。大きな問題を小さな問題に分けて解くので「分割統治」と呼ばれます。</p>
+
+<h3 class="print-h3">手順（省略しません）</h3>
+
+<p>1. 元の配列 [2，3，5，4，1]。左端の <strong>2</strong> が基準。<br>2. <strong>1回目の分割</strong>  <br>   - 2より小さい：1  <br>   - 2より大きい：3，5，4（元の順番のまま）  <br>   - 結果：[1]，[2]，[3，5，4]<br>3. <strong>2回目の分割</strong>（各グループで左端を基準にする）  <br>   - [1]：1個だけなので分割不要  <br>   - [2]：1個だけなので分割不要  <br>   - [3，5，4]：左端の <strong>3</strong> が基準。小さい値はなし。大きい値は 5，4（順番維持）→ [3]，[5，4]  <br>   - 結果：[1]，[2]，[3]，[5，4]<br>4. 並べて書くと <strong>1，2，3，5，4</strong>。</p>
+
+<p>※公式解説も同じ流れで「2回目分割後の配列の状態は『1，2，3，5，4』」としています。なお、[5，4] はまだ未整列で、3回目の分割で [4]，[5] になります。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア 1，2，3，5，4（正解）</strong>: 上の手順そのもの。</div>
+<div class="print-bullet">• <strong>イ 1，2，5，4，3</strong>: 1回目で 3，5，4 の中から「3を最後に回す」並びになっている。基準値より大きい値は元の順番（3，5，4）を保つ約束なので、3が最後に動くことはない。基準を取り違えると出てくる並び。</div>
+<div class="print-bullet">• <strong>ウ 2，3，1，4，5</strong>: 基準の2が先頭のままで、小さい値1が右側にあり、「小さい値は基準の左へ」という分割の定義に反する。</div>
+<div class="print-bullet">• <strong>エ 2，3，4，5，1</strong>: ほぼ元の配列を回した並びで、小さい値1が右端に残っており、1回目の分割すら終わっていない状態。</div>
+
+<blockquote class="print-quote">😈 最大のトラップ：「1回目の分割後」の配列も並べて書くと 1，2，3，5，4 になります。「基準が確定した」回数ではなく、<strong>グループごとに分割した回数</strong>を数えることを忘れずに。[3，5，4] の分割まで進めて、はじめて[3]，[5，4]になることを確認しましょう。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ア」を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 3回目の分割後の並び（1，2，3，4，5）を自分で書いてみよう。</div>
+</div>
+
+<div class="question-sheet" id="q_4">
+  <h1 class="print-h1">キャッシュのライトバック：付箋メモで覚える「追い出すときに主記憶へ」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: ライトスルーとライトバックの違いがごちゃ混ぜになる文系受験者  <br><strong>省いたもの</strong>: キャッシュ一貫性プロトコル（MESI等）の詳細  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 平成20年秋期 問19  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】平成20年秋期 問19</h2>
+
+<p><strong>【問題】</strong>  <br>キャッシュメモリの書込み制御方式の一つであるライトバック方式の特徴はどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: キャッシュメモリからデータを追い出すときに，主記憶を更新する必要がない。</div>
+<div class="print-bullet">• <strong>イ</strong>: キャッシュメモリのデータとそれに対応する主記憶のデータとの間で不一致が生じない。</div>
+<div class="print-bullet">• <strong>ウ</strong>: データを書き込むとき，キャッシュメモリにあるかどうかにかかわらず，主記憶に書き込む。</div>
+<div class="print-bullet">• <strong>エ</strong>: 同一番地に繰り返して書き込む場合は，主記憶へのアクセス回数が少なくて済む。</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（同一番地に繰り返して書き込む場合は，主記憶へのアクセス回数が少なくて済む。）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「バック＝あとで戻す」「スルー＝その場で通す」！</h2>
+
+<pre class="mermaid">
+flowchart LR
+    CPU["CPU"] -->|"書く"| C["キャッシュ"]
+    C -.->|"ライトバック: 追い出す時だけ"| M["主記憶"]
+    C ==>|"ライトスルー: 書くたび毎回"| M
+</pre>
+
+<table class="print-table">
+  <thead>
+    <tr><th>方式</th><th>主記憶に書くタイミング</th><th>主記憶アクセス</th><th>キャッシュと主記憶の一致</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ライトバック</td><td>キャッシュから追い出す時</td><td>少ない</td><td>一致しないことがある</td></tr>
+    <tr><td>ライトスルー</td><td>書き込むたび毎回</td><td>多い</td><td>常に一致</td></tr>
+  </tbody>
+</table>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 バックは「あとで」まとめて戻す。だから速いけど、ズレる！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：机の上の付箋と、会社の台帳）</h2>
+
+<p>会社の<strong>台帳（主記憶）</strong>は遠くの書庫にあり、書き換えに行くのは大変です。あなたの机には<strong>付箋（キャッシュ）</strong>があります。</p>
+
+<div class="print-bullet">• <strong>ライトスルー</strong>: 数字が変わるたび、付箋にも書き、書庫の台帳にも走って書きに行く。確実だが往復だらけで遅い。</div>
+<div class="print-bullet">• <strong>ライトバック</strong>: 変更は机の付箋だけに書く。付箋を捨てる（追い出す）ときに初めて、最終結果を台帳へ書く。同じ数字を10回書き換えても、台帳への書き込みは最後の1回で済む。</div>
+
+<p>だから「同じ番地に何度も書く」場合はライトバックの方が主記憶アクセスが減ります。代わりに、付箋を捨てる前は台帳が古いまま、つまり<strong>不一致が起こる</strong>のが弱点です。</p>
+
+<p>CPUが書き込む回数が10回の場合の比較（イメージ）:<br><div class="print-bullet">• ライトスルー：主記憶への書き込み 10回</div><br><div class="print-bullet">• ライトバック：主記憶への書き込み 1回（追い出し時のみ）</div></p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア ✕</strong>: 「追い出すとき主記憶を更新する必要がない」は逆。ライトバックは<strong>追い出すときに初めて</strong>主記憶へ書く方式（更新が必要）。「バック＝あとで戻す」を忘れると引っかかります。</div>
+<div class="print-bullet">• <strong>イ ✕</strong>: 不一致が生じないのはライトスルー側の特徴。ライトバックでは主記憶に書き込むのが追い出し時のみなので、<strong>常に内容が一致しているわけではない</strong>（公式解説）。</div>
+<div class="print-bullet">• <strong>ウ ✕</strong>: 「キャッシュにあるかどうかにかかわらず主記憶に書く」「書き込みの都度主記憶にも書く」はライトスルー方式の特徴（公式解説）。</div>
+<div class="print-bullet">• <strong>エ ○</strong>: 主記憶へ書くのは追い出し時のみで、それまでCPUはキャッシュだけに書く。したがって常に両方に書くライトスルーと比べ、主記憶アクセスが少ない（公式解説）。</div>
+
+<blockquote class="print-quote">😈 ひっかけの構造：ア・イ・ウは、ライトスルーの特徴をライトバックの特徴にすり替えたもの。「どちらの方式の特徴か」を意識して読むと消去できます。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢「エ」を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 「ライトスルーは確実だが遅い、ライトバックは速いがズレる」を声に出して言ってみよう。</div>
+</div>
+
+<div class="question-sheet" id="q_5">
+  <h1 class="print-h1">M/M/1待ち行列：ラーメン屋の行列で覚える「利用率÷(1−利用率)」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 待ち行列の公式を見ると固まってしまう文系受験者  <br><strong>省いたもの</strong>: 公式の導出（ポアソン到着・指数分布サービスの数学的証明）  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和4年春期 問3  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和4年春期 問3</h2>
+
+<p><strong>【問題】</strong>  <br>M/M/1の待ち行列モデルにおいて，窓口の利用率が25%から40%に増えると，平均待ち時間は何倍になるか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 1.25</div>
+<div class="print-bullet">• <strong>イ</strong>: 1.60</div>
+<div class="print-bullet">• <strong>ウ</strong>: 2.00</div>
+<div class="print-bullet">• <strong>エ</strong>: 3.00</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ウ（2.00）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：公式に入れて「割り算」するだけ！</h2>
+
+<pre class="mermaid">
+flowchart TD
+    A["平均待ち時間 = 利用率 ÷ (1 − 利用率) × 平均サービス時間"]
+    B["利用率25%: 0.25 ÷ 0.75 = 1/3"]
+    C["利用率40%: 0.4 ÷ 0.6 = 2/3"]
+    D["(2/3) ÷ (1/3) = 2倍"]
+    A --> B --> D
+    A --> C --> D
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 待ち時間は 利用率 ÷ (1 − 利用率)。サービス時間は割り算で消える！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：ラーメン屋のカウンター）</h2>
+
+<p>店員1人（M/M/1の「1」＝窓口1つ）のラーメン屋を想像してください。</p>
+
+<div class="print-bullet">• 利用率25%：店員は4分の1の時間だけ働いていて、あとは暇。お客が来てもほぼ待たずに作ってもらえる。</div>
+<div class="print-bullet">• 利用率40%：店員が忙しくなり、前の客がまだ食べ終わる前に次の客が来ることが増える。</div>
+
+<p>利用率が100%に近づくほど「1 − 利用率」が小さくなり、割り算の結果が急激に大きくなります。つまり<strong>忙しさが少し増えるだけで、待ち時間はそれ以上に伸びる</strong>のがこのモデルの肝です。</p>
+
+<p>公式（公式解説より）：<br>平均待ち時間 ＝ 利用率 ÷ (1 − 利用率) × 平均サービス時間</p>
+
+<h3 class="print-h3">途中計算（省略しません）</h3>
+
+<p>1. 利用率25%（0.25）の場合  <br>   - 分母：1 − 0.25 ＝ 0.75  <br>   - 0.25 ÷ 0.75 ＝ 1/3  <br>   - 待ち時間 ＝ 1/3 × 平均サービス時間<br>2. 利用率40%（0.4）の場合  <br>   - 分母：1 − 0.4 ＝ 0.6  <br>   - 0.4 ÷ 0.6 ＝ 4/6 ＝ 2/3  <br>   - 待ち時間 ＝ 2/3 × 平均サービス時間<br>3. 比べる：(2/3) ÷ (1/3) ＝ (2/3) × 3 ＝ <strong>2倍</strong>  <br>   平均サービス時間は両方に掛かっているので、割ると消えます。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 途中計算パズル</h2>
+
+<div class="print-bullet">• <strong>ア 1.25</strong>: 利用率25%の「25」から連想した数字。計算で出る根拠はなく、「なんとなく増えた分」で選ばせる引っかけ。</div>
+<div class="print-bullet">• <strong>イ 1.60</strong>: 利用率の比 40 ÷ 25 ＝ 1.6（利用率をそのまま比べた値）。<strong>これが最大のトラップ</strong>。待ち時間は利用率に比例せず、分母の「1 − 利用率」の効果で増え方が大きくなります。</div>
+<div class="print-bullet">• <strong>ウ 2.00（正解）</strong>: (2/3) ÷ (1/3) ＝ 2。</div>
+<div class="print-bullet">• <strong>エ 3.00</strong>: 利用率25%の値 1/3 の逆数 3 や、2/3 を 1/3 で割る手前の「3」を取り違えた誤り。1/3 や 2/3 の分母「3」に釣られないこと。</div>
+
+<blockquote class="print-quote">利用率が1.6倍になっても、待ち時間は1.6倍ではなく2倍。「利用率の比で答えない」が鉄則です。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢「ウ」を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 利用率50%のときの待ち時間（0.5 ÷ 0.5 ＝ 1）が、25%のときの何倍か（1 ÷ 1/3 ＝ 3倍）を自分で計算してみよう。</div>
+</div>
+
+<div class="question-sheet" id="q_6">
+  <h1 class="print-h1">CPU利用率とMIPS：レジの「1秒あたりの処理能力」と「来客数」で割り算する！</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: MIPSや「分あたり→秒あたり」の単位換算でつまずく文系受験者  <br><strong>省いたもの</strong>: CPIやクロック周波数などの詳細な性能指標  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 平成28年秋期 問15  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】平成28年秋期 問15</h2>
+
+<p><strong>【問題】</strong>  <br>オンライントランザクション処理システムにおいて，1分当たりの平均トランザクション数が1,200件であり，1件のトランザクション処理で100万命令を実行する場合，CPU性能が100MIPSのコンピュータを使用したときのCPUの平均利用率は何%か。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 5</div>
+<div class="print-bullet">• <strong>イ</strong>: 10</div>
+<div class="print-bullet">• <strong>ウ</strong>: 15</div>
+<div class="print-bullet">• <strong>エ</strong>: 20</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（20）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『必要な命令数 ÷ 出せる命令数、ただし必ず「1秒」にそろえる！』</h2>
+
+<pre class="mermaid">
+flowchart TD
+    A["①1分1,200件 → 1秒あたり20件<br/>(1,200 ÷ 60)"] --> B["②必要な命令数/秒<br/>20件 × 100万 = 2,000万命令"]
+    C["③CPUが出せる命令数/秒<br/>100MIPS = 1億命令"] --> D
+    B --> D["④利用率 = 2,000万 ÷ 1億"]
+    D --> E["⑤0.2 → 20%"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 MIPS＝1秒に百万命令！「分」を「秒」に直してから割る！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：ラーメン屋の厨房）</h2>
+
+<p>厨房の料理人が「1秒に1億個の作業」をこなせる（＝100MIPS）とします。お客さんの注文が入ると、1杯あたり100万個の作業が必要です。</p>
+
+<p>利用率とは、「料理人の全力に対して、実際に何割働いているか」です。全力＝1億作業/秒、実際＝注文が生む作業量/秒。ここで<strong>単位がバラバラ（注文は“1分あたり”、全力は“1秒あたり”）だと割り算できません</strong>。だから先に秒にそろえます。</p>
+
+<h3 class="print-h3">途中計算（省略なし）</h3>
+1. 1分＝60秒なので、1,200件/分 ÷ 60 ＝ <strong>20件/秒</strong>
+2. 1件100万命令なので、20 × 1,000,000 ＝ <strong>20,000,000命令/秒（2,000万）</strong>
+3. 100MIPS ＝ 100 × 1,000,000 ＝ <strong>100,000,000命令/秒（1億）</strong>
+4. 利用率 ＝ 20,000,000 ÷ 100,000,000 ＝ 0.2 ＝ <strong>20%</strong>
+
+<p>（MIPS＝Million Instructions Per Second。1秒間に実行できる命令数を百万単位で表した指標。）</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア（5）: ✗</strong>  </div>
+  → 「1,200件/分」を秒に直さず、あるいは割り方を誤ると出やすい小さな値。正しい計算では5%にならない。
+<div class="print-bullet">• <strong>イ（10）: ✗</strong>  </div>
+  → 2,000万と1億の比を「0.1」と目分量で読み違えたパターン。2,000万÷1億＝0.2であり、10%ではない。
+<div class="print-bullet">• <strong>ウ（15）: ✗</strong>  </div>
+  → 中途半端な値で、正しい計算の道筋からは出てこない。計算せず勘で選ばせるための選択肢。
+<div class="print-bullet">• <strong>エ（20）: ○</strong>  </div>
+  → 20件/秒 × 100万 ＝ 2,000万命令/秒 ÷ 1億命令/秒 ＝ 20%。公式解説と一致。
+
+<blockquote class="print-quote">⚠️ 最大のワナは<strong>単位（分と秒）の混在</strong>。もし「1,200件 × 100万 ÷ 1億」と分のまま計算すると1200％という異常値になるので、「利用率が100%を超えたら単位ミス」と検算できます。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. CPU利用率を求める手順を説明せよ。</strong>  </div>
+  → <strong>「単位時間あたりの必要命令数を、CPUが単位時間に実行できる命令数（MIPS値）で割る。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_7">
+  <h1 class="print-h1">タイトル：【マンションの管理人】で覚える「MMU（仮想アドレス→物理アドレスの変換）」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: MMU・キャッシュ・OS の役割がごちゃ混ぜになる文系受験者  <br><strong>省いたもの</strong>: TLB のミス処理の細部、ページテーブルの多段構造  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 [平成27年秋期 午前問10](https://www.ap-siken.com/kakomon/27_aki/q10.html)  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】平成27年秋期 午前問10</h2>
+
+<p><strong>【問題】</strong>  <br>MMU(Memory Management Unit)の説明として，適切なものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: CPUからのページフォールトを受けて，物理ページのスワップを行う。</div>
+<div class="print-bullet">• <strong>イ</strong>: CPUが指定した仮想アドレスを物理アドレスに対応させる。</div>
+<div class="print-bullet">• <strong>ウ</strong>: OSの一部分であり，キャッシュ制御機能及びバス調整機能を有する。</div>
+<div class="print-bullet">• <strong>エ</strong>: 主記憶のデータの一部を保持し，CPUと主記憶の速度差を吸収する。</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: イ（CPUが指定した仮想アドレスを物理アドレスに対応させる）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「MMU＝住所の翻訳係」と覚えて、他の部品の仕事と切り分ける！</h2>
+
+<p><strong>合言葉：『MMU は“翻訳係”。スワップは OS、保存は キャッシュ』</strong></p>
+
+<pre class="mermaid">
+flowchart LR
+    CPU["CPU<br>(仮想アドレスで依頼)"] --> MMU["MMU<br>(ハードウェア)<br>アドレス変換"]
+    MMU -->|"対応あり"| MEM["主記憶<br>(物理アドレス)"]
+    MMU -->|"対応なし<br>ページフォールトをOSへ通知"| OS["OS<br>(スワップ処理)"]
+    CACHE["キャッシュメモリ<br>速度差の吸収"] -.-> MEM
+</pre>
+
+<p>3ステップで選択肢を切る：<br>1. 「アドレスを変換する」→ MMU の仕事<br>2. 「スワップする・OSの一部」→ OS の仕事（MMU はハード）<br>3. 「データを一部保持して速度差を吸収」→ キャッシュメモリの仕事</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話）</h2>
+
+<p>大きなマンションを想像してください。住人（プログラム）は「自分は101号室に住んでいる」と思い込んで郵便物を頼みます。これが <strong>仮想（論理）アドレス</strong> です。ところが実際の建物では、101号室は都合で別の階の別の部屋（<strong>物理アドレス</strong>）に割り当てられています。</p>
+
+<p>そこで玄関に <strong>管理人（MMU）</strong> がいて、「101号室宛ね。実際は 5階の 503 だよ」と名簿（TLB やページテーブル）を引いて素早く案内します。名簿に載っていなければ（ページフォールト）、管理人は自分で部屋を片付けたりせず、<strong>管理会社（OS）に「この部屋、倉庫から出してください」と連絡する</strong> だけです。</p>
+
+<p>公式解説によると MMU は主記憶を管理する <strong>ハードウェア機構</strong> で、アドレス変換機能、メモリ保護機能、キャッシュ制御機能、バス調停機能などを持ちます。アドレス変換では、仮想記憶の論理アドレスと実アドレス（物理アドレス）の対応を TLB（Translation Lookaside Buffer）で管理し、CPU のアクセス要求に応じて高速に変換します。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定表</h2>
+
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説に基づく）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ア</td><td>✕</td><td>MMU はページフォールトを <strong>OS に通知する</strong> 役割まで。スワップを実行するのは OS。「通知する」と「実行する」のすり替えが罠。</td></tr>
+    <tr><td>イ</td><td>○</td><td>MMU（アドレス変換機能）の説明そのもの。</td></tr>
+    <tr><td>ウ</td><td>✕</td><td>MMU は <strong>ハードウェア部品</strong> なので OS の一部ではない。キャッシュ制御・バス調停の機能を持つ点は事実だが、「OSの一部」で誤り。</td></tr>
+    <tr><td>エ</td><td>✕</td><td><strong>キャッシュメモリ</strong> の説明。主記憶の一部を保持し CPU との速度差を吸収する。</td></tr>
+  </tbody>
+</table>
+
+<p><strong>心理トラップ</strong>: ウは前半「キャッシュ制御機能・バス調整機能」が MMU の機能として実在するため、後半の「OSの一部」を見落とすと選んでしまう。<strong>一部が正しい選択肢ほど、全体を最後まで読む</strong>のが鉄則。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 「MMU はハード／スワップは OS／速度差吸収はキャッシュ」を声に出して言えるか確認。</div>
+</div>
+
+<div class="question-sheet" id="q_8">
+  <h1 class="print-h1">カルノー図と論理式：マス目のお引っ越しで覚える「1をグループ化して共通項を取る」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: カルノー図から論理式を作る手順が分からず、上線（否定）つきの式を見ると身構える文系受験者  <br><strong>省いたもの</strong>: 3変数以外の大規模な最簡化（クワイン・マクラスキー法）、ド・モルガンの法則の証明  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和4年秋期 問2  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和4年秋期 問2</h2>
+
+<p><strong>【問題】</strong>  <br>A，B，C，Dを論理変数とするとき，次のカルノー図と等価な論理式はどれか。ここで，・は論理積，＋は論理和，Xの上線はXの否定を表す。</p>
+
+<blockquote class="print-quote">⚠️ <strong>復元に関する注意</strong>: 問題のカルノー図（画像）と、選択肢中の否定を表す上線は取得データに残っていません。選択肢の変数名と項の構造だけが残っています。そのため、どの変数に否定がつくかは復元できません。</blockquote>
+<div class="print-bullet">• <strong>ア</strong>: A・B・C・D ＋ B・D　（否定の位置は復元不可）</div>
+<div class="print-bullet">• <strong>イ</strong>: A・B・C・D ＋ B・D　（否定の位置は復元不可）</div>
+<div class="print-bullet">• <strong>ウ</strong>: A・B・D ＋ B・D　（否定の位置は復元不可）</div>
+<div class="print-bullet">• <strong>エ</strong>: A・B・D ＋ B・D　（否定の位置は復元不可）</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（A・B・D ＋ B・D の形。第1項は3変数の積、第2項は2変数の積。否定の位置は復元不可）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『1のマスを四角で囲む → 共通項を取る → ＋でつなぐ！』</h2>
+
+<pre class="mermaid">
+flowchart TD
+    S["カルノー図の 1 のマスをすべて囲む"] --> R["囲み方のルール<br/>長方形・個数は1,2,4,8個<br/>端はつながる・重複OK"]
+    R --> G["グループごとに<br/>変わらない変数だけ残す（共通項）"]
+    G --> P["共通項を ・（論理積）でつなぐ"]
+    P --> O["グループ同士を ＋（論理和）でつなぐ"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 1を大きく囲え！囲みの中で“変わらない変数”だけ残して、囲み同士は＋でつなぐ！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：クラス名簿のまとめ書き）</h2>
+
+<p>カルノー図は「条件の組合せ表」を、<strong>隣り合うマスが1変数しか違わない</strong>ように並べた特殊な表です。</p>
+
+<p>たとえば「3年A組で男子・メガネあり」と「3年A組で男子・メガネなし」の2人を名簿に書くとき、メガネの有無は問わないので「3年A組の男子」と<strong>まとめて書けば短く</strong>なります。カルノー図の「囲み」はこの<strong>まとめ書き</strong>です。</p>
+
+<div class="print-bullet">• 囲みの中で値が<strong>変わる変数</strong>（例：メガネの有無）→ 式から消える</div>
+<div class="print-bullet">• 囲みの中で値が<strong>変わらない変数</strong> → 式に残る（共通項）</div>
+
+<h3 class="print-h3">公式解説の手順（4ルール）</h3>
+1. 値が1のセルをすべて長方形で囲む。
+2. グループのセル数は 2のn乗個（1, 2, 4, 8, …）。
+3. カルノー図の<strong>上下左右の端は連続している</strong>と考える。
+4. 1つのセルが<strong>複数のグループに属してもよい</strong>。
+
+<h3 class="print-h3">この問題での結果（公式解説の記述）</h3>
+設問のカルノー図は<strong>2つの長方形</strong>ですべての1を囲めます。
+
+<table class="print-table">
+  <thead>
+    <tr><th>グループ</th><th>含まれるセル（変数の組）</th><th>共通項</th><th>論理積</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>赤枠</td><td>2セル</td><td>A, B, D（Cは変化して消える）</td><td>3変数の積（A・B・D）</td></tr>
+    <tr><td>青枠</td><td>4セル</td><td>B, D（AとCが変化して消える）</td><td>2変数の積（B・D）</td></tr>
+  </tbody>
+</table>
+
+<p><strong>赤枠（2セル）</strong>：2セルで1変数が消え、4変数のうち3変数が残る。  <br><strong>青枠（4セル）</strong>：4セルで2変数が消え、4変数のうち2変数が残る。</p>
+
+<p>つまり、「2セルで3変数の積・4セルで2変数の積」の組を探すことになります。これを＋で結ぶと「A・B・D ＋ B・D」の形になり、これが <strong>エ</strong> です。（否定の位置はこのデータからは復元不可）</p>
+
+<h3 class="print-h3">途中計算の見方（個数→残る変数）</h3>
+<table class="print-table">
+  <thead>
+    <tr><th>グループのセル数</th><th>消える変数の数</th><th>残る変数の数（4変数中）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>0</td><td>4</td></tr>
+    <tr><td>2</td><td>1</td><td>3</td></tr>
+    <tr><td>4</td><td>2</td><td>2</td></tr>
+    <tr><td>8</td><td>3</td><td>1</td></tr>
+  </tbody>
+</table>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<p>否定の上線が取得できないため、構造から言える範囲で書きます。</p>
+
+<div class="print-bullet">• <strong>ア ✕</strong>: 「A・B・C・D ＋ B・D」。第1項に<strong>4変数すべて</strong>が入っています。4変数すべてを含む項は<strong>1セルだけ</strong>を表し、囲みが2セルなら共通項は3変数になるはず。→ 公式解説の「赤枠（2セルで3変数）」と一致しません。</div>
+<div class="print-bullet">• <strong>イ ✕</strong>: アと同様に第1項が4変数の積。赤枠が1セルだけ（囲み忘れ・拡張忘れ）の答えになっている。</div>
+<div class="print-bullet">• <strong>ウ ✕</strong>: 項の構造は正解エと同じ（3変数の積＋2変数の積）ですが、<strong>否定のつく変数の位置が正解と違う</strong>。※具体的な位置は復元不可。ここが“一番似ている罠”です。</div>
+<div class="print-bullet">• <strong>エ ◯</strong>: 赤枠（A・B・Dの共通項）＋青枠（B・D）と一致。</div>
+
+<blockquote class="print-quote">💡 作問者の意図：選択肢は「どの変数に否定がつくか」だけが違う、見た目がそっくりな式を並べています。<strong>囲みごとに、各変数が0固定か1固定かを丁寧に読み取り、0なら否定をつける</strong>という手順を一つずつ踏めば、取り違えを避けられます。</blockquote>
+<blockquote class="print-quote">💡 この問題を実戦で解くとき：図から ①囲みごとに「変わらない変数」を探す ②その値が1なら素の変数、0なら否定つきにする ③項を＋でつなぐ、の順で確認してください。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. カルノー図で、グループに含めるセルの数と形のルールを述べよ。</strong>  </div>
+  → <strong>「値が1のセルを長方形で囲み、セル数は2のn乗個とし、上下左右の端は連続しているとみなす。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_9">
+  <h1 class="print-h1">NoSQLの種類：コインロッカーで覚える「キーバリュー型データベース」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: NoSQL・DWH・メタ情報など、データベース系の用語が混ざってしまう文系受験者  <br><strong>省いたもの</strong>: 各NoSQL製品の実装詳細、CAP定理などの理論  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和6年春期 問29  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和6年春期 問29</h2>
+
+<p><strong>【問題】</strong>  <br>ビッグデータの基盤技術として利用されるNoSQLに分類されるデータベースはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 関係データモデルをオブジェクト指向データモデルに拡張し，操作の定義や型の継承関係の定義を可能としたデータベース</div>
+<div class="print-bullet">• <strong>イ</strong>: 経営者の意思決定を支援するために，ある主題に基づくデータを現在の情報とともに過去の情報も蓄積したデータベース</div>
+<div class="print-bullet">• <strong>ウ</strong>: 様々な形式のデータを一つのキーに対応付けて管理するキーバリュー型データベース</div>
+<div class="print-bullet">• <strong>エ</strong>: データ項目の名称，形式など，データそのものの特性を表すメタ情報を管理するデータベース</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ウ（様々な形式のデータを一つのキーに対応付けて管理するキーバリュー型データベース）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『NoSQLの4タイプ「キー・カラム・ドキュメント・グラフ」を言えたら勝ち！』</h2>
+
+<pre class="mermaid">
+flowchart TD
+    N["NoSQL (Not only SQL)<br/>スキーマレス・軽量・拡張しやすい"]
+    N --> K["キー・バリュー型<br/>1つのキーに1つの値"]
+    N --> C["カラム指向<br/>行キーにカラムを結びつける"]
+    N --> D["ドキュメント指向<br/>XML・JSONで格納"]
+    N --> G["グラフ指向<br/>データ間の関係を表現"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 NoSQLは4兄弟：キー・カラム・ドキュメント・グラフ！“キーに値を結ぶ”のがKVS！ 』</strong></blockquote>
+3ステップ解法：
+1. 選択肢の定義文から、どのDBの説明かを言い当てる（ア＝オブジェクト指向DB、イ＝DWH、エ＝データディクショナリ）。
+2. 残ったものがNoSQLの4タイプのどれに当たるか確認する。
+3. 「キーに値を結びつける」＝キーバリュー型＝NoSQL。
+
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：駅のコインロッカー）</h2>
+
+<div class="print-bullet">• <strong>RDBMS（関係データベース）</strong> は、きっちり罫線を引いた<strong>会計帳簿</strong>です。列の名前も型も事前に厳密に決め、ACID特性で信頼性も高い。ただし、その分「記入の手間（処理コスト）」が重い。</div>
+<div class="print-bullet">• ビッグデータでは、高頻度で膨大なデータが流れ込みます。帳簿の書式を守っていたら、受付が大行列になりパフォーマンスが落ちる。</div>
+<div class="print-bullet">• そこで登場したのが <strong>NoSQL</strong>。たとえるなら<strong>駅のコインロッカー</strong>です。<strong>鍵の番号（キー）</strong>さえあれば、中身（値）はカバンでも段ボールでも自由。出し入れが速く、ロッカーを増設（スケールアウト）するのも簡単です。</div>
+
+<p>公式解説では、NoSQL（Not only SQL）は、データへのアクセス方法をSQLに限定しないDBMSの総称で、関係データベース以外のDBMSという意味でも使われます。<strong>スキーマレスで軽量</strong>なので、参照・追加が低コストで、スケーラビリティにも優れます。</p>
+
+<h3 class="print-h3">NoSQLの4タイプ（公式解説より）</h3>
+
+<table class="print-table">
+  <thead>
+    <tr><th>タイプ</th><th>格納のしかた</th><th>たとえ</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>キー・バリュー型</td><td>1つのキーに1つの値を結びつける</td><td>コインロッカー・辞書</td></tr>
+    <tr><td>カラム指向</td><td>行キーに対し、カラム（名前と値の組）を結びつける</td><td>名札つきの引き出し</td></tr>
+    <tr><td>ドキュメント指向</td><td>XMLやJSONなどの構造でデータを格納</td><td>1人ずつのカルテ</td></tr>
+    <tr><td>グラフ指向</td><td>グラフ理論に基づき、データ間の関係を表現</td><td>SNSの友だち相関図</td></tr>
+  </tbody>
+</table>
+
+<p>キーバリュー型（KVS）は、プログラミングの<strong>連想配列</strong>のように使えるタイプです。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア ✕: オブジェクト指向データベース</strong>  </div>
+  → 公式解説では「オブジェクト指向データベースの説明」。「関係データモデルを拡張」と書かれているため<strong>関係DBの仲間</strong>と見え、NoSQLではないと判断できます。「操作の定義や型の継承」というオブジェクト指向の言葉がヒントです。
+<div class="print-bullet">• <strong>イ ✕: データウェアハウス（DWH）</strong>  </div>
+  → 「ある主題に基づく」「過去の情報も蓄積」＝DWHの定義（意思決定支援）。ビッグデータという言葉に釣られがちですが、NoSQLの分類ではありません。
+<div class="print-bullet">• <strong>ウ ◯: キーバリュー型データベース</strong>  </div>
+  → 「1つのキーに1つの値を結びつける」NoSQLの代表タイプ（KVS）です。
+<div class="print-bullet">• <strong>エ ✕: データディクショナリ／リポジトリ</strong>  </div>
+  → 「データ項目の名称、形式など、データの特性を表すメタ情報」＝データについてのデータを管理するもの。DBの“辞書”であって、NoSQLではありません。
+
+<blockquote class="print-quote">💡 作問者の意図：「DBの名前らしい説明」を4つ並べ、NoSQLの4分類（特にKVS）を知っているかを見る問題。ア〜エの説明から、それぞれ「何の説明か」を即座に言える状態にしておけば全部消せます。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. ビッグデータの処理でNoSQLが向く理由を述べよ。</strong>  </div>
+  → <strong>「スキーマレスで軽量なため参照・追加が低コストで実行でき、スケーラビリティにも優れるため。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_10">
+  <h1 class="print-h1">タイトル：【ノートの清書と消しゴム】で覚える「ロールフォワード／ロールバック」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: チェックポイントとコミットの前後関係で混乱する文系受験者  <br><strong>省いたもの</strong>: ログの具体的な書式、WAL の詳細  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 [平成28年秋期 午前問30](https://www.ap-siken.com/kakomon/28_aki/q30.html)  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】平成28年秋期 午前問30</h2>
+
+<p><strong>【問題】</strong>  <br>DBMSをシステム障害発生後に再立上げするとき，ロールフォワードすべきトランザクションとロールバックすべきトランザクションの組合せとして，適切なものはどれか。ここで，トランザクションの中で実行される処理内容は次のとおりとする。</p>
+
+<blockquote class="print-quote">⚠️ <strong>復元できなかった部分</strong>: 元問題の「タイムチャート図（T1〜T6 とチェックポイント・障害発生の位置）」と「各トランザクションの処理内容の表」、およびイ〜エの選択肢は取得データに含まれていません。以下は <strong>公式解説の記述から復元できる事実のみ</strong> を使っています。<br><br>公式解説から読み取れる状況：<br>- T1：チェックポイント前にコミット済み<br>- T2・T5：チェックポイント後〜障害発生前にコミット済み<br>- T3・T4・T6：障害発生時に実行中（未コミット）。ただし T3・T4 はデータベースへの書込み処理が無い</blockquote>
+<div class="print-bullet">• <strong>ア</strong>: ロールフォワード = T2，T5 ／ ロールバック = T6（解説より復元。取得データの選択肢欄は「イ ウ エ」と記載されており、ア〜エの本来の表記は不明）</div>
+<div class="print-bullet">• <strong>イ〜エ</strong>: 取得データでは空（復元不可）</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ア（ロールフォワード：T2，T5 ／ ロールバック：T6）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「コミット済み→進める／実行中で書込みあり→戻す／書込みなし→放置」！</h2>
+
+<p><strong>合言葉：『済みは進め、途中は戻し、書かぬものは触らず』</strong></p>
+
+<pre class="mermaid">
+flowchart TD
+    S["各トランザクションを見る"] --> Q1{"チェックポイント前に<br>コミット済み？"}
+    Q1 -->|"はい"| N1["回復不要 (T1)"]
+    Q1 -->|"いいえ"| Q2{"障害前に<br>コミット済み？"}
+    Q2 -->|"はい"| F["ロールフォワード<br>(更新後ログで再反映)"]
+    Q2 -->|"いいえ(実行中)"| Q3{"DBへの書込みが<br>ある？"}
+    Q3 -->|"ある"| B["ロールバック<br>(更新前ログで元に戻す)"]
+    Q3 -->|"ない"| N2["対象外 (ログが無い)"]
+</pre>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話）</h2>
+
+<p><strong>授業のノート</strong> で考えます。先生の板書（メモリ上のバッファ）を、生徒は <strong>一定間隔でまとめてノートに清書（ディスクへ反映）</strong> します。この清書のタイミングが <strong>チェックポイント</strong> です。ただし「何を書いたか」のメモ（ログファイル）だけは、書いたそばから即座に手帳へ控えています。</p>
+
+<p>停電（システム障害）が起きて再開すると、ノートは <strong>最後の清書時点の状態</strong> に戻っています。そこで手帳（ログ）を見て整えます。</p>
+
+<div class="print-bullet">• <strong>ロールフォワード（前進復帰）</strong>: 清書のあとに「提出済み（コミット）」になった課題は、手帳の「更新後」の記録を使ってノートに <strong>書き足す</strong>。</div>
+<div class="print-bullet">• <strong>ロールバック（後退復帰）</strong>: 停電時にまだ書きかけ（未コミット）だった課題は、手帳の「更新前」の記録で <strong>消しゴムをかけて開始前に戻す</strong>。</div>
+<div class="print-bullet">• <strong>T1</strong>: 清書より前に提出済み。ノートに確実に載っているので何もしない。</div>
+
+<p>公式解説の要点：チェックポイント以前にコミットしたトランザクションはディスクへの反映が保証されます。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 途中の考え方パズル</h2>
+
+<h3 class="print-h3">判定の手順（公式解説どおり）</h3>
+
+<table class="print-table">
+  <thead>
+    <tr><th>トランザクション</th><th>状況</th><th>結論</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>T1</td><td>チェックポイント前にコミット</td><td>回復不要</td></tr>
+    <tr><td>T2</td><td>チェックポイント後〜障害前にコミット</td><td><strong>ロールフォワード</strong></td></tr>
+    <tr><td>T5</td><td>チェックポイント後〜障害前にコミット</td><td><strong>ロールフォワード</strong></td></tr>
+    <tr><td>T3</td><td>障害時に実行中、<strong>書込み無し</strong></td><td>対象外</td></tr>
+    <tr><td>T4</td><td>障害時に実行中、<strong>書込み無し</strong></td><td>対象外</td></tr>
+    <tr><td>T6</td><td>障害時に実行中、書込みあり</td><td><strong>ロールバック</strong></td></tr>
+  </tbody>
+</table>
+
+<h3 class="print-h3">最大のひっかけ</h3>
+図だけを見ると「障害時に実行中の T3・T4・T6 は全部ロールバック」と答えたくなります。ところが <strong>書込みが無いと更新前後のログ（ジャーナル）が生成されない</strong> ので、チェックポイントの状態まで戻った後に消すべきものが存在しません。よって T3・T4 は対象外。作問者は「処理内容の表」を見落とさせるのが狙いです。
+
+<h3 class="print-h3">選択肢の判定</h3>
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ア</td><td>○</td><td>ロールフォワード T2・T5、ロールバック T6 で解説の結論と一致</td></tr>
+    <tr><td>イ・ウ・エ</td><td>✕</td><td>選択肢の内容は取得できず個別の理由は復元不可。ただし正解がアなので、組合せは上表の結論と異なる（例：T3・T4 をロールバックに含める、T1 を対象にする等が典型的な誤り）。</td></tr>
+  </tbody>
+</table>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 「コミット済み＝前進、実行中＋書込み有＝後退、書込み無＝何もしない」を言えるか確認。</div>
+</div>
+
+<div class="question-sheet" id="q_11">
+  <h1 class="print-h1">SQLのUNIONとUNION ALL：2つの名簿を「そのままホッチキス留め」するか「ダブりを消す」か</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: UNIONとUNION ALLの違いがあいまいな文系受験者  <br><strong>省いたもの</strong>: ソート順やインデックスの内部動作  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和2年秋期 午前問29  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和2年秋期 問29</h2>
+
+<p><strong>【問題】</strong>  <br>"東京在庫"表と"大阪在庫"表に対して，SQL文を実行して得られる結果はどれか。ここで，実線の下線は主キーを表す。</p>
+
+<pre><code>SELECT 商品コード，在庫数 FROM 東京在庫
+UNION ALL
+SELECT 商品コード，在庫数 FROM 大阪在庫</code></pre>
+
+<blockquote class="print-quote">⚠️ <strong>復元に関する注記</strong>: 原問題の2つの表（東京在庫・大阪在庫）と選択肢ア〜エの結果表は図表で、取得データには含まれていません。公式解説から分かる事実は次のとおりです。<br>- 両表には共通するレコード <strong>{商品コード: C003, 在庫数: 35}</strong> がある<br>- <strong>エ</strong> は「東京在庫表と大阪在庫表をそのまま統合した結果（重複行も残る）」<br>- <strong>ウ</strong> は「UNION（ALLなし）で結合した場合の結果（重複行が1つに）」<br>- ア・イの内容は復元不可</blockquote>
+<div class="print-bullet">• <strong>ア</strong>: （図表のため復元不可）</div>
+<div class="print-bullet">• <strong>イ</strong>: （図表のため復元不可）</div>
+<div class="print-bullet">• <strong>ウ</strong>: （図表）UNIONで結合した場合の結果（C003, 35 が1行のみ）</div>
+<div class="print-bullet">• <strong>エ</strong>: （図表）東京在庫と大阪在庫をそのまま統合した結果（C003, 35 が2行）</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（両表をそのまま統合し、C003・35の重複行も残る結果）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『ALLが付いたら、ダブりも全部残す！』</h2>
+
+<pre class="mermaid">
+flowchart TD
+    T["東京在庫の行"] --> U{"UNION か UNION ALL か"}
+    O["大阪在庫の行"] --> U
+    U -->|"UNION"| R1["重複行を1つに削除<br/>C003,35 は1行（ウ）"]
+    U -->|"UNION ALL"| R2["重複行もそのまま残す<br/>C003,35 は2行（エ）"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 UNIONは重複を消す、UNION ALLは全部残す！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：2つの出席名簿）</h2>
+
+<p>東京クラスと大阪クラスの名簿を1枚にまとめるとします。</p>
+
+<div class="print-bullet">• <strong>UNION</strong>: 「同じ名前は1人分でいいよ」と、<strong>ダブりを消して</strong>まとめる。ダブりを探す手間がかかる。</div>
+<div class="print-bullet">• <strong>UNION ALL</strong>: 「とにかく2枚をホッチキス留めして」と、<strong>ダブりも含めて全部</strong>くっつける。探す手間がなく速い。</div>
+
+<p>公式解説のとおり、UNIONは和集合演算の演算子で、複数のSELECT結果を1つに統合します。通常のUNIONは<strong>完全に同じレコードがあれば重複行を削除</strong>しますが、UNION ALLは<strong>重複行を含めた結果</strong>を返します。</p>
+
+<p>本問では、東京・大阪のどちらにも {C003, 35} があります。UNION ALLなので<strong>この行が2行</strong>残り、結果は両表をそのまま縦につなげた形（エ）になります。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<p>図表が復元できないため、公式解説で裏づけられる範囲で記載します。</p>
+
+<div class="print-bullet">• <strong>エ → ○（正解）</strong>  </div>
+  UNION ALLは重複を除かないため、両表をそのまま統合した結果になる。C003・35が2行残る。
+<div class="print-bullet">• <strong>ウ → ×（ひっかけ）</strong>  </div>
+  これは<strong>UNION（ALLなし）を使った場合</strong>の結果。重複する {C003, 35} が1行にまとめられる。「ALL」を見落とすと選んでしまう最大の罠です。
+<div class="print-bullet">• <strong>ア・イ → ×</strong>  </div>
+  図表の内容が取得できず、個別の誤り理由は復元不可。公式解説は正解エとウの説明のみです。
+
+<blockquote class="print-quote">💡 <strong>ひっかけ</strong>: 「主キーが下線で示されている」ので、一見「重複はないはず」と思いがちです。しかし、主キーは<strong>各表の内部</strong>での一意性であり、<strong>2つの表の間</strong>では同じ値の行があっても構いません。UNIONの結果表に主キーの制約はかかりません。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. UNIONとUNION ALLの違いを説明せよ。</strong>  </div>
+  → <strong>「UNIONは結果から重複行を除くが、UNION ALLは重複行もそのまま残す。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 「ALL＝全部残す」と3回唱える。</div>
+</div>
+
+<div class="question-sheet" id="q_12">
+  <h1 class="print-h1">IPv4のホスト数計算：マンションの部屋数で覚える「16－2＝14」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: プレフィックス長（/28など）からホスト数を出す手順が曖昧な文系受験者  <br><strong>省いたもの</strong>: サブネットマスクの2進数変換の細かな理屈、CIDR集約  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和4年春期 問34  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和4年春期 問34</h2>
+
+<p><strong>【問題】</strong>  <br>IPv4で 192.168.30.32/28 のネットワークに接続可能なホストの最大数はどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 14</div>
+<div class="print-bullet">• <strong>イ</strong>: 16</div>
+<div class="print-bullet">• <strong>ウ</strong>: 28</div>
+<div class="print-bullet">• <strong>エ</strong>: 30</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ア（14）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『32－プレフィックス長＝ホスト部のビット数。2のn乗から「－2」！』</h2>
+
+<pre class="mermaid">
+flowchart TD
+    A["/28 とは？<br/>先頭28ビットがネットワーク部"] --> B["ホスト部 = 32 - 28 = 4ビット"]
+    B --> C["組合せ = 2の4乗 = 16通り"]
+    C --> D["全部0 = ネットワークアドレス<br/>全部1 = ブロードキャスト<br/>この2つは使えない"]
+    D --> E["16 - 2 = 14台"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 ホスト数は“2のn乗 マイナス2”！ネットワーク用とブロードキャスト用は住人になれない！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：マンションの部屋数）</h2>
+
+<p>IPアドレスは32ビット。<strong>「/28」は、先頭28ビットが“マンション名（ネットワーク部）”、残りが“部屋番号（ホスト部）”</strong> という意味です。</p>
+
+<div class="print-bullet">• 部屋番号に使えるのは 32 − 28 ＝ <strong>4ビット</strong>。</div>
+<div class="print-bullet">• 4ビットで表せるのは 0000〜1111 の <strong>16通り（2×2×2×2）</strong>。</div>
+<div class="print-bullet">• ただし、</div>
+  - <strong>全部0（0000）</strong>＝ネットワークアドレス：「このマンション自体」の名前札
+  - <strong>全部1（1111）</strong>＝ブロードキャストアドレス：「全住人に一斉放送」用の館内放送室
+
+<p>の2つは、住人（ホスト）の部屋としては<strong>予約済みで使えない</strong>。<br><div class="print-bullet">• よって、住める部屋は 16 − 2 ＝ <strong>14室</strong>。</div></p>
+
+<p>公式解説でも、「ホストの最大数は『16－2＝14』が適切」としています。</p>
+
+<h3 class="print-h3">途中計算（省略しない）</h3>
+<table class="print-table">
+  <thead>
+    <tr><th>手順</th><th>計算</th><th>結果</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>① ホスト部のビット数</td><td>32 − 28</td><td>4ビット</td></tr>
+    <tr><td>② ビットの組合せ数</td><td>2×2×2×2</td><td>16通り</td></tr>
+    <tr><td>③ 予約アドレスを引く</td><td>16 − 2</td><td><strong>14台</strong></td></tr>
+  </tbody>
+</table>
+
+<h3 class="print-h3">実際のアドレスで確認（理解のための補足）</h3>
+<div class="print-bullet">• 32は16の倍数なので、このネットワークは 192.168.30.32 から始まる16個のブロック。</div>
+<div class="print-bullet">• ネットワークアドレス： 192.168.30.32（ホスト部0000）</div>
+<div class="print-bullet">• ブロードキャスト： 192.168.30.47（ホスト部1111、32＋15）</div>
+<div class="print-bullet">• ホストに使える範囲： 192.168.30.33 〜 192.168.30.46 ＝ 14個</div>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア ◯: 14</strong>  </div>
+  → 16通り − 2（ネットワークアドレスとブロードキャスト）＝14。
+<div class="print-bullet">• <strong>イ ✕: 16</strong>  </div>
+  → ホスト部4ビットの<strong>組合せ数をそのまま答えた</strong>ミス。「−2」を忘れた人用の罠。
+<div class="print-bullet">• <strong>ウ ✕: 28</strong>  </div>
+  → 問題文の「/28」の数字を<strong>そのまま答えにした</strong>もの。28はネットワーク部のビット数で、ホスト数ではありません。
+<div class="print-bullet">• <strong>エ ✕: 30</strong>  </div>
+  → 「2のn乗−2」の形は合っているが、<strong>/27（ホスト部5ビット → 32−2＝30）の答え</strong>。/28 と /27 の取り違えを狙った罠です。ホスト部は 32−28＝4ビットであって5ビットではありません。
+
+<blockquote class="print-quote">💡 作問者の意図：「−2を忘れる（イ）」「プレフィックス長を答えにする（ウ）」「隣のプレフィックス長と混同する（エ）」という3つの典型ミスを並べています。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. ホスト部が4ビットのネットワークで、ホストに割り当てられるアドレスが組合せ数より2つ少ない理由を述べよ。</strong>  </div>
+  → <strong>「ホスト部が全て0のアドレスはネットワークアドレス、全て1のアドレスはブロードキャストアドレスとして予約されているため。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_13">
+  <h1 class="print-h1">LAN伝送時間の計算：高速道路の「渋滞率」で覚える「ビットとバイトの8倍」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: bps（ビット）とバイトの換算で毎回ミスをする文系受験者  <br><strong>省いたもの</strong>: 伝送効率の内訳（ヘッダ・衝突・再送などの詳細）  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和5年秋期 午前問31  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和5年秋期 問31</h2>
+
+<p><strong>【問題】</strong>  <br>100Mビット／秒のLANを使用し，1件のレコード長が1,000バイトの電文を1,000件連続して伝送するとき，伝送時間は何秒か。ここで，LANの伝送効率は50%とする。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 0.02</div>
+<div class="print-bullet">• <strong>イ</strong>: 0.08</div>
+<div class="print-bullet">• <strong>ウ</strong>: 0.16</div>
+<div class="print-bullet">• <strong>エ</strong>: 1.6</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ウ（0.16）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「データ量をビットにそろえる → 実効速度を出す → 割る」の3手順！</h2>
+
+<pre class="mermaid">
+flowchart TD
+    A["① データ量を出す<br/>1,000バイト × 1,000件 = 1,000,000バイト"]
+    B["② 単位をそろえる<br/>1バイト = 8ビット なので 8Mビット"]
+    C["③ 実効速度を出す<br/>100Mビット/秒 × 50% = 50Mビット/秒"]
+    D["④ 割り算<br/>伝送時間 = データ量 ÷ 実効速度"]
+    A --> B --> D
+    C --> D
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 バイトは8ビット！速度は効率を掛けてから割る！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：高速道路のトラック輸送）</h2>
+
+<div class="print-bullet">• <strong>回線の速度（100Mビット/秒）</strong> ＝ 高速道路が1秒間に通せる「荷物の最大量」。</div>
+<div class="print-bullet">• <strong>伝送効率50%</strong> ＝ 渋滞や検問のせいで、実際に走れる量は理論値の半分。</div>
+<div class="print-bullet">• <strong>データ量</strong> ＝ 運びたい荷物の総量。</div>
+<div class="print-bullet">• <strong>伝送時間</strong> ＝ 荷物の総量 ÷ 実際に運べる速さ。</div>
+
+<p>荷物の量は「バイト」、道路の能力は「ビット」で表されているので、<strong>同じ単位にそろえないと比較できません</strong>。重さをkgで、積載量をトンで言われたら、先にそろえるのと同じです。</p>
+
+<h3 class="print-h3">途中計算（省略しません）</h3>
+
+<p><strong>手順A：ビットにそろえる（公式の別解）</strong></p>
+
+<p>1. データ量（バイト）: 1,000 × 1,000 = 1,000,000 バイト = 1Mバイト<br>2. ビットに換算: 1,000,000 × 8 = 8,000,000 ビット = 8Mビット<br>3. 実効速度: 100Mビット/秒 × 0.5 = 50Mビット/秒<br>4. 伝送時間: 8M ÷ 50M = 8/50 = 0.16 秒</p>
+
+<p><strong>手順B：バイトにそろえる（公式解説の主解法）</strong></p>
+
+<p>1. データ量: 1Mバイト<br>2. 100Mビット/秒 ÷ 8 = 12.5Mバイト/秒<br>3. 実効速度: 12.5 × 0.5 = 6.25Mバイト/秒<br>4. 伝送時間: 1 ÷ 6.25 = 0.16 秒</p>
+
+<p>どちらでも <strong>0.16秒</strong> で一致します。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<blockquote class="print-quote">以下の「誤りの原因」は、数値から逆算した<strong>考えられるミスの型</strong>です（公式解説は正解の導出のみ記載）。</blockquote>
+<div class="print-bullet">• <strong>ア: 0.02 → ×</strong>  </div>
+  1Mバイトを、100Mビット/秒の効率50%の速度＝「50M」で割ってしまった型（1 ÷ 50 = 0.02）。<strong>ビットとバイトの単位を混ぜた</strong>ミスです。
+<div class="print-bullet">• <strong>イ: 0.08 → ×</strong>  </div>
+  8Mビット ÷ 100Mビット/秒 = 0.08。<strong>伝送効率50%を掛け忘れた</strong>型。効率を考慮すると所要時間は2倍の0.16になります。
+<div class="print-bullet">• <strong>ウ: 0.16 → ○</strong>  </div>
+  8Mビット ÷ 50Mビット/秒 = 0.16秒。単位換算と効率の両方を正しく処理した唯一の答えです。
+<div class="print-bullet">• <strong>エ: 1.6 → ×</strong>  </div>
+  正解0.16のちょうど10倍。<strong>桁（M/k/1,000倍）の取り違え</strong>に当たる大きすぎる値で、実効速度が5Mビット/秒相当になってしまいます。回線速度100Mビット/秒でこれほど遅いのは不自然だと気づけると消去できます。
+
+<blockquote class="print-quote">💡 <strong>検算のコツ</strong>: 「効率が下がれば時間は延びる」ので、効率を無視した0.08（イ）より必ず大きい。かつ8Mビットを50Mで割るので1未満。この2つで候補はウに絞れます。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. 伝送時間を求める式と、単位換算で注意すべき点は何か。</strong>  </div>
+  → <strong>「伝送時間＝伝送データ量÷（回線速度×伝送効率）。バイトは8ビットとして単位をそろえる。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 「1,000バイト×1,000件＝8Mビット」「100M×50%＝50M」の2行を紙に書いて暗唱する。</div>
+</div>
+
+<div class="question-sheet" id="q_14">
+  <h1 class="print-h1">LAN送信時間の差からパケット数を逆算：宅配トラックの速度差と「毎回の休憩」は相殺される！</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 「送信時間＝データ量÷速度」は知っているが、単位換算（M・G・バイト・ビット）で手が止まる文系受験者  <br><strong>省いたもの</strong>: プロトコルごとのヘッダー構造やCSMA/CDの詳細  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和5年春期 午前問32  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和5年春期 問32</h2>
+
+<p><strong>【問題】</strong>  <br>100Mビット／秒のLANと1Gビット／秒のLANがある。ヘッダーを含めて1,250バイトのパケットをN個送付するときに，100Mビット／秒のLANの送信時間が1Gビット／秒のLANより9ミリ秒多く掛かった。Nは幾らか。ここで，いずれのLANにおいても，パケットの送信間隔(パケットの送信が完了してから次のパケットを送信開始するまでの時間)は1ミリ秒であり，パケット送信間隔も送信時間に含める。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 10</div>
+<div class="print-bullet">• <strong>イ</strong>: 80</div>
+<div class="print-bullet">• <strong>ウ</strong>: 100</div>
+<div class="print-bullet">• <strong>エ</strong>: 800</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ウ（100）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『差を取れば「休憩（送信間隔）」は消える。残るのは速度差だけ！』</h2>
+
+<pre class="mermaid">
+flowchart TD
+    A["①1パケット = 1,250バイト = 10,000ビット"] --> B["②1個の送信時間<br/>100M: 0.1ms / 1G: 0.01ms"]
+    B --> C["③1個あたりの差 = 0.09ms<br/>(送信間隔1msは両方同じ→差で消える)"]
+    C --> D["④N × 0.09ms = 9ms"]
+    D --> E["⑤N = 100"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 両方に同じ分だけ足されるものは、差を取れば消える！バイトは×8でビットへ！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：トラックで荷物を運ぶ）</h2>
+
+<p>同じ荷物を、時速100のトラックと時速1,000のトラックで運ぶとします。どちらも荷物1個運ぶたびに「1分間の休憩」を取るルールです。<strong>休憩は両方に同じだけ入る</strong>ので、「どちらがどれだけ遅いか」の差を考えるときには休憩時間は関係ありません。差を生むのは<strong>走る速さだけ</strong>です。</p>
+
+<p>公式解説も「転送データ量、パケットの送信間隔は両方とも同じなので、9ミリ秒の差は単純に通信速度の違いのみによって生まれた」と述べています。</p>
+
+<h3 class="print-h3">途中計算（公式解説の方程式）</h3>
+転送データ量をA（ビット）とすると、
+
+<div class="print-bullet">• 100Mビット/秒の送信時間: A ÷ 100Mビット</div>
+<div class="print-bullet">• 1Gビット/秒の送信時間: A ÷ 1Gビット</div>
+<div class="print-bullet">• 差が9ミリ秒（0.009秒）なので A÷100M ＝ A÷1G ＋ 0.009</div>
+
+<p>両辺に1G（＝1,000M）を掛けると<br>1. 10A ＝ A ＋ 9,000,000<br>2. 9A ＝ 9,000,000<br>3. A ＝ 1,000,000ビット ＝ 125,000バイト（÷8）<br>4. N ＝ 125,000バイト ÷ 1,250バイト ＝ <strong>100個</strong></p>
+
+<h3 class="print-h3">検算（1パケットずつ）</h3>
+<div class="print-bullet">• 1,250バイト × 8 ＝ 10,000ビット</div>
+<div class="print-bullet">• 100M: 10,000 ÷ 100,000,000 ＝ 0.0001秒 ＝ 0.1ms（＋間隔1ms＝1.1ms）</div>
+<div class="print-bullet">• 1G: 10,000 ÷ 1,000,000,000 ＝ 0.00001秒 ＝ 0.01ms（＋間隔1ms＝1.01ms）</div>
+<div class="print-bullet">• 1個あたりの差 ＝ 1.1 − 1.01 ＝ 0.09ms → 9 ÷ 0.09 ＝ <strong>100個</strong> ✔</div>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア（10）: ✗</strong>  </div>
+  → 差を「0.9ms/個」と桁を取り違えると9÷0.9＝10になる。ビット換算か秒換算で1桁ずれたときの値。
+<div class="print-bullet">• <strong>イ（80）: ✗</strong>  </div>
+  → バイトとビットの混同（×8、÷8の取り違え）で出やすい値。正しい計算では80にならない。
+<div class="print-bullet">• <strong>ウ（100）: ○</strong>  </div>
+  → 1個あたりの差0.09ms、9ms÷0.09ms＝100。公式解説の方程式の解とも一致。
+<div class="print-bullet">• <strong>エ（800）: ✗</strong>  </div>
+  → ビット（10,000）とバイト（1,250）の混同、つまり8倍ずれた値。バイトのまま計算するなど単位が混ざると出る。
+
+<blockquote class="print-quote">⚠️ ワナは2つ。①<strong>バイト→ビットの×8を忘れる</strong>、②<strong>送信間隔1msを引き算に入れてしまう</strong>（差を取ると両方から消える）。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. 送信時間を求める式と、送信間隔の扱いを述べよ。</strong>  </div>
+  → <strong>「送信時間＝転送データ量÷回線速度。送信間隔は全体の時間に加算する。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_15">
+  <h1 class="print-h1">タイトル：【金庫破りの聞き耳】で覚える「サイドチャネル攻撃」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 攻撃手法の名前と説明が一致せず迷う文系受験者  <br><strong>省いたもの</strong>: 電力解析の統計処理（DPA/SPA）の数理  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 [令和4年秋期 午前問37](https://www.ap-siken.com/kakomon/04_aki/q37.html)  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和4年秋期 午前問37</h2>
+
+<p><strong>【問題】</strong>  <br>サイドチャネル攻撃に該当するものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 暗号アルゴリズムを実装した攻撃対象の物理デバイスから得られる物理量(処理時間，消費電流など)やエラーメッセージから，攻撃対象の秘密情報を得る。</div>
+<div class="print-bullet">• <strong>イ</strong>: 企業などの秘密情報を不正に取得するソーシャルエンジニアリングの手法の一つであり，不用意に捨てられた秘密情報の印刷物をオフィスの紙ごみの中から探し出す。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 通信を行う2者間に割り込み，両者が交換する情報を自分のものとすり替えることによって，その後の通信を気付かれることなく盗聴する。</div>
+<div class="print-bullet">• <strong>エ</strong>: データベースを利用するWebサイトに入力パラメータとしてSQL文の断片を送信することによって，データベースを改ざんする。</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ア（物理量やエラーメッセージから秘密情報を得る）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「正面（暗号そのもの）ではなく、横（動作の様子）から探る」！</h2>
+
+<p><strong>合言葉：『鍵は壊さず、音と熱と時間を盗む』</strong></p>
+
+<pre class="mermaid">
+flowchart TD
+    Q["攻撃の説明文を読む"] --> K{"装置の動作状況<br>(時間・電力・電磁波・誤動作)<br>から秘密を推定？"}
+    K -->|"はい"| SC["サイドチャネル攻撃"]
+    K -->|"ゴミ箱を漁る"| SV["スキャベンジング"]
+    K -->|"通信に割り込み"| MITM["中間者攻撃"]
+    K -->|"SQL断片を入力"| SQLI["SQLインジェクション"]
+</pre>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話）</h2>
+
+<p>ダイヤル式金庫を破りたい泥棒を考えます。正面から数字を総当たりするのは大変です。そこで <strong>金庫に耳を当てて、カチッという音の違い</strong> を聞き取る。これがサイドチャネル（Side Channel＝本来の入出力ではない <strong>脇の経路</strong>）攻撃です。暗号の数学的な強さではなく、<strong>装置が動くときに漏れる情報</strong> を狙います。</p>
+
+<p>公式解説では、サイドチャネル攻撃は対象の動作状況を観察し、漏洩電磁波・電力消費等から暗号鍵推定等を行う <strong>非破壊型解析攻撃の総称</strong> です。代表的な手法：</p>
+
+<table class="print-table">
+  <thead>
+    <tr><th>手法</th><th>内容</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>故障利用攻撃</td><td>デバイスに限定的な障害を故意に与え、計算誤りから秘密情報を解析</td></tr>
+    <tr><td>タイミング攻撃</td><td>暗号処理の時間が鍵の論理値に依存して変わることに着目し、所要時間の差を統計的に解析して鍵を推定</td></tr>
+    <tr><td>電力解析攻撃</td><td>消費電力の変化から鍵や処理内容を解析</td></tr>
+    <tr><td>電磁波解析攻撃（テンペスト攻撃）</td><td>機器が発する電磁波を測定して秘密情報を取得</td></tr>
+  </tbody>
+</table>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定表</h2>
+
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ア</td><td>○</td><td>処理時間・消費電流などの物理量やエラーメッセージから秘密情報を得る、サイドチャネル攻撃の説明。</td></tr>
+    <tr><td>イ</td><td>✕</td><td><strong>スキャベンジング</strong> の説明（ごみ漁り型のソーシャルエンジニアリング）。</td></tr>
+    <tr><td>ウ</td><td>✕</td><td><strong>MITM攻撃（中間者攻撃）</strong> の説明。</td></tr>
+    <tr><td>エ</td><td>✕</td><td><strong>SQLインジェクション</strong> の説明。</td></tr>
+  </tbody>
+</table>
+
+<p><strong>ひっかけ</strong>: イ〜エは、どれもセキュリティ試験の頻出用語で、「攻撃っぽいから」と選びやすい。決め手は <strong>「暗号の実装機器の物理的な様子を観察する」</strong> という一点。ちなみにアの「エラーメッセージ」も、装置から漏れる情報として含まれる点に注意。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 表の4手法（故障・タイミング・電力・電磁波）を指で隠して言えるか確認。</div>
+</div>
+
+<div class="question-sheet" id="q_16">
+  <h1 class="print-h1">CORBA：国連の通訳窓口で覚える「OMGが決めた分散オブジェクトの仕様」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: ANSI・OMG・ISOなど標準化団体の名前がごちゃ混ぜになる文系受験者  <br><strong>省いたもの</strong>: IDLやORBの内部実装の詳細  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 平成19年春期 問80  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】平成19年春期 問80</h2>
+
+<p><strong>【問題】</strong>  <br>CORBAを説明したものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: ANSIが制定したオブジェクト指向プログラミング技術の仕様</div>
+<div class="print-bullet">• <strong>イ</strong>: ANSIが制定した分散オブジェクト技術の仕様</div>
+<div class="print-bullet">• <strong>ウ</strong>: OMGが制定したオブジェクト指向プログラミング技術の仕様</div>
+<div class="print-bullet">• <strong>エ</strong>: OMGが制定した分散オブジェクト技術の仕様</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（OMGが制定した分散オブジェクト技術の仕様）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「誰が？（OMG）」×「何の？（分散オブジェクト）」の2軸で消去！</h2>
+
+<pre class="mermaid">
+flowchart TD
+    Q["CORBAの選択肢"] --> W{"制定団体は？"}
+    W -->|"ANSI"| X["ア・イ ✕"]
+    W -->|"OMG"| T{"何の技術？"}
+    T -->|"オブジェクト指向プログラミング"| Y["ウ ✕"]
+    T -->|"分散オブジェクト"| Z["エ ○"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 CORBAは OMG（オブジェクト団体）の 分散オブジェクト仕様！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：国際会議の同時通訳ブース）</h2>
+
+<p>世界中から集まった人が、それぞれ違う言語（プログラム言語）、違う場所（コンピュータ）にいても会話したい。そこで<strong>共通の通訳ブース（ORB）</strong>を挟み、誰が話しても相手に伝わるようにしたのがCORBAです。</p>
+
+<div class="print-bullet">• 正式名：Common Object Request Broker Architecture</div>
+<div class="print-bullet">• 制定団体：OMG（Object Management Group）＝オブジェクト指向技術の標準化団体</div>
+<div class="print-bullet">• 目的：様々なコンピュータ上で、様々なプログラム言語で書かれたソフトウェア部品（コンポーネント）を相互に利用できる<strong>分散処理環境</strong>を実現すること（公式解説）</div>
+
+<p>つまり「プログラムの書き方」ではなく、<strong>離れた場所にあるオブジェクト同士を呼び出し合う仕組み</strong>の標準仕様です。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア ✕</strong>: 制定団体がANSI（米国規格協会）で誤り。さらに「オブジェクト指向プログラミング技術」ではなく「分散オブジェクト技術」なので二重に誤り。</div>
+<div class="print-bullet">• <strong>イ ✕</strong>: 技術内容（分散オブジェクト）は正しいが、制定団体がANSIで誤り。<strong>半分だけ正しいひっかけ</strong>。</div>
+<div class="print-bullet">• <strong>ウ ✕</strong>: 制定団体（OMG）は正しいが、「オブジェクト指向プログラミング技術」が誤り。CORBAは言語の仕様ではなく、分散環境でオブジェクトを相互利用する仕様。</div>
+<div class="print-bullet">• <strong>エ ○</strong>: OMG（団体）＋分散オブジェクト技術（目的）の両方が正しい。</div>
+
+<blockquote class="print-quote">😈 最大のトラップ：イとウは「片方だけ正しい」選択肢。<strong>団体名と技術内容の両方を確認</strong>してから選びましょう。</blockquote>
+<blockquote class="print-quote">※元データの分類は「法務」ですが、内容は分散オブジェクト技術（開発技術）のため、12_システム開発技術に配置しました。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢「エ」を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 「CORBA＝OMG＝分散オブジェクト」を声に出して3回言ってみよう。</div>
+</div>
+
+<div class="question-sheet" id="q_17">
+  <h1 class="print-h1">画像フォーマットSVG：「設計図で描く絵」で覚える「拡大しても荒れないXML画像」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: PNG・TIFF・SVG・OpenGLの違いが混ざる文系受験者  <br><strong>省いたもの</strong>: SVGの詳細な記述文法やアニメーション仕様  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和3年春期 午前問27  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和3年春期 問27</h2>
+
+<p><strong>【問題】</strong>  <br>W3Cで仕様が定義され，矩形や円，直線，文字列などの図形オブジェクトをXML形式で記述し，Webページでの図形描画にも使うことができる画像フォーマットはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: OpenGL</div>
+<div class="print-bullet">• <strong>イ</strong>: PNG</div>
+<div class="print-bullet">• <strong>ウ</strong>: SVG</div>
+<div class="print-bullet">• <strong>エ</strong>: TIFF</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ウ（SVG）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「XMLで書く」「図形を命令で描く」＝SVG！</h2>
+
+<pre class="mermaid">
+flowchart TD
+    Q["XMLで図形（矩形・円・直線・文字列）を記述？"] -->|"はい"| SVG["SVG<br/>ベクター形式・拡大しても劣化なし"]
+    Q -->|"いいえ"| O["OpenGL: 2D/3D描画API<br/>PNG: 可逆圧縮のラスター画像<br/>TIFF: 複数形式を1ファイルに格納"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 SVG＝ベクター＋XML＋拡大しても荒れない！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：絵と設計図の違い）</h2>
+
+<div class="print-bullet">• <strong>PNGなどのラスター画像</strong> ＝ <strong>モザイクタイルの壁画</strong>。1マスずつ色を並べた絵なので、近づいて拡大するとマスが見えて荒れる。</div>
+<div class="print-bullet">• <strong>SVG（ベクター画像）</strong> ＝ <strong>「ここに半径3cmの赤い円を描く」という設計図</strong>。拡大しても、設計図から描き直すので<strong>常にくっきり</strong>。</div>
+
+<p>SVG（Scalable Vector Graphics）は、ベクター形式による2次元の画像・図形・テキストなどを<strong>XML形式で記述する</strong>画像フォーマットです。公式解説では、次の特徴が挙げられています。</p>
+
+<div class="print-bullet">• 拡大・縮小しても画質が劣化しない（高解像度ディスプレイに最適）</div>
+<div class="print-bullet">• テキストベースのため、画像編集ソフトなしにテキストエディタで直接編集できる</div>
+<div class="print-bullet">• JavaScriptなどで動的に制御できる</div>
+
+<p>用途は、アイコン、ロゴ、ボタン、チャート、グラフ、地図、ダイアグラムなど。ラスター画像（JPEGやPNG）よりデータサイズが小さく、通信量や表示速度で有利な場合があります。HTML5でインラインSVGがサポートされ、Webでの活用が広がりました。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア: OpenGL → ×</strong>  </div>
+  Open Graphics Libraryの略。Linux、FreeBSDなどのUNIXやWindows、Mac OS Xで使えるクロスプラットフォームの、<strong>2D/3DCGを扱うAPI</strong>です。画像フォーマットではありません。
+<div class="print-bullet">• <strong>イ: PNG → ×</strong>  </div>
+  Portable Network Graphicsの略。<strong>圧縮による画質劣化がない可逆圧縮</strong>の画像フォーマットで、GIFより圧縮率が高く、ほぼ全てのブラウザで対応しています。Web画像として使われますが、XMLで図形を記述する形式ではありません（ラスター画像）。
+<div class="print-bullet">• <strong>ウ: SVG → ○</strong>  </div>
+  XML形式で図形を記述する画像フォーマット。
+<div class="print-bullet">• <strong>エ: TIFF → ×</strong>  </div>
+  Tagged Image File Formatの略。解像度・色数・カラーモデルなどが異なる<strong>複数の形式の画像データを1つのファイルに格納</strong>できるファイル形式です。
+
+<blockquote class="print-quote">💡 <strong>ひっかけ</strong>: 「Web」「W3C」という言葉からPNGを選びがち。しかし<strong>「XMLで図形オブジェクトを記述する」がキーワード</strong>。ピクセルを並べるPNGは対象外です。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. SVGがラスター画像に比べて拡大に強い理由は何か。</strong>  </div>
+  → <strong>「SVGは図形を座標や形状の記述（ベクター形式）で持つため、拡大しても描き直されて画質が劣化しないから。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 「PNG＝可逆圧縮、TIFF＝複数形式を格納、OpenGL＝API、SVG＝XML」の対応を言ってみる。</div>
+</div>
+
+<div class="question-sheet" id="q_18">
+  <h1 class="print-h1">開発工数の式と生産性：「べき乗」は怖くない！ほぼ1乗とみなして割るだけ</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 「5.2×L の 0.98 乗」を見ただけで固まる文系受験者  <br><strong>省いたもの</strong>: 0.98乗の厳密な電卓計算、COCOMO等のモデル詳細  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 平成30年春期 午前問54  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】平成30年春期 問54</h2>
+
+<p><strong>【問題】</strong>  <br>あるソフトウェア開発部門では，開発工数E(人月)と開発規模L(キロ行)との関係を，E＝5.2L^0.98（Lの0.98乗）としている。L＝10としたときの生産性(キロ行／人月)は，およそ幾らか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 0.2</div>
+<div class="print-bullet">• <strong>イ</strong>: 0.5</div>
+<div class="print-bullet">• <strong>ウ</strong>: 1.9</div>
+<div class="print-bullet">• <strong>エ</strong>: 5.2</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ア（0.2）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『生産性＝規模÷工数。0.98乗は“ほぼ1乗”で近似！』</h2>
+
+<pre class="mermaid">
+flowchart TD
+    A["L = 10 を式に代入<br/>E = 5.2 × 10の0.98乗"] --> B["0.98乗 ≒ 1乗 とみなす<br/>E ≒ 5.2 × 10 = 52人月"]
+    B --> C["生産性 = 規模 ÷ 工数<br/>10 ÷ 52"]
+    C --> D["0.192... ≒ 0.2 キロ行/人月"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 生産性＝できた量÷かかった工数！ほぼ1乗なら 5.2×10＝52 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：1人が1か月に書ける原稿の量）</h2>
+
+<p>「ライターが1か月（＝1人月）で何ページ書けるか」が生産性です。10キロ行（＝1万行）のプログラムを書くのに52人月かかったなら、1人月あたりは 10÷52 ≒ 0.19キロ行（約190行）。意外と少なく感じますが、設計・テスト・会議を含めた“全工程込み”の工数だからです。</p>
+
+<h3 class="print-h3">途中計算（省略なし）</h3>
+1. 生産性 ＝ 開発規模 ÷ 開発工数
+2. E ＝ 5.2 × 10^0.98。10^0.98 は 10^1＝10 にとても近いので、公式解説どおり「約1乗」とみなして E ≒ 5.2 × 10 ＝ <strong>52人月</strong>
+3. 生産性 ＝ 10 ÷ 52 ＝ 0.192… ≒ <strong>0.2キロ行/人月</strong>
+
+<p>（参考：10^0.98 を厳密に計算しても約9.55で、E ≒ 49.7、生産性 ≒ 0.20 となり、答えは変わりません。）</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア（0.2）: ○</strong>  </div>
+  → 10÷52 ＝ 0.192… ≒ 0.2。公式解説と一致。
+<div class="print-bullet">• <strong>イ（0.5）: ✗</strong>  </div>
+  → 工数を5.2×L＝52でなく約20程度と誤る、など計算経路が合わない値。10÷52 は0.5にならない。
+<div class="print-bullet">• <strong>ウ（1.9）: ✗</strong>  </div>
+  → 10÷52＝0.192 の<strong>小数点の位置を1桁ずらした</strong>値（0.192 → 1.92）。小数点ミスの罠。
+<div class="print-bullet">• <strong>エ（5.2）: ✗</strong>  </div>
+  → 式の係数5.2を、そのまま答えにしてしまう罠。5.2は係数であり、生産性ではない。
+
+<blockquote class="print-quote">⚠️ 逆数の罠にも注意。「工数÷規模」＝52÷10＝5.2 は“1キロ行あたりの人月”であり、生産性（キロ行/人月）とは<strong>逆</strong>。単位「キロ行／人月」＝「キロ行 ÷ 人月」と読めば間違えません。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. 生産性の求め方を述べよ。</strong>  </div>
+  → <strong>「生産性＝開発規模（キロ行）÷開発工数（人月）で求める。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_19">
+  <h1 class="print-h1">可用性管理の保守性指標：「入院から退院までの日数」で覚える「平均サービス回復時間（MTRS）」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 信頼性・保守性・可用性の指標がごちゃ混ぜになる文系受験者  <br><strong>省いたもの</strong>: ITILの可用性管理プロセスの詳細な活動内容  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和4年春期 午前問56  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和4年春期 問56</h2>
+
+<p><strong>【問題】</strong>  <br>ITIL 2011 editionでは，可用性管理における重要業績評価指標(KPI)の例として，"保守性を表す指標値"の短縮を挙げている。保守性を表す指標に該当するものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 一定期間内での中断の数</div>
+<div class="print-bullet">• <strong>イ</strong>: 平均故障間隔</div>
+<div class="print-bullet">• <strong>ウ</strong>: 平均サービス・インシデント間隔</div>
+<div class="print-bullet">• <strong>エ</strong>: 平均サービス回復時間</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（平均サービス回復時間）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「壊れてから直るまで」＝保守性！</h2>
+
+<pre class="mermaid">
+flowchart LR
+    UP1["稼働中"] -->|"故障発生"| DOWN["停止（ダウン）"]
+    DOWN -->|"回復"| UP2["稼働中"]
+    DOWN -.->|"停止している時間の長さ"| M["保守性<br/>平均サービス回復時間 MTRS<br/>（短いほど良い）"]
+    UP1 -.->|"稼働が続く時間の長さ"| R["信頼性<br/>平均故障間隔 MTBF<br/>平均サービス・インシデント間隔 MTBSI"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 保守性＝直す速さ（回復時間）、信頼性＝壊れにくさ（間隔）！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：スマホの入院）</h2>
+
+<div class="print-bullet">• <strong>信頼性</strong>: スマホが「どれだけ壊れずに使えるか」。壊れる間隔が長いほど良い。</div>
+<div class="print-bullet">• <strong>保守性</strong>: 壊れたとき「どれだけ早く修理から戻ってくるか」。<strong>ダウン時間が短いほど</strong>保守性が高い。</div>
+<div class="print-bullet">• <strong>可用性</strong>: 「必要なときに使える状態にある割合・状況」。</div>
+
+<p>公式解説のとおり、保守性とは、ITサービスその他の構成アイテムを<strong>どの程度迅速かつ効果的に通常の稼働状態に戻せるか</strong>を表す指標です。簡単に言えば<strong>ダウンタイムの短さ</strong>です。ITサービスマネジメントでは、システムが停止してからユーザーが再び利用できるようになるまでの平均時間「<strong>平均サービス回復時間（MTRS）</strong>」が保守性の指標として使われます。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア: 一定期間内での中断の数 → ×</strong>  </div>
+  公式解説では<strong>可用性</strong>を表す指標。中断が何回あったかであって、回復の速さではありません。
+<div class="print-bullet">• <strong>イ: 平均故障間隔 → ×</strong>  </div>
+  公式解説では<strong>信頼性</strong>を表す指標（MTBF）。「壊れるまでの長さ」で、直す速さではありません。
+<div class="print-bullet">• <strong>ウ: 平均サービス・インシデント間隔 → ×</strong>  </div>
+  公式解説では<strong>信頼性</strong>を表す指標（MTBSI）。サービスのインシデントが起きる間隔であり、これも「壊れにくさ」側です。
+<div class="print-bullet">• <strong>エ: 平均サービス回復時間 → ○</strong>  </div>
+  停止から利用可能になるまでの平均時間（MTRS）。保守性を測る指標です。
+
+<blockquote class="print-quote">💡 <strong>ひっかけ</strong>: 「間隔（長いほど良い）＝信頼性」と「時間（短いほど良い）＝保守性」。<strong>良くなる方向が逆</strong>である点が問題文の「短縮」にも表れています。「短縮を目標にできるのは回復時間」と気づければ即決です。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. 保守性を測る指標と、その意味を述べよ。</strong>  </div>
+  → <strong>「平均サービス回復時間（MTRS）。停止から利用可能に戻るまでの平均時間で、短いほど保守性が高い。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 「可用性＝中断の数、信頼性＝間隔、保守性＝回復時間」と言ってみる。</div>
+</div>
+
+<div class="question-sheet" id="q_20">
+  <h1 class="print-h1">ITILの7ステップの改善プロセス：「家計簿の見直し」で覚える「収集→処理→分析→提示」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: ITILの横文字プロセスが頭に残らない文系受験者  <br><strong>省いたもの</strong>: 各ステップの入出力や成果物の細則  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和元年秋期 午前問56  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和元年秋期 問56</h2>
+
+<p><strong>【問題】</strong>  <br>ITIL 2011 editionによれば，7ステップの改善プロセスにおけるa，b及びcの適切な組合せはどれか。  <br>〔7ステップの改善プロセス〕</p>
+
+<blockquote class="print-quote">⚠️ <strong>復元に関する注記</strong>: 原問題では7ステップの図が提示され、ステップ4〜6にあたる空欄a, b, cを、下の選択肢の組合せから選びます。取得データには図と選択肢ア〜エの各組合せ本文が含まれていません（選択肢欄は「イ ウ エ」とのみ記録）。そのため、ここでは公式解説から「空欄に入る正しい内容」だけを復元しています。</blockquote>
+<div class="print-bullet">• <strong>空欄a（ステップ4）</strong>: 公式解説により「データを処理する」と対応</div>
+<div class="print-bullet">• <strong>空欄b（ステップ5）</strong>: 同じく「情報とデータを分析する」と対応</div>
+<div class="print-bullet">• <strong>空欄c（ステップ6）</strong>: 同じく「情報を提示して利用する」と対応</div>
+<div class="print-bullet">• <strong>ア〜エの選択肢</strong>: 取得データに本文なし（復元不可）</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ウ</strong>  <br>（a＝データを処理する、b＝情報とデータを分析する、c＝情報を提示して利用する、の組合せ）</p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「特定→定義→収集→処理→分析→提示→実装」の順番を言える！</h2>
+
+<pre class="mermaid">
+flowchart LR
+    S1["①特定<br/>改善の戦略"] --> S2["②定義<br/>何を測るか"]
+    S2 --> S3["③収集<br/>データを集める"]
+    S3 --> S4["④処理<br/>データを加工"]
+    S4 --> S5["⑤分析<br/>情報とデータを分析"]
+    S5 --> S6["⑥提示<br/>情報を提示し利用"]
+    S6 --> S7["⑦実装<br/>改善を実施"]
+    S7 -.次の周回へ.-> S1
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 集めて、処理して、分析して、見せる！ 』</strong>（③収集 → ④処理 → ⑤分析 → ⑥提示）</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：家計簿で食費を減らす）</h2>
+
+<p>「食費を減らしたい」と思ったら、次の順で動きます。</p>
+
+<p>1. <strong>特定</strong>: 「食費を見直そう」と方針を決める<br>2. <strong>定義</strong>: 何を測るか決める（月の食費、外食回数）<br>3. <strong>収集</strong>: レシートを集める<br>4. <strong>処理</strong>: レシートを表に入力して整理する（＝データを処理する）<br>5. <strong>分析</strong>: 「外食が増えた月は赤字」と傾向を読み解く（＝情報とデータを分析する）<br>6. <strong>提示</strong>: 家族に結果を見せて共有する（＝情報を提示して利用する）<br>7. <strong>実装</strong>: 実際に自炊を増やして改善する</p>
+
+<p>公式解説のとおり、7ステップの改善プロセスとは、改善を <strong>①特定、②定義、③収集、④処理、⑤分析、⑥提示、⑦実装</strong> するために必要な手順を定義・管理するプロセスです。<strong>データは「集めただけ」では役に立たず、加工（処理）→読み解き（分析）→見せる（提示）を経て、初めて改善行動（実装）につながります。</strong></p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<p>取得データには選択肢ア〜エの本文がないため、<strong>各選択肢ごとの判定理由は復元できません</strong>。公式解説から確実に言える範囲は次のとおりです。</p>
+
+<div class="print-bullet">• <strong>ウ → ○（正解）</strong>  </div>
+  ④処理＝データを処理する、⑤分析＝情報とデータを分析する、⑥提示＝情報を提示して利用する、と順番どおりに対応しているため。
+<div class="print-bullet">• <strong>ア・イ・エ → ×</strong>  </div>
+  公式解説にこれらの内容記載はなく、正解の対応関係と食い違う組合せです（具体的な誤り方は復元不可）。
+
+<blockquote class="print-quote">💡 <strong>ひっかけの一般的な型（推定）</strong>: 「分析」と「処理」の入れ替え、「提示」と「実装」の混同。<strong>収集した後に処理、その後に分析、最後に提示</strong>の順序を固定して覚えれば、並び替え型の選択肢を消せます。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. 7ステップの改善プロセスで、データ収集の後に行うことは何か。</strong>  </div>
+  → <strong>「収集したデータを処理し、情報とデータを分析した後、結果を提示して利用し、改善を実装する。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 7ステップを「特定・定義・収集・処理・分析・提示・実装」と声に出して言う。</div>
+</div>
+
+<div class="question-sheet" id="q_21">
+  <h1 class="print-h1">サービスレベル管理プロセス：お客さんと「ここまで保証します」と契約書を交わす係</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: ITILのプロセス名（キャパシティ管理・継続管理など）が似ていて区別できない文系受験者  <br><strong>省いたもの</strong>: 各プロセスの入出力や成果物の詳細  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和6年春期 午前問56  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和6年春期 問56</h2>
+
+<p><strong>【問題】</strong>  <br>サービスマネジメントにおけるサービスレベル管理プロセスの活動はどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 現在の資源の調整と最適化とを行い，将来の資源要件に関する予測を記載した計画を作成する。</div>
+<div class="print-bullet">• <strong>イ</strong>: サービスの提供に必要な予算に応じて，適切な資金を確保する。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 災害や障害などで事業が中断しても，要求されたサービス機能を合意された期間内に確実に復旧できるように，事業影響度の評価や復旧優先順位を明確にする。</div>
+<div class="print-bullet">• <strong>エ</strong>: 提供するサービス及びサービスレベル目標を決定し，サービス提供者が顧客との間で合意文書を交わす。</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（提供するサービス及びサービスレベル目標を決定し，サービス提供者が顧客との間で合意文書を交わす。）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『サービスレベル管理＝顧客との約束（SLA）を決めて守る係！』</h2>
+
+<pre class="mermaid">
+flowchart TD
+    Q["選択肢の主語を見る"] --> K{"顧客と合意文書(SLA)を交わす？"}
+    K -- "はい" --> SLM["サービスレベル管理 ✅"]
+    K -- "資源の予測・最適化" --> CAP["キャパシティ管理"]
+    K -- "予算・資金" --> BUD["予算及び会計業務"]
+    K -- "災害時の復旧・優先順位" --> CON["サービス継続及び可用性管理"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 SLA＝顧客との約束書。「合意文書」の文字が見えたらサービスレベル管理！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：宅配ピザ店の「30分以内にお届け」保証）</h2>
+
+<p>ピザ店が「30分以内にお届けします。遅れたら割引」と客に約束するとします。これがSLA（サービスレベルアグリーメント）です。約束の内容（サービスとレベル目標）を決め、客と合意し、実際に守れているか毎月確認し、守れなければ改善する。この一連の係がサービスレベル管理です。</p>
+
+<p>公式解説では、サービスレベル管理は「SLAに基づいて顧客要件を満たすサービスの提供を実現するとともに、サービス品質の継続的な改善を図るための管理活動」で、サービスレベル目標や例外を定めて顧客と提供者でSLAを合意することも活動の一つです。維持・管理のために「モニタリング」「レポーティング」「レビュー」「改善」というPDCAサイクルを繰り返します。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア: ✗（キャパシティ管理の活動）</strong>  </div>
+  → 「資源の調整と最適化」「将来の資源要件の予測」＝ピザ店で言えば「ピザ窯や配達員を何人揃えるか」の計画。約束ではなく、約束を守るための設備計画。
+<div class="print-bullet">• <strong>イ: ✗（サービスの予算及び会計業務の活動）</strong>  </div>
+  → 「予算」「資金」というお金のキーワード。店の経理係の仕事。
+<div class="print-bullet">• <strong>ウ: ✗（サービス継続及び可用性管理の活動）</strong>  </div>
+  → 「災害・障害で中断」「復旧」「事業影響度」「復旧優先順位」＝店が火事になっても営業再開できる備え（BCP的）。
+<div class="print-bullet">• <strong>エ: ○（サービスレベル管理の活動）</strong>  </div>
+  → 「サービスレベル目標を決定」「顧客と合意文書」＝SLAの締結そのもの。
+
+<blockquote class="print-quote">⚠️ ウは「合意された期間内に」と“合意”の語が入っているのがひっかけ。しかし主題は<strong>復旧の備え</strong>であり、合意文書を交わす活動ではない。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. サービスレベル管理で繰り返すPDCAの活動を挙げよ。</strong>  </div>
+  → <strong>「モニタリング、レポーティング、レビュー、改善を繰り返す。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_22">
+  <h1 class="print-h1">タイトル：【レストランの全メニュー台帳】で覚える「サービス・ポートフォリオ」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: サービス・ポートフォリオ／パイプライン／カタログの違いが曖昧な文系受験者  <br><strong>省いたもの</strong>: ITIL 2011 のライフサイクル各段階の詳細プロセス  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 [令和3年春期 午前問56](https://www.ap-siken.com/kakomon/03_haru/q56.html)  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和3年春期 午前問56</h2>
+
+<p><strong>【問題】</strong>  <br>ITIL 2011 editionによれば，サービス・ポートフォリオの説明のうち，適切なものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: サービス・プロバイダの約束事項と投資を表すものであって，サービス・プロバイダによって管理されている"検討中か開発中"，"稼働中か展開可能"及び"廃止済み"の全てのサービスが含まれる。</div>
+<div class="print-bullet">• <strong>イ</strong>: サービスの販売と提供の支援に使用され，顧客に公開されるものであって，"検討中か開発中"と"廃止済み"のサービスは含まれず，"稼働中か展開可能"のサービスだけが含まれる。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 投資の機会と実現される価値を含むものであって，"廃止済み"のサービスは含まれず，"検討中か開発中"のサービスと"稼働中か展開可能"のサービスが含まれる。</div>
+<div class="print-bullet">• <strong>エ</strong>: どのようなサービスが提供できたのか，実力を示すものであって，"検討中か開発中"のサービスは含まれず，"稼働中か展開可能"のサービスと"廃止済み"のサービスが含まれる。</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ア（全てのサービスを含む）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「ポートフォリオ＝3つの箱の全部入り」！</h2>
+
+<p><strong>合言葉：『ポートフォリオは“全部”、カタログは“今売ってる分だけ”』</strong></p>
+
+<pre class="mermaid">
+flowchart TD
+    PF["サービス・ポートフォリオ<br>(全サービス)"] --> PL["サービス・パイプライン<br>検討中か開発中"]
+    PF --> CT["サービス・カタログ<br>稼働中か展開可能"]
+    PF --> RT["廃止済みサービス"]
+</pre>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話）</h2>
+
+<p>レストランの <strong>経営者用の全メニュー台帳</strong> を想像してください。台帳には</p>
+
+<div class="print-bullet">• 「来月から出す新メニューの試作中リスト」（パイプライン＝検討中か開発中）</div>
+<div class="print-bullet">• 「今お客さんに出せるメニュー」（カタログ＝稼働中か展開可能）</div>
+<div class="print-bullet">• 「もう販売をやめた過去のメニュー」（廃止済み）</div>
+
+<p>が <strong>全部まとめて</strong> 載っています。これがサービス・ポートフォリオです。一方、お客さんに渡すメニュー表は「今出せる料理」だけ。これが <strong>サービス・カタログ</strong>。</p>
+
+<p>公式解説：サービス・ポートフォリオはサービス・プロバイダが管理する全サービスをリスト化し、サービスごとに詳細情報をまとめたもの。ライフサイクル上の位置に応じ、上の3つに分けて管理されます。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定表</h2>
+
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ア</td><td>○</td><td>検討中か開発中・稼働中か展開可能・廃止済みの <strong>全て</strong> を含む。ポートフォリオの説明。</td></tr>
+    <tr><td>イ</td><td>✕</td><td>顧客に公開され「稼働中か展開可能」だけを含む → <strong>サービス・カタログ</strong> の説明。</td></tr>
+    <tr><td>ウ</td><td>✕</td><td>「廃止済み」を含まないとしている点が誤り。ポートフォリオには廃止済みも含まれる。</td></tr>
+    <tr><td>エ</td><td>✕</td><td>「検討中か開発中」を含まないとしている点が誤り。ポートフォリオにはパイプラインも含まれる。</td></tr>
+  </tbody>
+</table>
+
+<p><strong>ひっかけ</strong>: ウ・エは「3つの箱のうち1つを抜いた」だけの精巧な偽物。<strong>3つの箱が全て入っているか</strong> を数えて確認すると見破れます。イは「顧客に公開」「販売の支援」という言葉でカタログと見抜く。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 「パイプライン＝準備中、カタログ＝稼働中、廃止済み＝引退、全部合わせてポートフォリオ」を言えるか確認。</div>
+</div>
+
+<div class="question-sheet" id="q_23">
+  <h1 class="print-h1">システム監査の「監査手続」：裁判の証拠集めで覚える「十分かつ適切な監査証拠」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 監査計画・監査手続・監査報告の違いがごちゃ混ぜになる文系受験者  <br><strong>省いたもの</strong>: 監査基準の条文や予備調査・本調査の細かな実施要領  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和4年秋期 問59  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和4年秋期 問59</h2>
+
+<p><strong>【問題】</strong>  <br>システム監査における"監査手続"として，最も適切なものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 監査計画の立案や監査業務の進捗管理を行うための手順</div>
+<div class="print-bullet">• <strong>イ</strong>: 監査結果を受けて，監査報告書に監査人の結論や指摘事項を記述する手順</div>
+<div class="print-bullet">• <strong>ウ</strong>: 監査項目について，十分かつ適切な証拠を入手するための手順</div>
+<div class="print-bullet">• <strong>エ</strong>: 監査テーマに合わせて，監査チームを編成する手順</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ウ（監査項目について，十分かつ適切な証拠を入手するための手順）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『手続＝証拠を集める作業。計画は前、報告は後！』</h2>
+
+<pre class="mermaid">
+flowchart LR
+    A["体制づくり<br/>チーム編成"] --> B["監査計画<br/>立案・進捗管理"]
+    B --> C["監査手続<br/>証拠を集める"]
+    C --> D["監査報告<br/>結論・指摘を書く"]
+    C -.->|"証拠が結論を裏付ける"| D
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 監査手続は“証拠集め”！計画は手続の前、報告書は手続の後！ 』</strong></blockquote>
+3ステップ解法：
+1. 選択肢が「監査の流れ」のどこの話かを分類する（体制 / 計画 / 手続 / 報告）。
+2. 「手続」＝「監査証拠を入手する」と結びつける。
+3. 「証拠」の語が入っている選択肢を選ぶ。
+
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：裁判の証拠集め）</h2>
+
+<p>監査を「裁判」にたとえます。</p>
+
+<div class="print-bullet">• 検事（監査人）が「この会社のシステム管理は適切です／不適切です」と<strong>結論</strong>を出すには、<strong>証拠</strong>が必要です。</div>
+<div class="print-bullet">• 証拠なしの意見は、ただの感想です。</div>
+<div class="print-bullet">• この<strong>証拠を集める具体的な作業</strong>が「<strong>監査手続</strong>」です。</div>
+
+<p>公式解説によると、監査手続とは、システム監査人が監査意見を裏付けるための<strong>十分かつ適切な監査証拠を入手するために実施する手続</strong>のこと。<strong>予備調査と本調査</strong>に分けて実施されます。</p>
+
+<p>手法には次のようなものがあり、<strong>一般的には複数を組み合わせて</strong>実施します。</p>
+
+<table class="print-table">
+  <thead>
+    <tr><th>手法</th><th>日常のイメージ</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>チェックリスト法</td><td>健康診断の問診票に○×をつけてもらう</td></tr>
+    <tr><td>ドキュメントレビュー法</td><td>家計簿やレシートを読み込む</td></tr>
+    <tr><td>インタビュー法</td><td>本人に「どうしていますか？」と聞く</td></tr>
+    <tr><td>突合・照合法</td><td>領収書と帳簿の数字を突き合わせる</td></tr>
+    <tr><td>現場調査法</td><td>実際にお店を見に行く</td></tr>
+    <tr><td>コンピュータ支援監査技法</td><td>電卓やExcelで大量データを一気に検算</td></tr>
+  </tbody>
+</table>
+
+<p>集めた証拠は、<strong>システム監査報告書に書く監査結論の裏付け</strong>になります。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア ✕: 監査計画の立案や進捗管理</strong>  </div>
+  → 公式解説では「<strong>監査計画の策定</strong>」に該当。裁判でいえば「どう捜査するか」の段取りで、証拠集めそのものではありません。「手続」と「手順」という言葉の響きが似ているのが罠です。
+<div class="print-bullet">• <strong>イ ✕: 監査報告書に結論・指摘事項を書く</strong>  </div>
+  → 公式解説では「<strong>監査報告書の作成</strong>」に該当。証拠を集めた<strong>後</strong>の、判決文を書く工程です。
+<div class="print-bullet">• <strong>ウ ◯: 十分かつ適切な証拠を入手する手順</strong>  </div>
+  → 公式解説：「監査手続は、監査の結論を裏付けるための監査証拠を入手するプロセス」。これが定義そのものです。
+<div class="print-bullet">• <strong>エ ✕: 監査テーマに合わせて監査チームを編成する</strong>  </div>
+  → 公式解説では「<strong>監査業務の体制構築</strong>」に該当。捜査本部の人選であり、これも準備段階です。
+
+<blockquote class="print-quote">💡 作問者の意図：日常語の「手続」から「段取り全般」を連想させ、ア・エを選ばせたい。試験用語の「手続＝証拠を入手するための手順」を確実に覚えているかを問うています。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. システム監査で、監査手続によって入手した監査証拠は何の裏付けになるか。</strong>  </div>
+  → <strong>「システム監査報告書に記載する監査人の結論（監査意見）の裏付けとなる。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_24">
+  <h1 class="print-h1">共通フレーム2013の要件定義プロセス：「家づくりの聞き取り」で覚える「利害関係者の識別」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 企画・要件定義・開発のプロセスの境目があいまいな文系受験者  <br><strong>省いたもの</strong>: 共通フレーム2013の全プロセス一覧の細則  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和元年秋期 午前問65  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和元年秋期 問65</h2>
+
+<p><strong>【問題】</strong>  <br>共通フレーム2013によれば，要件定義プロセスで行うことはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: システム化計画の立案</div>
+<div class="print-bullet">• <strong>イ</strong>: システム方式設計</div>
+<div class="print-bullet">• <strong>ウ</strong>: ソフトウェア詳細設計</div>
+<div class="print-bullet">• <strong>エ</strong>: 利害関係者の識別</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（利害関係者の識別）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「企画 → 要件定義 → 開発」の流れの中で位置を決める！</h2>
+
+<pre class="mermaid">
+flowchart LR
+    P["企画プロセス<br/>システム化計画の立案（ア）"] --> R["要件定義プロセス<br/>利害関係者の識別（エ）ほか"]
+    R --> D["システム開発プロセス<br/>システム方式設計（イ）"]
+    D --> S["ソフトウェア実装プロセス<br/>ソフトウェア詳細設計（ウ）"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 要件定義はまず「誰が関わるか」を洗い出す！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：家を建てる前の聞き取り）</h2>
+
+<p>注文住宅を建てる流れで考えます。</p>
+
+<p>1. <strong>企画</strong>: 「家を建てよう」と計画を立てる（システム化計画）<br>2. <strong>要件定義</strong>: 住む人（家族）や関係者を確認し、「どんな家がほしいか」を聞き取って決める<br>3. <strong>方式設計</strong>: 構造・工法を決める<br>4. <strong>詳細設計・実装</strong>: 部屋ごとの細部を設計して建てる</p>
+
+<p>共通フレーム2013の要件定義プロセスは、<strong>利用者や他の利害関係者が求めるシステムへの要件を定義する</strong>プロセスです。システムにかかわる利害関係者を識別し、そのニーズや要望を抽出します。公式解説では実施アクティビティを次の5つとしています。</p>
+
+<table class="print-table">
+  <thead>
+    <tr><th style="text-align: center">順</th><th>アクティビティ</th></tr>
+  </thead>
+  <tbody>
+    <tr><td style="text-align: center">1</td><td>利害関係者の識別</td></tr>
+    <tr><td style="text-align: center">2</td><td>要件の識別</td></tr>
+    <tr><td style="text-align: center">3</td><td>要件の評価</td></tr>
+    <tr><td style="text-align: center">4</td><td>要件の合意</td></tr>
+    <tr><td style="text-align: center">5</td><td>要件の記録</td></tr>
+  </tbody>
+</table>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア: システム化計画の立案 → ×</strong>  </div>
+  <strong>企画プロセス</strong>で行います。要件定義より前の段階です。
+<div class="print-bullet">• <strong>イ: システム方式設計 → ×</strong>  </div>
+  <strong>システム開発プロセス</strong>で行います。要件が決まった後に、どう作るかを決める工程です。
+<div class="print-bullet">• <strong>ウ: ソフトウェア詳細設計 → ×</strong>  </div>
+  <strong>ソフトウェア実装プロセス</strong>で行います。さらに後工程の細かい設計です。
+<div class="print-bullet">• <strong>エ: 利害関係者の識別 → ○</strong>  </div>
+  要件定義プロセスの最初のアクティビティです。
+
+<blockquote class="print-quote">💡 <strong>ひっかけ</strong>: 「要件定義」と聞いて「計画」「設計」の語が並ぶ選択肢に引っ張られがち。<strong>「何を作るか（要件）」は、「なぜ・いつ（企画）」の後、「どう作るか（設計）」の前</strong>と位置づけましょう。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. 要件定義プロセスで最初に行うことは何か。</strong>  </div>
+  → <strong>「システムに関わる利害関係者を識別し、そのニーズや要望を抽出する。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 要件定義の5アクティビティ（利害関係者の識別・要件の識別・評価・合意・記録）を言ってみる。</div>
+</div>
+
+<div class="question-sheet" id="q_25">
+  <h1 class="print-h1">EAのTo-Beモデル：旅行の「目的地マップ」で覚える「理想の将来像」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: As-Is／To-Be、EA参照モデル、ザックマンモデルが混ざる文系受験者  <br><strong>省いたもの</strong>: 4つの体系ごとの詳細な成果物  <br><strong>所要時間</strong>: 5〜6分  <br><strong>対象過去問</strong>: 応用情報技術者 平成29年秋期 午前問61</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】平成29年秋期 問61</h2>
+
+<p><strong>【問題】</strong>  <br>エンタープライズアーキテクチャにおいて，業務と情報システムの理想を表すモデルはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: EA参照モデル</div>
+<div class="print-bullet">• <strong>イ</strong>: To-Beモデル</div>
+<div class="print-bullet">• <strong>ウ</strong>: ザックマンモデル</div>
+<div class="print-bullet">• <strong>エ</strong>: データモデル</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: イ（To-Beモデル）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『As-Is＝今ここ、To-Be＝行きたい未来！』</h2>
+
+<pre class="mermaid">
+flowchart LR
+    A["現状モデル As-Is<br/>（今の姿）"] --> C["比較"]
+    T["理想モデル To-Be<br/>（目標とする姿）"] --> C
+    C --> N["次期モデル<br/>（現実的な次の姿）"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 理想の To-Be、現状の As-Is 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：ダイエット計画）</h2>
+
+<p>ダイエットで、「今の体重・体型」を測り(As-Is)、「3か月後の理想の体型」を決め(To-Be)、両者の差を見て「週何回運動するか」という現実的な計画を立てますよね。</p>
+
+<p>EA（エンタープライズアーキテクチャ）も同じです。公式解説によると、EAでは <strong>「政策・業務体系」「データ体系」「適用処理体系」「技術体系」の4つの体系</strong> それぞれで、</p>
+
+<p>1. 最初に現状を分析した <strong>現状モデル(As-Is)</strong> を整理<br>2. 目標とする <strong>理想モデル(To-Be)</strong> を描く<br>3. 最後に現状と理想目標を比較した、現実的な <strong>次期モデル</strong> を作成</p>
+
+<p>という順に進めます。To-Beは「To be＝あるべき姿」と読めば覚えやすいです。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説に基づく）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>ア</strong> EA参照モデル</td><td>✕</td><td>政府が公開しているEAのひな型のこと。理想の姿そのものではない。</td></tr>
+    <tr><td><strong>イ</strong> To-Beモデル</td><td>◯</td><td>対象の理想的な将来像・目標を表現するモデル。</td></tr>
+    <tr><td><strong>ウ</strong> ザックマンモデル</td><td>✕</td><td>1987年ジョン・A・ザックマンが提唱した、EAの基礎となっているフレームワーク。5種類の異なる立場の視点と、それぞれの5W1H（What、How、Where、Who、When、Why）の側面から分析・記述する手法。</td></tr>
+    <tr><td><strong>エ</strong> データモデル</td><td>✕</td><td>対象業務を、情報システムやDBMSにおける抽象的な形式としてモデル化したもの。EA固有の「理想」の意味はない。</td></tr>
+  </tbody>
+</table>
+
+<div class="print-bullet">• <strong>ひっかけ心理</strong>: 「参照モデル」「ザックマンモデル」はEAの有名語なので、「EA＝正解」と錯覚しやすい。<strong>問われているのは「理想」＝将来像</strong> なので、キーワードは To-Be。</div>
+<div class="print-bullet">• 「データモデル」は名前が似ているだけで、EAの4体系の一つ「データ体系」とも別物。選択肢のモデルの種類が違う点に注意。</div>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. EAにおけるTo-Beモデルとは何か。</strong>  </div>
+  → <strong>「対象の理想的な将来像・目標を表現するモデルで、現状(As-Is)との比較から次期モデルを作る基になる。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢「イ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_26">
+  <h1 class="print-h1">アンゾフの成長マトリクス：パン屋の「4つの攻め方」で覚える「市場×製品」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: SWOT・PPM・プロダクトライフサイクルとアンゾフが混ざる文系受験者  <br><strong>省いたもの</strong>: 各象限のリスク度合いの学説的議論  <br><strong>所要時間</strong>: 5〜6分  <br><strong>対象過去問</strong>: 応用情報技術者 平成28年秋期 午前問68</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】平成28年秋期 問68</h2>
+
+<p><strong>【問題】</strong>  <br>アンゾフが提唱する成長マトリクスを説明したものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 自社の強みと弱み，市場における機会と脅威を，分類ごとに列挙して，事業戦略における企業の環境分析を行う。</div>
+<div class="print-bullet">• <strong>イ</strong>: 製品と市場の視点から，事業拡大の方向性を市場浸透・製品開発・市場開拓・多角化に分けて，戦略を検討する。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 製品の市場占有率と市場成長率から，企業がそれぞれの事業に対する経営資源の最適配分を意思決定する。</div>
+<div class="print-bullet">• <strong>エ</strong>: 製品の導入期・成長期・成熟期・衰退期の各段階に応じて，製品の改良，新品種の追加，製品廃棄などを計画する。</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: イ（製品と市場の視点から，市場浸透・製品開発・市場開拓・多角化に分けて戦略を検討する）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『アンゾフ＝製品×市場の2×2、既存か新規か！』</h2>
+
+<pre class="mermaid">
+flowchart TD
+    A["製品・市場それぞれ「既存」か「新規」か？"] --> B{"組み合わせ"}
+    B -->|"既存製品 × 既存市場"| C["市場浸透"]
+    B -->|"新製品 × 既存市場"| D["製品開発"]
+    B -->|"既存製品 × 新市場"| E["市場開拓"]
+    B -->|"新製品 × 新市場"| F["多角化"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 アンゾフは4つの攻め方：浸透・開発・開拓・多角化 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：駅前のパン屋の作戦会議）</h2>
+
+<p>パン屋が「もっと成長したい」とき、作戦は4つに整理できます。</p>
+
+<table class="print-table">
+  <thead>
+    <tr><th></th><th>既存の製品</th><th>新規の製品</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>既存の市場（今のお客さん）</strong></td><td>市場浸透：今のパンをもっと買ってもらう</td><td>製品開発：今のお客さんに新作パンを出す</td></tr>
+    <tr><td><strong>新規の市場（新しいお客さん）</strong></td><td>市場開拓：今のパンを隣町でも売る</td><td>多角化：新しい商品を新しい客層へ（例：カフェ事業）</td></tr>
+  </tbody>
+</table>
+
+<p>公式解説では、アンゾフ（H・イゴール・アンゾフ）が提唱したもので、縦軸に「市場」、横軸に「製品」をとり、それぞれ「既存」「新規」の2区分を設けた4象限のマトリクスとされています。<strong>事業が成長・発展できる経営戦略を検討するためのフレームワーク</strong> です。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説に基づく）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>ア</strong> 強み・弱み・機会・脅威を列挙して環境分析</td><td>✕</td><td><strong>SWOT分析</strong> の説明。内部（強み・弱み）と外部（機会・脅威）の4要素。</td></tr>
+    <tr><td><strong>イ</strong> 市場浸透・製品開発・市場開拓・多角化</td><td>◯</td><td><strong>アンゾフの成長マトリクス</strong> の説明。</td></tr>
+    <tr><td><strong>ウ</strong> 市場占有率と市場成長率から経営資源を配分</td><td>✕</td><td><strong>プロダクトポートフォリオマネジメント（PPM）</strong> の説明。</td></tr>
+    <tr><td><strong>エ</strong> 導入期・成長期・成熟期・衰退期に応じた計画</td><td>✕</td><td><strong>プロダクトライフサイクル</strong> の説明。</td></tr>
+  </tbody>
+</table>
+
+<div class="print-bullet">• <strong>ひっかけ心理</strong>: どれも「2軸のマトリクスや段階で戦略を考える」フレームワークで似て見える。<strong>4つの名前（浸透・開発・開拓・多角化）が出ればアンゾフ</strong> と決め打ちできる。</div>
+<div class="print-bullet">• 見分けキーワード：強み/弱み → SWOT、占有率/成長率 → PPM、導入〜衰退 → PLC。</div>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. アンゾフの成長マトリクスの4象限を挙げよ。</strong>  </div>
+  → <strong>「市場浸透、製品開発、市場開拓、多角化（製品と市場を既存・新規に分けた4区分）。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢「イ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_27">
+  <h1 class="print-h1">コアコンピタンス：老舗うなぎ屋の「秘伝のタレ」で覚える「差別化の源泉」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 経営理念・ビジョン・SWOTの「機会と脅威」とコアコンピタンスが混ざる文系受験者  <br><strong>省いたもの</strong>: 経営学者による定義の変遷  <br><strong>所要時間</strong>: 5〜6分  <br><strong>対象過去問</strong>: 応用情報技術者 平成23年特別 午前問66</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】平成23年特別 問66</h2>
+
+<p><strong>【問題】</strong>  <br>コアコンピタンスを説明したものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 経営活動における基本精神や行動指針</div>
+<div class="print-bullet">• <strong>イ</strong>: 事業戦略の遂行によって達成すべき到達目標</div>
+<div class="print-bullet">• <strong>ウ</strong>: 自社を取り巻く環境に関するビジネス上の機会と脅威</div>
+<div class="print-bullet">• <strong>エ</strong>: 他社との差別化の源泉となる経営資源</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（他社との差別化の源泉となる経営資源）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『コア（核）＋コンピタンス（能力）＝他社が真似できない核の力！』</h2>
+
+<pre class="mermaid">
+flowchart TD
+    Q["その選択肢は何の説明？"] --> A{"キーワード"}
+    A -->|"基本精神・行動指針"| R["経営理念"]
+    A -->|"到達目標"| V["経営ビジョン"]
+    A -->|"機会と脅威"| E["外部環境要因"]
+    A -->|"差別化の源泉・真似できない"| C["コアコンピタンス"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 コアコンピタンス＝真似できない自社の核の力 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：老舗うなぎ屋の秘伝のタレ）</h2>
+
+<p>創業100年のうなぎ屋があります。立地や店構えは真似できても、<strong>代々継ぎ足してきた秘伝のタレと焼きの技</strong> だけは他店が簡単に真似できません。そのため客は遠くからでも来てくれます。この「真似できない独自の力」がコアコンピタンスです。</p>
+
+<p>公式解説では、<strong>長年の企業活動により蓄積され、他社には模倣できない企業独自の能力（プロセス、ノウハウ、技術、企業文化など）</strong> で、単なる強みを超え、競争優位を生み出す源泉とされています。共通性質は次の3つです。</p>
+
+<p>1. 様々な市場に展開可能<br>2. 競合他社による模倣が困難<br>3. 顧客価値の向上に大きく寄与する</p>
+
+<p>例：ホンダのエンジン技術、ソニーの小型化技術、トヨタ自動車の生産プロセス。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説に基づく）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>ア</strong> 基本精神や行動指針</td><td>✕</td><td><strong>経営理念</strong> の説明。うなぎ屋なら「まごころを込めて焼く」という店訓。</td></tr>
+    <tr><td><strong>イ</strong> 到達すべき目標</td><td>✕</td><td><strong>経営ビジョン</strong> の説明。「5年後に全国展開」のような目指す姿。</td></tr>
+    <tr><td><strong>ウ</strong> 機会と脅威</td><td>✕</td><td><strong>外部環境要因</strong> の説明（SWOTの O と T）。自社の能力ではなく、周りの状況。</td></tr>
+    <tr><td><strong>エ</strong> 差別化の源泉となる経営資源</td><td>◯</td><td><strong>コアコンピタンス</strong> の説明。</td></tr>
+  </tbody>
+</table>
+
+<div class="print-bullet">• <strong>ひっかけ心理</strong>: ア・イは「経営の根っこ」っぽく見え、ウは「分析っぽい」ので紛らわしい。<strong>「資源・能力」の話か、「理念・目標・環境」の話か</strong> で分ける。</div>
+<div class="print-bullet">• 「他社との差別化」「模倣困難」が出たら即コアコンピタンス。</div>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. コアコンピタンスの特徴を挙げよ。</strong>  </div>
+  → <strong>「様々な市場に展開でき、他社が模倣しにくく、顧客価値の向上に大きく寄与する独自の能力。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢「エ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_28">
+  <h1 class="print-h1">PPMマトリックス：果樹園で覚える「縦軸は成長率・横軸は占有率」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 花形・金のなる木・問題児・負け犬の位置と軸があいまいな文系受験者  <br><strong>省いたもの</strong>: PPMの批判や発展モデル、投資額の数値計算  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和3年春期 問67  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和3年春期 問67</h2>
+
+<p><strong>【問題】</strong>  <br>プロダクトポートフォリオマネジメント(PPM)マトリックスのa，bに入れる語句の適切な組合せはどれか。</p>
+
+<blockquote class="print-quote">⚠️ <strong>復元に関する注意</strong>: 原問題は図表問題で、マトリックス図と選択肢の表（a, b の語句の組合せ）は画像のため取得できませんでした。取得データの選択肢は「イ ウ エ」としか残っておらず、各選択肢の具体的な語句は復元できません。以下は公式解説の記述から言える範囲のみを書いています。</blockquote>
+<div class="print-bullet">• 図：4象限のマトリックス（"金のなる木"の位置が a=低，b=高、"問題児"の位置が a=高，b=低 となっている ※公式解説の記述より）</div>
+<div class="print-bullet">• <strong>ア〜エ</strong>: a, b に入れる語句の組合せ（各選択肢の具体的内容は復元不可）</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ウ（a＝市場成長率，b＝市場占有率）</strong>  <br>※「ウ」の選択肢の具体的な語句は原データにないため、公式解説の結論（aが市場成長率、bが市場占有率）から記載。</p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『“金のなる木”は成長率が低く占有率が高い、を座標に当てはめる！』</h2>
+
+<pre class="mermaid">
+flowchart TD
+    Q["図の“金のなる木”の位置を見る<br/>a=低, b=高"] --> W["金のなる木の定義<br/>成長率=低, 占有率=高"]
+    W --> R["a＝市場成長率<br/>b＝市場占有率"]
+    R --> C["確認：問題児 a=高, b=低<br/>＝成長率高, 占有率低 ✔"]
+</pre>
+
+<table class="print-table">
+  <thead>
+    <tr><th>象限</th><th>市場成長率</th><th>市場占有率</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>花形（star）</td><td>高</td><td>高</td></tr>
+    <tr><td>金のなる木（cash cow）</td><td>低</td><td>高</td></tr>
+    <tr><td>問題児（problem child）</td><td>高</td><td>低</td></tr>
+    <tr><td>負け犬（dog）</td><td>低</td><td>低</td></tr>
+  </tbody>
+</table>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 金のなる木は“成長低・占有高”、問題児は“成長高・占有低”！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：果樹園の経営）</h2>
+
+<div class="print-bullet">• <strong>花形</strong>：すくすく育つ若木で、実もたくさんなる。ただし水や肥料（投資）をたっぷり与え続けないと、シェアを守れない。</div>
+<div class="print-bullet">• <strong>金のなる木</strong>：もう大木で成長は止まった。だから肥料はほぼ不要なのに、実（利益）だけは安定して取れる。→ 追加投資が必須でなく、安定した資金・利益が見込める。</div>
+<div class="print-bullet">• <strong>問題児</strong>：芽はぐんぐん伸びている（成長率高）が、まだ実が少ない（占有率低）。花形に育てるには多額の投資が必要。失敗してそのまま成長率が下がれば負け犬に…。慎重な対応が必要。</div>
+<div class="print-bullet">• <strong>負け犬</strong>：伸びもしないし実もならない。投資しても利益が見込めず、撤退を検討。</div>
+
+<p>公式解説：PPMは縦軸・横軸に<strong>市場成長率</strong>と<strong>市場占有率</strong>を設定したマトリクスを4象限に分け、製品の位置付けを分析して<strong>経営資源の最適な配分</strong>を検討する手法です。</p>
+
+<h3 class="print-h3">軸を特定する手順</h3>
+1. 図中の“金のなる木”の位置は「a＝低、b＝高」。
+2. 金のなる木は【成長率：低、占有率：高】なので、a＝成長率、b＝占有率。
+3. “問題児”の位置「a＝高、b＝低」とも、【成長率：高、占有率：低】で矛盾なし。
+
+<p>したがって「aが市場成長率、bが市場占有率」の組合せが正しく、それが選択肢「ウ」です。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<p>各選択肢の具体的な語句は取得できないため、公式解説から言える判定の根拠を示します。</p>
+
+<div class="print-bullet">• <strong>ア・イ・エ ✕（ウ以外）</strong>  </div>
+  → 公式解説は「aが市場成長率、bが市場占有率である組合せがウ」と結論しています。したがってア・イ・エは、この組合せ（a＝成長率, b＝占有率）と異なるもの、つまり a と b を逆にしたもの、または別の語句の組合せです。※具体的な語句は復元不可。
+<div class="print-bullet">• <strong>ウ ◯</strong>  </div>
+  → a＝市場成長率、b＝市場占有率。金のなる木（a=低, b=高）、問題児（a=高, b=低）の両方と整合します。
+
+<blockquote class="print-quote">💡 ひっかけ：<strong>軸の順番</strong>。「占有率が横軸」と覚えこむより、図の“金のなる木”と“問題児”の位置から<strong>毎回その場で軸を決める</strong>ほうが確実です。図のどの象限がどの名前かさえ分かれば、軸の取り違えは起きません。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. PPMで“負け犬”に分類された事業は、どのように扱うべきか。</strong>  </div>
+  → <strong>「成長率・占有率ともに低く、投資しても利益増が見込めないため、市場からの撤退を検討する。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_29">
+  <h1 class="print-h1">SCMの目的：バケツリレーで覚える「企業をまたぐ一気通貫の情報共有」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: SCM・CRM・SFA・ERPの略語が似ていて区別できない文系受験者  <br><strong>省いたもの</strong>: SCMシステムの詳細な導入手順・需要予測モデル  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 平成29年春期 問67  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】平成29年春期 問67</h2>
+
+<p><strong>【問題】</strong>  <br>SCMの目的はどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 顧客情報や購買履歴，クレームなどを一元管理し，きめ細かな顧客対応を行うことによって，良好な顧客関係の構築を目的とする。</div>
+<div class="print-bullet">• <strong>イ</strong>: 顧客情報や商談スケジュール，進捗状況などの商談状況を一元管理することによって，営業活動の効率向上を目的とする。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 生産，販売，在庫管理，財務会計，人事管理など基幹業務のあらゆる情報を統合管理することによって，経営効率の向上を目的とする。</div>
+<div class="print-bullet">• <strong>エ</strong>: 複数の企業や組織にまたがる調達から販売までの業務プロセス全ての情報を統合的に管理することによって，コスト低減や納期短縮などを目的とする。</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（複数の企業や組織にまたがる調達から販売までの業務プロセス全ての情報を統合的に管理することによって，コスト低減や納期短縮などを目的とする。）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『SCM＝“サプライチェーン”＝つなぐ相手は“他社も含めた流れ”！』</h2>
+
+<pre class="mermaid">
+flowchart LR
+    S["原材料の<br/>調達先"] --> M["製造"] --> L["物流・在庫"] --> R["販売"] --> C["顧客"]
+    S -. "情報をリアルタイム共有" .- R
+</pre>
+
+<table class="print-table">
+  <thead>
+    <tr><th>略語</th><th>管理する対象</th><th>一言</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>SCM</strong></td><td>調達〜販売の流れ全体（企業間）</td><td>供給の鎖</td></tr>
+    <tr><td><strong>CRM</strong></td><td>顧客との関係</td><td>お客様カルテ</td></tr>
+    <tr><td><strong>SFA</strong></td><td>営業活動・商談</td><td>営業の進捗ボード</td></tr>
+    <tr><td><strong>ERP</strong></td><td>社内の基幹業務</td><td>社内の全部入り台帳</td></tr>
+  </tbody>
+</table>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 SCMは“鎖”（Chain）！調達から販売まで会社をまたいでつなげ、納期短縮・在庫削減！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：バケツリレー）</h2>
+
+<p>火事場のバケツリレーを想像してください。水をくむ人（調達）→運ぶ人（製造・物流）→かける人（販売）が一列に並びます。</p>
+
+<div class="print-bullet">• 誰かが「今、水が足りない」「こっちはもう空っぽ」と<strong>情報を共有せず</strong>に動くと、途中で水があふれたり（在庫過多）、先頭で足りなくなったり（欠品）して非効率です。</div>
+<div class="print-bullet">• 全員が<strong>リアルタイムに状況を共有</strong>すれば、無駄な待ちがなくなり、バケツは最短で届きます。</div>
+
+<p>これがSCM（Supply Chain Management）です。公式解説では、生産・在庫・購買・販売・物流などの情報をリアルタイムに交換・一元管理し、生産から販売に至る<strong>一連の流れ全体の効率を大幅に向上</strong>させる経営管理手法。導入でサプライチェーンが最適化され、<strong>納期短縮や在庫削減</strong>が期待できます。</p>
+
+<p>ポイントは、<strong>1社の中だけでなく、取引先など複数の企業・組織にまたがる</strong>流れを対象にすること。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア ✕: CRMの目的</strong>  </div>
+  → 「顧客情報・購買履歴・クレームを一元管理して良好な顧客関係を築く」はCRM（Customer Relationship Management）。キーワードは“顧客”。
+<div class="print-bullet">• <strong>イ ✕: SFAの目的</strong>  </div>
+  → 「商談スケジュール・進捗状況を管理して営業活動を効率化」はSFA（Sales Force Automation）。キーワードは“商談・営業”。
+<div class="print-bullet">• <strong>ウ ✕: ERPの目的</strong>  </div>
+  → 「生産・販売・在庫・財務会計・人事など基幹業務を統合管理して経営効率を向上」はERP（Enterprise Resource Planning）。<strong>社内の</strong>基幹業務が対象。在庫・生産などSCMと重なる語があり紛らわしいですが、企業をまたぐ視点がありません。
+<div class="print-bullet">• <strong>エ ◯: SCMの目的</strong>  </div>
+  → 「複数の企業や組織にまたがる調達から販売まで」「コスト低減や納期短縮」。SCMの定義そのものです。
+
+<blockquote class="print-quote">💡 作問者の意図：4つの「〜を一元管理して〜効率化」という似た文章を並べ、“何を・どの範囲で管理するか”の違いを見抜けるかを問う問題。<strong>対象（顧客／商談／社内基幹／企業間の供給の流れ）</strong>で切り分けましょう。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. SCMの導入で期待できる効果を挙げよ。</strong>  </div>
+  → <strong>「サプライチェーン全体が最適化され、納期短縮や在庫削減が実現できる。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_30">
+  <h1 class="print-h1">タイトル：【お掃除の段取り】で覚える「合計段取り時間を最小にする順序」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 表を見ると全パターンを数え始めて時間切れになる文系受験者  <br><strong>省いたもの</strong>: 巡回セールスマン問題の一般的な解法理論  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 [令和6年秋期 午前問72](https://www.ap-siken.com/kakomon/06_aki/q72.html)  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和6年秋期 午前問72</h2>
+
+<p><strong>【問題】</strong>  <br>製造業のA社では，NC工作機械を用いて，四つの仕事a～dを行っている。各仕事間の段取り時間は表のとおりである。合計の段取り時間が最小になるように仕事を行った場合の合計段取り時間は何時間か。ここで，仕事はどの順序で行ってもよく，a～dを一度ずつ行うものとし，FROMからTOへの段取り時間で算出する。</p>
+
+<blockquote class="print-quote">⚠️ <strong>復元できなかった部分</strong>: 元問題の「FROM×TO の段取り時間表」は取得データに含まれません。公式解説から分かるのは次の事実のみです。<br>- 段取り時間が最小の <strong>1時間</strong> は「a→c」「b→a」「b→c」の3つ<br>- 仕事 d は「他の作業の後ろ、または作業 c の前」に置くと <strong>2時間</strong><br>- 最適順序の c→d は <strong>2時間</strong></blockquote>
+<div class="print-bullet">• <strong>ア</strong>: 4</div>
+<div class="print-bullet">• <strong>イ</strong>: 5</div>
+<div class="print-bullet">• <strong>ウ</strong>: 6</div>
+<div class="print-bullet">• <strong>エ</strong>: 7</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: ア（4時間）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「1時間の矢印をつなげ、余りの d を最後に回す」！</h2>
+
+<p><strong>合言葉：『一番安い矢印を数珠つなぎ、余り物は最後尾へ』</strong></p>
+
+<pre class="mermaid">
+flowchart LR
+    B["仕事b"] -->|"1時間"| A["仕事a"]
+    A -->|"1時間"| C["仕事c"]
+    C -->|"2時間"| D["仕事d"]
+</pre>
+
+<p>合計 = 1 + 1 + 2 = 4時間</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話）</h2>
+
+<p>4つの部屋（a〜d）を順番に掃除するとします。部屋を移るたびに道具の付け替え（段取り）が要り、移る順番で付け替え時間が変わります。全順序は 4 × 3 × 2 × 1 = 24通りですが、<strong>全部試す必要はありません</strong>。付け替えが最短（1時間）で済む移動「b→a」「a→c」「b→c」を優先して使えば、手早く答えに届きます。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 途中計算</h2>
+
+<h3 class="print-h3">解き方（公式解説どおり）</h3>
+1. 1時間の移動 b→a と a→c を連結すると <strong>b→a→c</strong> が 1 + 1 = 2時間で組める。
+2. 残る d は、他の作業の後ろか c の前なら 2時間。ところが b→a→c の先頭は b なので、d を前に置けない（b の前に d を置くと別の移動が要る）。そこで <strong>c の後ろ</strong> に回す。
+3. 順序は b→a→c→d。段取り合計 = 1（b→a）+ 1（a→c）+ 2（c→d）= <strong>4時間</strong>。
+
+<h3 class="print-h3">選択肢の判定</h3>
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ア 4</td><td>○</td><td>上記の b→a→c→d で達成できる最小値</td></tr>
+    <tr><td>イ 5</td><td>✕</td><td>4時間で達成できる順序がある以上、最小ではない。例えば 1時間の矢印を活かさず 2時間の移動を増やすと届く値</td></tr>
+    <tr><td>ウ 6</td><td>✕</td><td>同上。1時間の矢印をうまく連結できていない順序の結果</td></tr>
+    <tr><td>エ 7</td><td>✕</td><td>同上。最小値ではなく、無駄な段取りの多い順序の値</td></tr>
+  </tbody>
+</table>
+
+<p>※表が取得できないため、イ〜エを実現する具体的な順序までは復元できません。「最小値の問題で、より小さい4が実現できるので、5・6・7は不正解」が確実な根拠です。</p>
+
+<p><strong>ひっかけ</strong>: 「1時間の移動を3本全部使いたい」と欲張ると、b→a と b→c は出発点が同じ b なので同時には使えず、行き詰まります。「最安の矢印は連結できるものだけ」と割り切るのがコツです。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 「最安の矢印を鎖にして、余りを最後尾へ」と手順を言えるか確認。</div>
+</div>
+
+<div class="question-sheet" id="q_31">
+  <h1 class="print-h1">CIOの役割：会社の「IT担当の参謀長」で覚える「ビジネス価値を最大化するIT活用」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: CEO・CFO・CTO…とアルファベット役職が並ぶと混ざってしまう文系受験者  <br><strong>省いたもの</strong>: CxOの細かな組織論や企業ごとの呼称の違い  <br><strong>所要時間</strong>: 5〜6分  <br><strong>対象過去問</strong>: 応用情報技術者 平成30年秋期 午前問74</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】平成30年秋期 問74</h2>
+
+<p><strong>【問題】</strong>  <br>CIOが経営から求められる役割はどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 企業経営のための財務戦略の立案と遂行</div>
+<div class="print-bullet">• <strong>イ</strong>: 企業の研究開発方針の立案と実施</div>
+<div class="print-bullet">• <strong>ウ</strong>: 企業の法令遵守の体制の構築と運用</div>
+<div class="print-bullet">• <strong>エ</strong>: ビジネス価値を最大化させるITサービス活用の促進</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（ビジネス価値を最大化させるITサービス活用の促進）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『C◯Oは頭文字の「◯」で担当を当てる！I＝Information＝IT』</h2>
+
+<pre class="mermaid">
+flowchart TD
+    Q["選択肢の役割を読む"] --> W{"何の責任者の仕事？"}
+    W -->|"お金・財務"| CFO["CFO (Financial)"]
+    W -->|"技術・研究開発"| CTO["CTO (Technology)"]
+    W -->|"法務・法令遵守"| CLO["CLO (Legal)"]
+    W -->|"情報・ITの活用"| CIO["CIO (Information)"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 I は Information の I ！ITを経営に活かす人が CIO 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：ラーメンチェーンの経営会議）</h2>
+
+<p>ラーメンチェーンの本部を想像してください。</p>
+
+<div class="print-bullet">• 社長(CEO)が「3年で100店舗にする」と決めました。</div>
+<div class="print-bullet">• このとき「注文アプリや在庫管理システムにいくら投資し、どう使えば売上が伸びるか」を考えて社長を支えるのが <strong>CIO（最高情報責任者）</strong> です。</div>
+<div class="print-bullet">• 「お金の工面」は経理の親分(CFO)、「新しいスープの開発」は技術の親分(CTO)、「法律違反が起きない仕組み」は法務の親分(CLO)の仕事です。</div>
+
+<p>CIOは <strong>経営戦略に沿った情報戦略やIT投資計画に責任を持つ役職</strong> で、CEO（最高経営責任者）やCOO（最高執行責任者）を補佐し、企業の情報戦略を策定します。つまり「ITを導入すること」自体が目的ではなく、<strong>ビジネス価値を最大化するためにITサービスを活用させる</strong> ことが求められる役割です。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説に基づく）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>ア</strong> 財務戦略の立案と遂行</td><td>✕</td><td><strong>CFO</strong>（Chief Financial Officer：最高財務責任者）の役割。「お金」＝Financial。</td></tr>
+    <tr><td><strong>イ</strong> 研究開発方針の立案と実施</td><td>✕</td><td><strong>CTO</strong>（Chief Technology Officer：最高技術責任者）の役割。「技術」＝Technology。</td></tr>
+    <tr><td><strong>ウ</strong> 法令遵守の体制の構築と運用</td><td>✕</td><td><strong>CLO</strong>（Chief Legal Officer：最高法務責任者）の役割。「法律」＝Legal。</td></tr>
+    <tr><td><strong>エ</strong> ITサービス活用の促進</td><td>◯</td><td><strong>CIO</strong>の役割。情報戦略の責任者として、ITでビジネス価値を最大化する。</td></tr>
+  </tbody>
+</table>
+
+<div class="print-bullet">• <strong>ひっかけ心理</strong>: 「T（Technology）」と「I（Information）」が似て見えて、技術系の選択肢イに引っ張られやすい。CTOは「研究開発・技術」、CIOは「情報戦略・IT活用」と切り分ける。</div>
+<div class="print-bullet">• 「IT＝技術」という連想で選ばず、<strong>頭文字の英単語で担当を引く</strong> のが確実。</div>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. CIOの役割を説明せよ。</strong>  </div>
+  → <strong>「経営戦略に沿った情報戦略やIT投資計画に責任を持ち、IT活用でビジネス価値を最大化する。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢「エ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_32">
+  <h1 class="print-h1">系統図法：お弁当づくりの「目的→手段」ツリーで覚える「系統図法」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 連関図・特性要因図・親和図・系統図が見分けられない文系受験者  <br><strong>省いたもの</strong>: 新QC七つ道具の他の手法（PDPC法・マトリックス図法など）の詳細  <br><strong>所要時間</strong>: 5〜6分  <br><strong>対象過去問</strong>: 応用情報技術者 令和3年春期 午前問76</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和3年春期 問76</h2>
+
+<p><strong>【問題】</strong>  <br>系統図法の活用例はどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 解決すべき問題を端か中央に置き，関係する要因を因果関係に従って矢印でつないで周辺に並べ，問題発生に大きく影響している重要な原因を探る。</div>
+<div class="print-bullet">• <strong>イ</strong>: 結果とそれに影響を及ぼすと思われる要因との関連を整理し，体系化して，魚の骨のような形にまとめる。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 事実，意見，発想を小さなカードに書き込み，カード相互の親和性によってグループ化して，解決すべき問題を明確にする。</div>
+<div class="print-bullet">• <strong>エ</strong>: 目的を達成するための手段を導き出し，更にその手段を実施するための幾つかの手段を考えることを繰り返し，細分化していく。</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（目的を達成するための手段を導き出し，更にその手段を細分化していく）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『系統図＝目的を枝分かれさせて手段まで掘り下げる木！』</h2>
+
+<pre class="mermaid">
+flowchart LR
+    M["🎯 目的：売上を上げる"] --> S1["手段：客数を増やす"]
+    M --> S2["手段：客単価を上げる"]
+    S1 --> S11["さらに手段：広告を出す"]
+    S1 --> S12["さらに手段：クーポン配布"]
+    S2 --> S21["さらに手段：セット販売"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 系統図は「目的→手段→さらに手段」の木。原因探しは別の図！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：家系図ならぬ「手段の家系図」）</h2>
+
+<p>「今夜、家族を喜ばせる」という目的があるとします。</p>
+
+<div class="print-bullet">• 手段1「豪華な夕食を作る」→ さらに「肉料理にする」「デザートを付ける」</div>
+<div class="print-bullet">• 手段2「プレゼントを用意する」→ さらに「花を買う」「手紙を書く」</div>
+
+<p>このように、<strong>ご先祖（目的）から子・孫（手段・さらに具体的な手段）へ枝分かれ</strong> させていくと、最後は「今日やること」にまで落とし込めます。これが系統図法です。公式解説では、<strong>「目的－手段」の連鎖を段階的に下位に掘り下げることで最適な手段を見いだす図法</strong> とされています。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説に基づく）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>ア</strong> 問題を中央に置き、要因を因果関係の矢印でつなぐ</td><td>✕</td><td><strong>連関図法</strong> の活用事例。「原因と結果が絡み合う」ときに矢印で結ぶ。</td></tr>
+    <tr><td><strong>イ</strong> 結果と要因を整理して魚の骨の形にまとめる</td><td>✕</td><td><strong>特性要因図（フィッシュボーンチャート）</strong> の活用事例。</td></tr>
+    <tr><td><strong>ウ</strong> カードに書いてグループ化する</td><td>✕</td><td><strong>親和図法（KJ法）</strong> の活用事例。バラバラの意見を仲間分けする。</td></tr>
+    <tr><td><strong>エ</strong> 目的から手段を細分化していく</td><td>◯</td><td><strong>系統図法</strong> の活用例。</td></tr>
+  </tbody>
+</table>
+
+<div class="print-bullet">• <strong>ひっかけ心理</strong>: ア・イはどちらも「原因」を探る図なので系統図と混同しやすい。系統図は原因探しではなく <strong>「手段」を出す</strong> ための図。</div>
+<div class="print-bullet">• キーワード対応：矢印で因果 → 連関図／魚の骨 → 特性要因図／カード → 親和図(KJ法)／目的→手段の枝分かれ → 系統図。</div>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. 系統図法とはどのような図法か。</strong>  </div>
+  → <strong>「目的を達成する手段を、目的－手段の連鎖で段階的に下位へ掘り下げ、最適な手段を見いだす図法。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢「エ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_33">
+  <h1 class="print-h1">デルファイ法：覆面の専門家会議で覚える「アンケートを繰り返して意見を収束」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: デルファイ法・シナリオプランニング・回帰分析の違いが曖昧な文系受験者  <br><strong>省いたもの</strong>: 統計的集約に使う指標（中央値・四分位）の詳細  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和4年秋期 問75  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和4年秋期 問75</h2>
+
+<p><strong>【問題】</strong>  <br>予測手法の一つであるデルファイ法の説明はどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 現状の指標の中に将来の動向を示す指標があることに着目して予測する。</div>
+<div class="print-bullet">• <strong>イ</strong>: 将来予測のためのモデル化した連立方程式を解いて予測する。</div>
+<div class="print-bullet">• <strong>ウ</strong>: 同時点における複数の観測データの統計比較分析によって将来を予測する。</div>
+<div class="print-bullet">• <strong>エ</strong>: 複数の専門家へのアンケートの繰返しによる回答の収束によって将来を予測する。</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（複数の専門家へのアンケートの繰返しによる回答の収束によって将来を予測する。）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「専門家」「アンケート」「繰り返し」「収束」の4語！</h2>
+
+<pre class="mermaid">
+flowchart LR
+    A["① 複数の専門家から意見収集"] --> B["② 意見を統計的に集約"]
+    B --> C["③ 集約結果をフィードバック"]
+    C -->|"繰り返す"| A
+    C --> D["回答が収束 → 最終的な意見"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 デルファイ＝専門家へのアンケートを繰り返して、意見を収束！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：覆面で行う「みんなの予想」会議）</h2>
+
+<p>「5年後のスマホ技術はどうなる？」を決めたいとき、会議で声の大きい人の意見に引っ張られがちです。そこで専門家に<strong>アンケート用紙で別々に</strong>答えてもらい、全員の回答のまとめ（統計）を配って「これを見て、もう一度答えてください」と何度か繰り返します。すると極端な意見が丸まり、意見が収束していきます。技術開発戦略の立案で将来の技術動向を予測する場面で使われる技法です（公式解説）。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<p>公式解説に基づく各選択肢の正体：</p>
+
+<div class="print-bullet">• <strong>ア ✕（シナリオプランニングの説明）</strong>: 現状の指標の中から将来の動向を示す指標に着目するのは、公式解説ではシナリオプランニングの説明とされています。</div>
+<div class="print-bullet">• <strong>イ ✕（回帰分析の説明）</strong>: モデル化した式を解いて予測するのは、公式解説では回帰分析の説明とされています。</div>
+<div class="print-bullet">• <strong>ウ ✕（統計的予測理論の説明）</strong>: 観測データの統計比較分析による予測は、公式解説では統計的予測理論の説明です。</div>
+<div class="print-bullet">• <strong>エ ○（デルファイ法）</strong>: 専門家・アンケートの繰り返し・回答の収束という3要素がそろっています。</div>
+
+<table class="print-table">
+  <thead>
+    <tr><th>手法</th><th>一言で言うと</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>デルファイ法</td><td>専門家アンケートを繰り返し、意見を収束</td></tr>
+    <tr><td>シナリオプランニング</td><td>将来のシナリオを描き予測する（選択肢アの説明）</td></tr>
+    <tr><td>回帰分析</td><td>式（モデル）を使って予測する（選択肢イの説明）</td></tr>
+  </tbody>
+</table>
+
+<blockquote class="print-quote">😈 ひっかけの構造：ア〜ウはどれも「予測手法の説明文」としてもっともらしい。<strong>「専門家」「アンケート」「繰り返し」のキーワードがあるかどうか</strong>で判断しましょう。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢「エ」を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 「デルファイ＝専門家・アンケート・繰り返し・収束」を声に出して覚えよう。</div>
+</div>
+
+<div class="question-sheet" id="q_34">
+  <h1 class="print-h1">最大利益の価格設定：屋台のたこ焼きで覚える「価格×個数−固定費−変動費×個数」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 価格が高いほど儲かるのか安い方がよいのか、直感で選んでしまう文系受験者  <br><strong>省いたもの</strong>: 需要の価格弾力性などの経済学の理論  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 令和4年春期 問76  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】令和4年春期 問76</h2>
+
+<p><strong>【問題】</strong>  <br>新製品の設定価格とその価格での予測需要との関係を表にした。最大利益が見込める新製品の設定価格はどれか。ここで，いずれの場合にも，次の費用が発生するものとする。  <br>固定費：1,000,000円  <br>変動費：600円／個</p>
+
+<blockquote class="print-quote">※元の問題の表（設定価格と予測需要）は、公式解説の計算式から以下のように復元しました。</blockquote>
+<table class="print-table">
+  <thead>
+    <tr><th>設定価格（円）</th><th>予測需要（個）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1,000</td><td>80,000</td></tr>
+    <tr><td>1,200</td><td>70,000</td></tr>
+    <tr><td>1,400</td><td>60,000</td></tr>
+    <tr><td>1,600</td><td>50,000</td></tr>
+  </tbody>
+</table>
+
+<div class="print-bullet">• <strong>ア</strong>: 1,000</div>
+<div class="print-bullet">• <strong>イ</strong>: 1,200</div>
+<div class="print-bullet">• <strong>ウ</strong>: 1,400</div>
+<div class="print-bullet">• <strong>エ</strong>: 1,600</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（1,600）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：「全部の価格で利益を計算して、一番大きいものを選ぶ」！</h2>
+
+<pre class="mermaid">
+flowchart TD
+    F["利益 = 価格 × 個数 − 固定費 − 変動費 × 個数"]
+    F --> A["1,000円: 31,000,000"]
+    F --> B["1,200円: 41,000,000"]
+    F --> C["1,400円: 47,000,000"]
+    F --> D["1,600円: 49,000,000"]
+    D --> R["最大を選ぶ"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 利益は 売上 − 費用。4通りとも計算して最大を選ぶ！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：文化祭のたこ焼き屋）</h2>
+
+<p>たこ焼き屋の準備費（鉄板レンタル等）は何個売っても同じ<strong>固定費</strong>。たこ焼き1個ごとの材料費が<strong>変動費</strong>です。値段を上げると1個あたりの儲けは増えますが、客は減ります。<strong>「1個の儲け × 売れる数」が最大になる点</strong>を探すのがこの問題です。売上（売れた総額）が最大でも、利益が最大とは限りません。</p>
+
+<h3 class="print-h3">途中計算（省略しません）</h3>
+
+<p>利益 ＝ 価格 × 販売個数 − 固定費 − 変動費 × 販売個数</p>
+
+<p>1. 1,000円（80,000個）  <br>   1,000 × 80,000 ＝ 80,000,000  <br>   変動費 600 × 80,000 ＝ 48,000,000  <br>   80,000,000 − 1,000,000 − 48,000,000 ＝ <strong>31,000,000</strong><br>2. 1,200円（70,000個）  <br>   1,200 × 70,000 ＝ 84,000,000  <br>   変動費 600 × 70,000 ＝ 42,000,000  <br>   84,000,000 − 1,000,000 − 42,000,000 ＝ <strong>41,000,000</strong><br>3. 1,400円（60,000個）  <br>   1,400 × 60,000 ＝ 84,000,000  <br>   変動費 600 × 60,000 ＝ 36,000,000  <br>   84,000,000 − 1,000,000 − 36,000,000 ＝ <strong>47,000,000</strong><br>4. 1,600円（50,000個）  <br>   1,600 × 50,000 ＝ 80,000,000  <br>   変動費 600 × 50,000 ＝ 30,000,000  <br>   80,000,000 − 1,000,000 − 30,000,000 ＝ <strong>49,000,000</strong></p>
+
+<p>最大は4.の49,000,000円なので、設定価格は1,600円です。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア 1,000円（利益31,000,000円）✕</strong>: 一番たくさん売れるので「薄利多売で一番儲かりそう」と思わせる罠。1個あたりの儲けが 1,000 − 600 ＝ 400円しかなく、最下位です。</div>
+<div class="print-bullet">• <strong>イ 1,200円（利益41,000,000円）✕</strong>: 真ん中あたりの無難な選択に見えるが、4通り中3位。</div>
+<div class="print-bullet">• <strong>ウ 1,400円（利益47,000,000円）✕</strong>: 売上は1,200円のときと同じ84,000,000円。<strong>売上が同じでも、販売個数が少ない分、変動費が減って利益は増える</strong>ことに注意。ただし最大ではありません。</div>
+<div class="print-bullet">• <strong>エ 1,600円（利益49,000,000円）○</strong>: 1個の儲けが 1,600 − 600 ＝ 1,000円で、売上は80,000,000円と最大ではないが、費用が大きく減るため利益は最大。</div>
+
+<blockquote class="print-quote">😈 最大のトラップ：売上の最大値（1,200円と1,400円の84,000,000円）を見て「売上が大きい＝利益が大きい」と思い込むこと。利益は費用を引いて初めて比較できます。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢「エ」を確信を持って選べるか試してみよう！</strong></div>
+<div class="print-check">□ 1個あたりの儲け（価格 − 600）× 個数 − 1,000,000 の形でも同じ結果になるか検算しよう（例：1,600円は 1,000 × 50,000 − 1,000,000 ＝ 49,000,000）。</div>
+</div>
+
+<div class="question-sheet" id="q_35">
+  <h1 class="print-h1">最大利益の価格設定：高く売れば儲かる…とは限らない！「価格×個数」の山を探す</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 固定費・変動費の式は分かるが、価格ごとの売れ行きが絡むと混乱する文系受験者  <br><strong>省いたもの</strong>: 需要曲線・価格弾力性の経済学的な理論  <br><strong>所要時間</strong>: 6〜8分  <br><strong>対象過去問</strong>: 応用情報技術者 平成26年秋期 午前問77  </blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】平成26年秋期 問77</h2>
+
+<p><strong>【問題】</strong>  <br>最大利益が見込める新製品の設定価格はどれか。ここで，いずれの場合にも，次の費用が発生するものとする。  <br>固定費：1,000,000円  <br>変動費：600円／個</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 1,000</div>
+<div class="print-bullet">• <strong>イ</strong>: 1,200</div>
+<div class="print-bullet">• <strong>ウ</strong>: 1,400</div>
+<div class="print-bullet">• <strong>エ</strong>: 1,600</div>
+
+<blockquote class="print-quote">📝 <strong>復元に関する注記</strong>: 原問題には「設定価格ごとの予測販売個数」の表が付いていますが、取得データの問題文には含まれていません。公式解説の計算式から、ア〜エの価格に対応する販売個数は <strong>1,000円→80,000個、1,200円→70,000個、1,400円→60,000個、1,600円→50,000個</strong> と復元できます（表そのものの体裁は未復元）。</blockquote>
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: エ（1,600）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『利益＝価格×個数−固定費−変動費×個数。4つ全部計算して比べる！』</h2>
+
+<pre class="mermaid">
+flowchart TD
+    A["利益 = 売上 - 費用"] --> B["売上 = 価格 × 販売個数"]
+    A --> C["費用 = 固定費 + 変動費 × 個数"]
+    B --> D["4つの価格で全部計算"]
+    C --> D
+    D --> E["ア 3,100万 / イ 4,100万<br/>ウ 4,700万 / エ 4,900万"]
+    E --> F["いちばん大きい価格が答え"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 価格が高い＝売れ個数が減る。だから全部計算して最大を選ぶ！ 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：文化祭のたこ焼き屋）</h2>
+
+<p>たこ焼きを1個100円で売れば大行列、300円なら閑古鳥…。安くすればたくさん売れますが、1個あたりの儲けは薄い。高くすれば1個の儲けは大きいが、売れる数が減る。<strong>「1個の儲け×売れる数」が最大になる点</strong>が、最大利益の価格です。</p>
+
+<p>材料費など個数に比例するのが変動費、屋台のレンタル料のように売れても売れなくても固定でかかるのが固定費です。</p>
+
+<h3 class="print-h3">途中計算（公式解説に基づく・省略なし）</h3>
+利益 ＝ 価格×販売個数 − 固定費 − 変動費×販売個数
+
+<div class="print-bullet">• <strong>ア（1,000円・80,000個）</strong>  </div>
+  1,000×80,000 − 1,000,000 − 600×80,000  
+  ＝ 80,000,000 − 1,000,000 − 48,000,000 ＝ <strong>31,000,000円</strong>
+<div class="print-bullet">• <strong>イ（1,200円・70,000個）</strong>  </div>
+  1,200×70,000 − 1,000,000 − 600×70,000  
+  ＝ 84,000,000 − 1,000,000 − 42,000,000 ＝ <strong>41,000,000円</strong>
+<div class="print-bullet">• <strong>ウ（1,400円・60,000個）</strong>  </div>
+  1,400×60,000 − 1,000,000 − 600×60,000  
+  ＝ 84,000,000 − 1,000,000 − 36,000,000 ＝ <strong>47,000,000円</strong>
+<div class="print-bullet">• <strong>エ（1,600円・50,000個）</strong>  </div>
+  1,600×50,000 − 1,000,000 − 600×50,000  
+  ＝ 80,000,000 − 1,000,000 − 30,000,000 ＝ <strong>49,000,000円</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<div class="print-bullet">• <strong>ア（1,000円）: ✗</strong>  </div>
+  → 最も売れる（8万個）が1個あたりの儲けは400円と薄く、利益は3,100万円で最下位。「薄利多売で一番儲かりそう」という心理トラップ。
+<div class="print-bullet">• <strong>イ（1,200円）: ✗</strong>  </div>
+  → 利益4,100万円。売上は8,400万円と大きいが、変動費が4,200万円かかり利益はウ・エに届かない。
+<div class="print-bullet">• <strong>ウ（1,400円）: ✗</strong>  </div>
+  → 利益4,700万円。<strong>売上はイと同じ8,400万円</strong>で、個数が減った分だけ変動費が減るため利益が増える。惜しいが最大ではない。
+<div class="print-bullet">• <strong>エ（1,600円）: ○</strong>  </div>
+  → 利益4,900万円で最大。売上は8,000万円と一番低いが、変動費が3,000万円まで下がるため利益は最大になる。
+
+<blockquote class="print-quote">⚠️ 「売上が最大＝利益が最大」ではない！売上最大はイとウ（8,400万円）ですが、利益最大はエ。必ず費用を引いて比べます。</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. 利益を求める式を、固定費・変動費を使って示せ。</strong>  </div>
+  → <strong>「利益＝売上高−（固定費＋変動費×販売個数）で求める。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢を確信を持って選べるか試してみよう！</strong></div>
+</div>
+
+<div class="question-sheet" id="q_36">
+  <h1 class="print-h1">共通フレーム98：取引の「共通の物差し」で覚える「社内取引もOK」</h1>
+
+<blockquote class="print-quote"><strong>想定読者</strong>: 共通フレームとISO/IEC 12207の関係や、規定範囲があいまいな文系受験者  <br><strong>省いたもの</strong>: 各プロセスの細かな一覧  <br><strong>所要時間</strong>: 5〜6分  <br><strong>対象過去問</strong>: 応用情報技術者 平成18年秋期 午前問78</blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">【対象過去問】平成18年秋期 問78</h2>
+
+<p><strong>【問題】</strong>  <br>共通フレーム98(SLCP-JCF98)が規定しているものはどれか。</p>
+
+<div class="print-bullet">• <strong>ア</strong>: 開発プロセスでは，ソフトウェアライフサイクルを構成する作業の時間及び順序を規定している。</div>
+<div class="print-bullet">• <strong>イ</strong>: 顧客と開発ベンダーの受注契約にかかわる取引以外に，社内の部門間取引も対象に規定している。</div>
+<div class="print-bullet">• <strong>ウ</strong>: ハードウェアを含めた業務システムの開発プロセスではなく，ソフトウェア開発のプロセスを対象に規定している。</div>
+<div class="print-bullet">• <strong>エ</strong>: プロセスのくくりとプロセス自体をISO/IEC 12207(JIS X 0160)と同一に規定している。</div>
+
+<details open class="print-details">
+<summary class="print-summary">▶ 正解を表示する</summary>
+
+<p><strong>正解: イ（顧客と開発ベンダーの受注契約にかかわる取引以外に，社内の部門間取引も対象に規定している）</strong></p>
+
+</details>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">0. 一枚で：『共通フレーム＝取得者と供給者の共通の物差し。社内でも社外でも使える！』</h2>
+
+<pre class="mermaid">
+flowchart TD
+    ISO["ISO/IEC 12207 (JIS X 0160)"] -->|"ベースにして作成＋日本独自要素を追加"| SLCP["共通フレーム98"]
+    SLCP --> T["取得者と供給者の取引を明確化"]
+    T --> I["組織の内部でも外部でも適用対象"]
+    SLCP --> NG1["❌ 時間・順序の規定ではない"]
+    SLCP --> NG2["❌ ソフトのみではなくシステム方式設計も含む"]
+    SLCP --> NG3["❌ ISOと同一ではない"]
+</pre>
+
+<h3 class="print-h3">🧠 脳に刻む合言葉：</h3>
+<blockquote class="print-quote"><strong>『 共通フレームは共通の物差し。社内取引も対象、ISOとは同一じゃない 』</strong></blockquote>
+<hr class="print-hr">
+
+<h2 class="print-h2">1. なぜそうなるのか？（日常のたとえ話：引っ越しの「見積書の共通書式」）</h2>
+
+<p>引っ越しで、業者ごとに見積書の書き方がバラバラだと比較できません。そこで「項目名と作業の区切りはこの書式で統一」というルールがあれば、頼む側も請ける側も同じ物差しで話せます。共通フレームはまさにこの <strong>ソフトウェア取引の共通書式</strong> です。</p>
+
+<p>公式解説では、ソフトウェア産業界における「共通の物差し」を目的に、ISO/IEC 12207をベースに作られた規格で、取得者と供給者双方（システム開発に関わる全員）が、企画・要件定義・開発・運用・保守の作業内容を共通に参照できるようにし、ソフトウェア取引を明確化する基準が記述されています。</p>
+
+<p>「取得者」と「供給者」は、<strong>会社対会社でも、同じ会社の部署対部署でもよい</strong> ので、組織の内部か外部かを問わず、システム・ソフトウェアを取得／供給するときは適用対象になります。</p>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">2. 選択肢のひっかけポイント ＆ 判定理由</h2>
+
+<table class="print-table">
+  <thead>
+    <tr><th>選択肢</th><th>判定</th><th>理由（公式解説に基づく）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>ア</strong> 作業の時間及び順序を規定</td><td>✕</td><td>工程や時間に依存して定義されたものではない。「何をするか」の作業内容の物差しであり、「いつ・どの順で」を縛るものではない。</td></tr>
+    <tr><td><strong>イ</strong> 社内の部門間取引も対象</td><td>◯</td><td>組織の内部か外部かを問わず、システム・ソフトウェアを取得／供給するときは適用対象。</td></tr>
+    <tr><td><strong>ウ</strong> ソフトウェア開発のみが対象</td><td>✕</td><td>ソフトウェア、ハードウェア、手作業を含むシステム方式設計の工程が含まれる。さらにソフトウェアを中心としたシステム関連作業まで含む。</td></tr>
+    <tr><td><strong>エ</strong> ISO/IEC 12207と同一</td><td>✕</td><td>日本独自の要素が追加されているので同一ではない。</td></tr>
+  </tbody>
+</table>
+
+<div class="print-bullet">• <strong>ひっかけ心理</strong>: 「ISOがベース」という知識から、エの「同一」を選びやすい。<strong>ベース≠同一</strong>（日本独自要素の追加あり）。</div>
+<div class="print-bullet">• ウは「ソフトウェア」という名前に引っ張られる罠。範囲はシステム全体寄り。</div>
+<div class="print-bullet">• アはウォーターフォールの工程順のイメージで「順序も決めている」と思い込む罠。</div>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">3. 午後試験 記述対策チェックリスト（※該当する場合）</h2>
+
+<div class="print-check">□ <strong>Q. 共通フレームの目的を述べよ。</strong>  </div>
+  → <strong>「ソフトウェア産業界の共通の物差しとして、取得者と供給者が作業内容を共通に参照し、取引を明確化すること。」</strong>
+
+<hr class="print-hr">
+
+<h2 class="print-h2">🎯 次の2分アクション（定着チェック）</h2>
+
+<div class="print-check">□ <strong>画面の一番上に戻り、正解を隠した状態で正解肢「イ」を確信を持って選べるか試してみよう！</strong></div>
+</div>
+  </main>
+</body>
+</html>

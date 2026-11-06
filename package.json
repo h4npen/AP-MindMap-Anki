@@ -9,7 +9,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "pipeline": "python scripts/pipeline.py",
-    "export-print": "python scripts/export_printable.py"
+    "export-print": "python scripts/export_printable.py",
+    "export-workbook": "python scripts/export_printable.py docs/inbox/ --workbook",
+    "export-glossary": "python scripts/export_printable.py docs/inbox/ --glossary",
+    "export-offline": "python scripts/export_offline_app.py"
   },
   "dependencies": {
     "mermaid": "^12.1.0",

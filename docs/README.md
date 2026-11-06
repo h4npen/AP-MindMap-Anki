@@ -102,6 +102,14 @@
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :--- |
+| [math-queueing-mm1-wait-time.md](./inbox/04_システム構成要素/math-queueing-mm1-wait-time.md) | **M/M/1待ち行列の平均待ち時間**<br>（[令和4年春期 問3](https://www.ap-siken.com/kakomon/04_haru/q3.html)） | 『待ち時間は利用率÷(1−利用率)』<br>ラーメン屋のカウンターは、忙しさが少し増えるだけで行列が急に伸びる | inbox |
+| [algo-quicksort-second-partition.md](./inbox/04_システム構成要素/algo-quicksort-second-partition.md) | **クイックソートの2回目の分割**<br>（[令和5年春期 問7](https://www.ap-siken.com/kakomon/05_haru/q7.html)） | 『左端を基準に小さい組・基準・大きい組』<br>身長順の整列で、先頭の子を基準に低い子は左、高い子は右へ分ける | inbox |
+| [hw-cache-write-back.md](./inbox/04_システム構成要素/hw-cache-write-back.md) | **キャッシュのライトバック方式**<br>（[平成20年秋期 問19](https://www.ap-siken.com/kakomon/20_aki/q19.html)） | 『バックはあとでまとめて戻す。速いがズレる』<br>机の付箋だけ書き換えて、捨てるときに書庫の台帳へ書く | inbox |
+| [sys-mmu-address-translation.md](./inbox/04_システム構成要素/sys-mmu-address-translation.md) | **MMU（仮想→物理アドレス変換）**<br>（[平成27年秋期 問10](https://www.ap-siken.com/kakomon/27_aki/q10.html)） | 『MMUは翻訳係。スワップはOS、保存はキャッシュ』<br>マンションの管理人が仮想の部屋番号を実際の部屋へ案内する | inbox |
+| [algo-binary-tree-postorder-traversal.md](./inbox/04_システム構成要素/algo-binary-tree-postorder-traversal.md) | **2分木の後行順（右→左→自分）**<br>（[令和6年春期 問6](https://www.ap-siken.com/kakomon/06_haru/q6.html)） | 『右・左・自分で下から出す』<br>小部屋を右→左と空にしてから最後に自分の部屋の荷物を出す引っ越し | inbox |
+| [theory-karnaugh-map-simplification.md](./inbox/04_システム構成要素/theory-karnaugh-map-simplification.md) | **カルノー図から論理式を作る**<br>（[令和4年秋期 問2](https://www.ap-siken.com/kakomon/04_aki/q2.html)） | 『1を大きく囲え！変わらない変数だけ残して＋でつなぐ！』<br>クラス名簿のまとめ書きのように、違いのあるマスを1行にまとめる | inbox |
+| [sys-cpu-utilization-mips.md](./inbox/04_システム構成要素/sys-cpu-utilization-mips.md) | **CPU利用率とMIPSの計算**<br>（[平成28年秋期 問15](https://www.ap-siken.com/kakomon/28_aki/q15.html)） | 『MIPS＝1秒に百万命令！「分」を「秒」に直してから割る！』<br>ラーメン屋の厨房の全力（1秒あたり）に対し、注文が生む作業量で働き度合いを測る | inbox |
+| [algo-hash-table-constant-search-time.md](./inbox/04_システム構成要素/algo-hash-table-constant-search-time.md) | **ハッシュ表の探索時間（定数時間）**<br>（[令和5年春期 問19](https://www.ap-siken.com/kakomon/05_haru/q19.html)） | 『ハッシュは一発！データが増えても探索時間は横ばい！』<br>ロッカー番号が分かれば何個あっても一発で開く | inbox |
 | [sys-availability-mtbf-mttr.md](./inbox/04_システム構成要素/sys-availability-mtbf-mttr.md) | **稼働率とMTBF・MTTR**<br>（[R4秋 問14](https://www.ap-siken.com/kakomon/04_aki/q14.html)） | 『Bは元気・Rはリペア（修理）』<br>スマホの元気時間と入院時間。両方1.5倍になっても比率だから「変わらない」！ | inbox |
 
 ## 05. ソフトウェア
@@ -114,6 +122,9 @@
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :---: |
+| [db-sql-union-all-duplicate.md](./inbox/09_データベース/db-sql-union-all-duplicate.md) | **UNION ALLと重複行**<br>（[令和2年秋期 問29](https://www.ap-siken.com/kakomon/02_aki/q29.html)） | 『UNION ALLは全部残す！』<br>2クラスの名簿をホッチキス留め。ダブりも消さずそのまま、UNIONなら同名を1人にまとめる | inbox |
+| [db-recovery-rollforward-rollback-checkpoint.md](./inbox/09_データベース/db-recovery-rollforward-rollback-checkpoint.md) | **ロールフォワード／ロールバック（チェックポイント）**<br>（[平成28年秋期 問30](https://www.ap-siken.com/kakomon/28_aki/q30.html)） | 『済みは進め、途中は戻し、書かぬものは触らず』<br>停電後、手帳のログでノートに書き足したり消しゴムで戻したりする | inbox |
+| [db-nosql-key-value-store.md](./inbox/09_データベース/db-nosql-key-value-store.md) | **NoSQLの4タイプとKVS**<br>（[令和6年春期 問29](https://www.ap-siken.com/kakomon/06_haru/q29.html)） | 『NoSQLは4兄弟：キー・カラム・ドキュメント・グラフ！』<br>鍵の番号さえあれば中身は自由な駅のコインロッカー | inbox |
 | [db-distributed-two-phase-commit.md](./inbox/09_データベース/db-distributed-two-phase-commit.md) | **2相コミット**<br>（[平成22年秋期 問30](https://www.ap-siken.com/kakomon/22_aki/q30.html)） | 『全員OKなら一斉実行！』<br>結婚式の神父。「全員準備は良いですか？（第1相）」→全員がYESなら「では誓いなさい（第2相）」と指示する | inbox |
 | [db-sql-outer-join-group-by.md](./inbox/09_データベース/db-sql-outer-join-group-by.md) | **SQL外部結合と集約**<br>（[平成28年秋期 問29](https://www.ap-siken.com/kakomon/28_aki/q29.html)） | 『0件の人を名簿から消さない！』<br>スタンプラリー。スタンプを1個も押していない人も、外部結合なら「0個」として全員表に載せられる | inbox |
 | [db-sql-not-exists-correlated-subquery.md](./inbox/09_データベース/db-sql-not-exists-correlated-subquery.md) | **NOT EXISTS相関副問合せ**<br>（[平成19年春期 問66](https://www.ap-siken.com/kakomon/19_haru/q66.html)） | 『未提出者リストのあぶり出し！』<br>全校生徒名簿から、提出済みボックスに名前が「存在しない（NOT EXISTS）」人だけを呼び出す | inbox |
@@ -131,6 +142,9 @@
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :---: |
+| [net-lan-transmission-time-efficiency.md](./inbox/10_ネットワーク/net-lan-transmission-time-efficiency.md) | **LAN伝送時間と伝送効率**<br>（[令和5年秋期 問31](https://www.ap-siken.com/kakomon/05_aki/q31.html)） | 『バイトは8ビット！効率を掛けてから割る！』<br>渋滞で半分しか走れない高速道路。荷物(バイト)と道路(ビット)の単位をそろえて運ぶ時間を出す | inbox |
+| [net-host-count-prefix-28.md](./inbox/10_ネットワーク/net-host-count-prefix-28.md) | **/28のホスト最大数**<br>（[令和4年春期 問34](https://www.ap-siken.com/kakomon/04_haru/q34.html)） | 『ホスト数は2のn乗マイナス2！』<br>マンションの部屋番号のうち、名前札と館内放送室は住人になれない | inbox |
+| [net-transmission-time-packet-interval.md](./inbox/10_ネットワーク/net-transmission-time-packet-interval.md) | **LAN送信時間の差からパケット数を逆算**<br>（[令和5年春期 問32](https://www.ap-siken.com/kakomon/05_haru/q32.html)） | 『両方に同じ分だけ足されるものは、差を取れば消える！バイトは×8でビットへ！』<br>速度違いのトラックでも休憩時間は同じなので差に効かない | inbox |
 | [net-mtu-mss-transmission-efficiency.md](./inbox/10_ネットワーク/net-mtu-mss-transmission-efficiency.md) | **回線伝送効率**<br>（[平成28年春期 問32](https://www.ap-siken.com/kakomon/28_haru/q32.html)） | 『データと梱包材の比率計算！』<br>トラックで運ぶとき、荷物そのもの（MSS）と段ボール箱＋緩衝材（ヘッダ・プリアンブル）を足した総重量で効率を割る | inbox |
 | [net-napt-ip-port-translation.md](./inbox/10_ネットワーク/net-napt-ip-port-translation.md) | **NAPTの役割**<br>（[平成23年特別 問34](https://www.ap-siken.com/kakomon/23_toku/q34.html)） | 『IP＋ポート番号をセットで変換！』<br>マンション全体の代表電話番号を、内線番号で各世帯に振り分ける仕組み | inbox |
 | [net-majority-voting-error-rate-calc.md](./inbox/10_ネットワーク/net-majority-voting-error-rate-calc.md) | **多数決方式の伝送誤り率**<br>（[平成25年秋期 問33](https://www.ap-siken.com/kakomon/25_aki/q33.html)） | 『多数決の失敗＝過半数のミス！』<br>3人に同じ伝言を伝えたとき、2人または3人全員が聞き間違えたら全体の判断が狂う | inbox |
@@ -178,6 +192,7 @@
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :---: |
+| [sec-side-channel-attack.md](./inbox/11_セキュリティ/sec-side-channel-attack.md) | **サイドチャネル攻撃**<br>（[令和4年秋期 問37](https://www.ap-siken.com/kakomon/04_aki/q37.html)） | 『鍵は壊さず、音と熱と時間を盗む』<br>金庫に耳を当ててカチッという音の違いを聞き取る泥棒 | inbox |
 | [sec-session-hijacking-reauth.md](./inbox/11_セキュリティ/sec-session-hijacking-reauth.md) | **セッション乗っ取り対策（再認証）**<br>（[H28春 問41](https://www.ap-siken.com/kakomon/28_haru/q41.html)） | ホテルのカードキーと貴重品金庫<br>部屋の鍵を盗まれても、最後の金庫（個人情報）を開ける直前のパスワード再入力で防ぐ | inbox |
 | [sec-tls-client-authentication.md](./inbox/11_セキュリティ/sec-tls-client-authentication.md) | **TLSクライアント認証の送付順序**<br>（[R3春 問45](https://www.ap-siken.com/kakomon/03_haru/q45.html)） | 高級会員制クラブの名刺交換<br>詐欺を警戒してまず店側が名刺（b） → 客が会員証（a） → 店が確認（c）！ | inbox |
 | [sec-ipsec-ah-esp.md](./inbox/11_セキュリティ/sec-ipsec-ah-esp.md) | **IPsec（AHとESP）**<br>（[R3秋 問43](https://www.ap-siken.com/kakomon/03_aki/q43.html)） | 宅配便の封蝋と頑丈な金庫<br>AHは認証・改ざん防止のみ（暗号化なし）。ESPは暗号化＋認証の万能選手 | inbox |
@@ -208,6 +223,8 @@
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :---: |
+| [media-svg-xml-vector-image.md](./inbox/12_システム開発技術/media-svg-xml-vector-image.md) | **画像フォーマットSVG**<br>（[令和3年春期 問27](https://www.ap-siken.com/kakomon/03_haru/q27.html)） | 『SVG＝ベクター＋XML！』<br>タイルの壁画(PNG)は拡大で荒れるが、「円を描け」という設計図(SVG)は何倍でもくっきり | inbox |
+| [dev-corba-omg-distributed-object.md](./inbox/12_システム開発技術/dev-corba-omg-distributed-object.md) | **CORBA（OMGの分散オブジェクト仕様）**<br>（[平成19年春期 問80](https://www.ap-siken.com/kakomon/19_haru/q80.html)） | 『CORBAはOMGの分散オブジェクト仕様』<br>国際会議の同時通訳ブースが、言語の違う人同士をつなぐ | inbox |
 | [dev-square-quality-characteristics.md](./inbox/12_システム開発技術/dev-square-quality-characteristics.md) | **ソフトウェア品質特性 (SQuaRE)**<br>（[R1秋 問47](https://www.ap-siken.com/kakomon/01_aki/q47.html)） | スマホ選びの8大チェック項目<br>機能適合性＝明示的＆暗黙の「ニーズを満足させる」機能があるかどうか | inbox |
 
 ## 13. ソフトウェア開発管理技術
@@ -220,18 +237,24 @@
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :---: |
+| [pm-productivity-effort-power-formula.md](./inbox/14_プロジェクトマネジメント/pm-productivity-effort-power-formula.md) | **開発工数式（べき乗）と生産性**<br>（[平成30年春期 問54](https://www.ap-siken.com/kakomon/30_haru/q54.html)） | 『生産性＝できた量÷かかった工数！ほぼ1乗なら 5.2×10＝52』<br>1人が1か月に書ける原稿量を求める | inbox |
 | [pm-cost-assignment-puzzle.md](./inbox/14_プロジェクトマネジメント/pm-cost-assignment-puzzle.md) | **要員割り当て最小コストパズル**<br>（[R1秋 問54](https://www.ap-siken.com/kakomon/01_aki/q54.html)） | 『期限で絞って・重い順に・パズルする！』<br>遅いCさんは4キロの仕事を2か月で終わらせられない（足切り脱落）から解く | inbox |
 
 ## 15. サービスマネジメント
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :---: |
+| [service-itil-seven-step-improvement.md](./inbox/15_サービスマネジメント/service-itil-seven-step-improvement.md) | **ITILの7ステップの改善プロセス**<br>（[令和元年秋期 問56](https://www.ap-siken.com/kakomon/01_aki/q56.html)） | 『集めて、処理して、分析して、見せる！』<br>家計簿のレシートを集め→入力→傾向を読む→家族に見せて食費を改善 | inbox |
+| [service-availability-maintainability-mtrs.md](./inbox/15_サービスマネジメント/service-availability-maintainability-mtrs.md) | **可用性管理の保守性指標（MTRS）**<br>（[令和4年春期 問56](https://www.ap-siken.com/kakomon/04_haru/q56.html)） | 『保守性＝直す速さ（回復時間）！』<br>スマホの入院。壊れにくさ(間隔)は信頼性、退院までの短さが保守性 | inbox |
+| [service-portfolio-itil2011.md](./inbox/15_サービスマネジメント/service-portfolio-itil2011.md) | **サービス・ポートフォリオ（ITIL 2011）**<br>（[令和3年春期 問56](https://www.ap-siken.com/kakomon/03_haru/q56.html)） | 『ポートフォリオは全部、カタログは今売ってる分だけ』<br>試作中・提供中・販売終了を全部載せたレストランの経営者用メニュー台帳 | inbox |
+| [service-level-management-process-activity.md](./inbox/15_サービスマネジメント/service-level-management-process-activity.md) | **サービスレベル管理プロセスの活動**<br>（[令和6年春期 問56](https://www.ap-siken.com/kakomon/06_haru/q56.html)） | 『SLA＝顧客との約束書。「合意文書」が見えたらサービスレベル管理！』<br>ピザ店の「30分以内にお届け」保証を決めて守る係 | inbox |
 | [service-level-management-sla.md](./inbox/15_サービスマネジメント/service-level-management-sla.md) | **サービスレベル管理 (SLM) と SLA**<br>（[H27秋 問56](https://www.ap-siken.com/kakomon/27_aki/q56.html)） | ホテルの宿泊プラン契約<br>顧客とサービス目標を「合意文書（SLA）」として交わし、定期的にPDCAを回す | inbox |
 
 ## 16. システム監査
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :--- |
+| [audit-procedure-evidence.md](./inbox/16_システム監査/audit-procedure-evidence.md) | **監査手続＝監査証拠の入手**<br>（[令和4年秋期 問59](https://www.ap-siken.com/kakomon/04_aki/q59.html)） | 『監査手続は証拠集め！計画は前、報告書は後！』<br>判決を書く前に証拠を集める裁判の捜査 | inbox |
 | [audit-system-audit-charter-approval.md](./inbox/16_システム監査/audit-system-audit-charter-approval.md) | **規程の承認者と3者の力関係**<br>（[H30春 問59](https://www.ap-siken.com/kakomon/30_haru/q59.html)） | 警察と裁判所と社長<br>現場にルールを決めさせたら不正が隠せる（自己監査の禁止）。承認は社長一択！ | inbox |
 | [audit-master-file-availability-cia.md](./inbox/16_システム監査/audit-master-file-availability-cia.md) | **可用性とセキュリティ3大要件 (CIA)**<br>（[R3春 問59](https://www.ap-siken.com/kakomon/03_haru/q59.html)） | 金庫のCIA3兄弟<br>機密＝見せない、完全＝壊させない、可用＝いつでも使える予備キー（サーバ二重化）！ | inbox |
 
@@ -239,18 +262,25 @@
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :--- |
+| [plan-ea-to-be-model.md](./inbox/17_システム企画/plan-ea-to-be-model.md) | **EAのTo-Beモデル（理想の将来像）**<br>（[平成29年秋期 問61](https://www.ap-siken.com/kakomon/29_aki/q61.html)） | 『理想の To-Be、現状の As-Is』<br>ダイエットで「今の体型」と「理想の体型」を比べて計画を立てる | inbox |
+| [plan-common-frame-requirements-definition.md](./inbox/17_システム企画/plan-common-frame-requirements-definition.md) | **共通フレーム2013の要件定義プロセス**<br>（[令和元年秋期 問65](https://www.ap-siken.com/kakomon/01_aki/q65.html)） | 『まず「誰が関わるか」を洗い出す！』<br>家を建てる前の聞き取り。企画の後、設計の前に家族の要望を確認する | inbox |
 | [strategy-investment-pbp-payback-period.md](./inbox/17_システム企画/strategy-investment-pbp-payback-period.md) | **投資評価の回収期間法 (PBP)**<br>（[R5秋 問64](https://www.ap-siken.com/kakomon/05_aki/q64.html)） | カフェの100万エスプレッソマシン<br>何年で元が取れる？Period（期間）＝PBP。利益率はROI、現在価値はNPV | inbox |
 
 ## 19. 経営戦略マネジメント
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :--- |
+| [strategy-ansoff-growth-matrix.md](./inbox/19_経営戦略マネジメント/strategy-ansoff-growth-matrix.md) | **アンゾフの成長マトリクス**<br>（[平成28年秋期 問68](https://www.ap-siken.com/kakomon/28_aki/q68.html)） | 『アンゾフは4つの攻め方：浸透・開発・開拓・多角化』<br>パン屋が既存/新規の製品×客層で成長作戦を4通りに整理する | inbox |
+| [strategy-core-competence.md](./inbox/19_経営戦略マネジメント/strategy-core-competence.md) | **コアコンピタンス**<br>（[平成23年特別 問66](https://www.ap-siken.com/kakomon/23_toku/q66.html)） | 『コアコンピタンス＝真似できない自社の核の力』<br>老舗うなぎ屋の秘伝のタレは他店に真似できない | inbox |
+| [strategy-scm-purpose.md](./inbox/19_経営戦略マネジメント/strategy-scm-purpose.md) | **SCMの目的（CRM・SFA・ERPとの区別）**<br>（[平成29年春期 問67](https://www.ap-siken.com/kakomon/29_haru/q67.html)） | 『SCMは鎖！会社をまたいで調達から販売までつなぐ！』<br>情報を共有して水を無駄なく運ぶバケツリレー | inbox |
+| [strategy-ppm-matrix-axes.md](./inbox/19_経営戦略マネジメント/strategy-ppm-matrix-axes.md) | **PPMマトリックスの軸**<br>（[令和3年春期 問67](https://www.ap-siken.com/kakomon/03_haru/q67.html)） | 『金のなる木は成長低・占有高、問題児は成長高・占有低！』<br>成長が止まった大木は肥料いらずで実だけ取れる果樹園 | inbox |
 | [strategy-value-chain-frameworks.md](./inbox/19_経営戦略マネジメント/strategy-value-chain-frameworks.md) | **バリューチェーンと4大フレームワーク**<br>（[R3秋 問67](https://www.ap-siken.com/kakomon/03_aki/q67.html)） | パン屋さんのバトンリレー<br>「5つの主活動と4つの支援活動」＝バリューチェーン。SWOT・BSCとの見分け方 | inbox |
 
 ## 21. ビジネスインダストリ
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :--- |
+| [ind-setup-time-min-order.md](./inbox/21_ビジネスインダストリ/ind-setup-time-min-order.md) | **合計段取り時間を最小にする順序**<br>（[令和6年秋期 問72](https://www.ap-siken.com/kakomon/06_aki/q72.html)） | 『一番安い矢印を数珠つなぎ、余り物は最後尾へ』<br>部屋掃除で道具の付け替えが最短の移動をつなぐ | inbox |
 | [strategy-cps-cyber-physical-system.md](./inbox/21_ビジネスインダストリ/strategy-cps-cyber-physical-system.md) | **サイバーフィジカルシステム (CPS)**<br>（[R4秋 問73](https://www.ap-siken.com/kakomon/04_aki/q73.html)） | 現実と仮想の卓球ラリー<br>畑のデータを測る（現実） → AIで分析（仮想） → 自動散水（現実にフィードバック） | inbox |
 | [strategy-edge-computing.md](./inbox/21_ビジネスインダストリ/strategy-edge-computing.md) | **エッジコンピューティング**<br>（[R6春 問72](https://www.ap-siken.com/kakomon/06_haru/q72.html)） | 現場の店長が即決！<br>本社（クラウド）のお伺い待ちをなくし、端末の近傍で超低遅延処理＆回線負荷軽減 | inbox |
 
@@ -258,6 +288,11 @@
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :--- |
+| [corp-cio-role.md](./inbox/22_企業活動/corp-cio-role.md) | **CIOの役割**<br>（[平成30年秋期 問74](https://www.ap-siken.com/kakomon/30_aki/q74.html)） | 『I は Information の I！ITを経営に活かす人が CIO』<br>ラーメンチェーン本部でIT投資を社長に助言する参謀 | inbox |
+| [corp-qc-tree-diagram.md](./inbox/22_企業活動/corp-qc-tree-diagram.md) | **系統図法**<br>（[令和3年春期 問76](https://www.ap-siken.com/kakomon/03_haru/q76.html)） | 『系統図は「目的→手段→さらに手段」の木。原因探しは別の図！』<br>「家族を喜ばせる」を手段の家系図に枝分かれさせる | inbox |
+| [strategy-max-profit-price-calc.md](./inbox/22_企業活動/strategy-max-profit-price-calc.md) | **最大利益となる価格設定**<br>（[令和4年春期 問76](https://www.ap-siken.com/kakomon/04_haru/q76.html)） | 『利益は売上−費用。4通りとも計算して最大を選ぶ』<br>文化祭のたこ焼き屋は、売上が大きくても利益が最大とは限らない | inbox |
+| [strategy-delphi-method.md](./inbox/22_企業活動/strategy-delphi-method.md) | **デルファイ法**<br>（[令和4年秋期 問75](https://www.ap-siken.com/kakomon/04_aki/q75.html)） | 『専門家へのアンケートを繰り返して意見を収束』<br>覆面の予想会議で、声の大きい人に引っ張られずに結論を出す | inbox |
+| [strategy-optimal-price-max-profit.md](./inbox/22_企業活動/strategy-optimal-price-max-profit.md) | **最大利益となる設定価格**<br>（[平成26年秋期 問77](https://www.ap-siken.com/kakomon/26_aki/q77.html)） | 『価格が高い＝売れ個数が減る。だから全部計算して最大を選ぶ！』<br>文化祭のたこ焼き屋で「1個の儲け×売れる数」の山を探す | inbox |
 | [strategy-breakeven-point.md](./inbox/22_企業活動/strategy-breakeven-point.md) | **損益分岐点・安全余裕率**<br>（[R1秋 問77](https://www.ap-siken.com/kakomon/01_aki/q77.html)） | 『粗利を・こそげて・安心』<br>ラーメン屋の家賃回収パズル。小数を10倍して消す途中式を全記載 | inbox |
 | [strategy-qc7-relations-diagram.md](./inbox/22_企業活動/strategy-qc7-relations-diagram.md) | **新QC7つ道具「連関図」**<br>（[H26秋 問75](https://www.ap-siken.com/kakomon/26_aki/q75.html)） | 太った原因の悪循環ループ！<br>複雑に絡み合った因果関係を矢印で解きほぐし、根本原因（矢印が出る元凶）を暴く | inbox |
 
@@ -265,6 +300,7 @@
 
 | ファイル名 | テーマ・過去問 | 日常のたとえ話（暗記フック・要約） | 状態 |
 | :--- | :--- | :--- | :---: |
+| [legal-common-frame-98.md](./inbox/23_法務/legal-common-frame-98.md) | **共通フレーム98（SLCP-JCF98）の規定範囲**<br>（[平成18年秋期 問78](https://www.ap-siken.com/kakomon/18_aki/q78.html)） | 『共通フレームは共通の物差し。社内取引も対象、ISOとは同一じゃない』<br>引っ越し見積書の共通書式で業者を比べる | inbox |
 | [law-sensitive-personal-information.md](./inbox/23_法務/law-sensitive-personal-information.md) | **要配慮個人情報（個人情報保護法）**<br>（[R6春 問80](https://www.ap-siken.com/kakomon/06_haru/q80.html)） | 個人情報のデリケート度3段階<br>要配慮＝差別の防止！病歴、前科、信条など知られたら不当な不利益が生じる情報 | inbox |
 | [law-giteki-mark-regulations.md](./inbox/23_法務/law-giteki-mark-regulations.md) | **技適マークと各国の認証マーク**<br>（[R1秋 問80](https://www.ap-siken.com/kakomon/01_aki/q80.html)） | スマホの電波の車検シール<br>日本の電波法に適合している証明。EUはCE、米はFCC、家電安全はPSE | inbox |
 | [law-labor-contract-dispatch-subcontract.md](./inbox/23_法務/law-labor-contract-dispatch-subcontract.md) | **請負・派遣・出向の契約形態**<br>（[R5秋 問80](https://www.ap-siken.com/kakomon/05_aki/q80.html)） | 労働形態の三角関係<br>請負で客先が指示したら「偽装請負」！出向は出向先と指揮命令関係が生じる | inbox |

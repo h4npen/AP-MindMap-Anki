@@ -1,0 +1,2962 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>AP応用情報 間違えた全129問 直前総復習単語帳（過去問道場＆解説ページ直リンク搭載）</title>
+  <style>
+    /* ========================================================
+       A4縦向き印刷 & スマホ両対応スタイルシート
+       ======================================================== */
+    @page {
+      size: A4 portrait;
+      margin: 10mm 10mm 10mm 10mm;
+      @bottom-right {
+        content: counter(page) " / " counter(pages);
+        font-size: 8pt;
+        color: #64748b;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Meiryo", sans-serif;
+      font-size: 8.5pt;
+      line-height: 1.35;
+      color: #0f172a;
+      background: #f8fafc;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 210mm;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 8px 12px;
+    }
+
+    /* 画面表示用コントロールバー */
+    @media screen {
+      body {
+        padding: 15px 10px;
+      }
+      .container {
+        box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+        border-radius: 8px;
+        padding: 20px 25px;
+      }
+      .nav-bar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: #0f172a;
+        color: #ffffff;
+        padding: 10px 16px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+      }
+      .btn {
+        background: #38bdf8;
+        color: #0f172a;
+        font-weight: 800;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 9pt;
+      }
+      .btn:hover {
+        background: #7dd3fc;
+      }
+      .btn-toggle {
+        background: #334155;
+        color: #f8fafc;
+      }
+      .btn-toggle:hover {
+        background: #475569;
+      }
+      .card-row {
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+      }
+      .card-row:hover {
+        background-color: #f1f5f9;
+      }
+      .hide-answers .desc-col {
+        visibility: hidden;
+      }
+      .hide-answers .card-row.revealed .desc-col {
+        visibility: visible;
+        background-color: #fef08a !important;
+      }
+      /* リンクのホバー演出（画面表示時のみ） */
+      a.q-badge-link:hover {
+        background: #1e40af !important;
+        color: #ffffff !important;
+        transform: translateY(-1px);
+      }
+      a.term-title-link:hover {
+        color: #2563eb !important;
+        text-decoration: underline !important;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+      .container {
+        box-shadow: none;
+        padding: 0;
+        max-width: none;
+      }
+      .nav-bar, .no-print {
+        display: none !important;
+      }
+      .card-row {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      .category-header {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+      .link-icon {
+        display: none !important;
+      }
+    }
+
+    /* ヘッダー */
+    .header-box {
+      border-bottom: 2.5px solid #0f172a;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .main-title {
+      font-size: 14pt;
+      font-weight: 900;
+      color: #0f172a;
+    }
+    .sub-title {
+      font-size: 8pt;
+      color: #64748b;
+    }
+    .badge-top {
+      background: #ef4444;
+      color: #ffffff;
+      font-size: 7.5pt;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    /* 分野見出し */
+    .category-header {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 4px 8px;
+      font-size: 9pt;
+      font-weight: 800;
+      border-radius: 4px;
+      margin-top: 12px;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* 二つ折り単語帳テーブル */
+    .flashcard-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1.5px solid #94a3b8;
+      margin-bottom: 8px;
+    }
+
+    .flashcard-table th {
+      background: #e2e8f0;
+      color: #1e293b;
+      padding: 4px 6px;
+      font-size: 8pt;
+      border: 1px solid #cbd5e1;
+      text-align: left;
+    }
+
+    .card-row {
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    /* 左列：問題・用語（40%） 中央に破線折り目ガイド */
+    .term-col {
+      width: 40%;
+      padding: 6px 7px;
+      background: #f8fafc;
+      border-right: 2px dashed #64748b;
+      vertical-align: top;
+    }
+
+    /* 右列：合言葉・正解・ひっかけ（60%） */
+    .desc-col {
+      width: 60%;
+      padding: 6px 8px;
+      background: #ffffff;
+      vertical-align: top;
+    }
+
+    .term-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+
+    /* 過去問出題番号リンクバッジ（クリックで過去問道場へ） */
+    a.q-badge-link {
+      display: inline-block;
+      background: #0f172a;
+      color: #38bdf8;
+      font-size: 7.5pt;
+      font-weight: 900;
+      padding: 1px 6px;
+      border-radius: 3px;
+      letter-spacing: 0.3px;
+      border: 1px solid #1e293b;
+      white-space: nowrap;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    /* 問題タイトルリンク（クリックで作成した詳細解説ページへ） */
+    a.term-title-link {
+      display: block;
+      font-size: 9.2pt;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.3;
+      margin-bottom: 2px;
+      text-decoration: none;
+    }
+
+    .num-pill {
+      display: inline-block;
+      background: #e2e8f0;
+      color: #0f172a;
+      padding: 0 4px;
+      border-radius: 3px;
+      font-size: 8pt;
+      margin-right: 3px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .check-box {
+      font-size: 7.5pt;
+      color: #94a3b8;
+      letter-spacing: 1px;
+    }
+
+    /* 右側のスタイル */
+    .catchphrase-text {
+      font-size: 8.5pt;
+      font-weight: 800;
+      color: #b45309;
+      margin-bottom: 3px;
+      line-height: 1.3;
+    }
+
+    .ans-tag {
+      display: inline-block;
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+      padding: 1px 5px;
+      border-radius: 2px;
+      font-weight: 800;
+      font-size: 7.5pt;
+      margin-bottom: 2px;
+    }
+
+    .trap-hint {
+      font-size: 7.5pt;
+      color: #475569;
+      background: #fef2f2;
+      border-left: 2.5px solid #ef4444;
+      padding: 3px 6px;
+      margin-top: 3px;
+      line-height: 1.25;
+    }
+  </style>
+  <script>
+    function toggleAnswers() {
+      document.body.classList.toggle('hide-answers');
+      const btn = document.getElementById('toggleBtn');
+      if (document.body.classList.contains('hide-answers')) {
+        btn.innerText = '👀 全ての答えを表示する';
+      } else {
+        btn.innerText = '🙈 答えを隠す（暗記モード）';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const rows = document.querySelectorAll('.card-row');
+      rows.forEach(row => {
+        row.addEventListener('click', () => {
+          row.classList.toggle('revealed');
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+
+  <div class="container">
+    <div class="nav-bar">
+      <div>
+        <strong>📖 直前総復習単語帳（全129問・直リンク搭載版）</strong>
+        <span style="font-size: 8pt; opacity: 0.9; margin-left: 6px;">
+          💡 <strong>「📌 R6春 問6」</strong>を押すと過去問道場へ、<strong>「#1 タイトル」</strong>を押すと詳細解説ページへ飛べます！
+        </span>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button id="toggleBtn" class="btn btn-toggle" onclick="toggleAnswers()">🙈 答えを隠す（暗記モード）</button>
+        <button class="btn" onclick="window.print()">🖨️ A4印刷する</button>
+      </div>
+    </div>
+
+    <div class="header-box">
+      <div>
+        <span class="badge-top">明日試験！最終チェック版</span>
+        <div class="main-title">AP 応用情報 直前総復習単語帳（間違えた全129問完全収録）</div>
+        <div class="sub-title">
+          【画面】過去問バッジクリック＝過去問道場を開く ／ #番号・タイトルクリック＝自作解説ノートを開く<br>
+          【印刷】真ん中の破線で半分に折ってセルフテスト！「過去問番号・用語」を見て右側の「合言葉・正解」を即答！
+        </div>
+      </div>
+      <div style="text-align: right; font-size: 7.5pt; color: #64748b;">
+        過去問道場＆解説直リンク対応<br>中央二つ折り印刷対応
+      </div>
+    </div>
+
+    <div class="category-header" style="background: #0284c7;">
+      <span>💻 システム構成要素 (9問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/06_haru/q6.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R6春 問6 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#algo-binary-tree-postorder-traversal.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#1 📖</span>【荷物の積み下ろし】で覚える「2分木の後行順（右→左→自分）」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 右・左・自分（みぎ・ひだり・じぶん）で下から出す</div>
+            <div class="ans-tag">正解: エ（ED－CB×÷A＋）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/05_haru/q19.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R5春 問19 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#algo-hash-table-constant-search-time.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#2 📖</span>ハッシュ表の探索時間：ロッカー番号が分かれば、何千個あっても一発で開く！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ハッシュは一発！データが増えても探索時間は横ばい！</div>
+            <div class="ans-tag">正解: エ（データ数が増えても探索時間が変わらない＝一定のグラフ）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/05_haru/q7.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R5春 問7 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#algo-quicksort-second-partition.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#3 📖</span>クイックソート：クラス替えの「基準の人」で覚える「2回目の分割」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 左端を基準に「小さい組・基準・大きい組」。順番はそのまま、組ごとに繰り返す！</div>
+            <div class="ans-tag">正解: ア（1，2，3，5，4）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/20_aki/q19.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H20秋 問19 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#hw-cache-write-back.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#4 📖</span>キャッシュのライトバック：付箋メモで覚える「追い出すときに主記憶へ」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 バックは「あとで」まとめて戻す。だから速いけど、ズレる！</div>
+            <div class="ans-tag">正解: エ（同一番地に繰り返して書き込む場合は，主記憶へのアクセス回数が少なくて済む。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/04_haru/q3.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R4春 問3 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#math-queueing-mm1-wait-time.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#5 📖</span>M/M/1待ち行列：ラーメン屋の行列で覚える「利用率÷(1−利用率)」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 待ち時間は 利用率 ÷ (1 − 利用率)。サービス時間は割り算で消える！</div>
+            <div class="ans-tag">正解: ウ（2.00）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/04_aki/q14.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R4秋 問14 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sys-availability-mtbf-mttr.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#6 📖</span>稼働率とMTBF・MTTR：スマホの「元気な時間と入院時間」で覚える計算
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ビー（B）は元気・アール（R）はリペア（修理） - MTBF の `B` ＝ Between（故障と故障の間＝元気に動いている時間！）</div>
+            <div class="ans-tag">正解: エ（変わらない）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/28_aki/q15.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H28秋 問15 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sys-cpu-utilization-mips.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#7 📖</span>CPU利用率とMIPS：レジの「1秒あたりの処理能力」と「来客数」で割り算する！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 MIPS＝1秒に百万命令！「分」を「秒」に直してから割る！</div>
+            <div class="ans-tag">正解: エ（20）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/27_aki/q10.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H27秋 問10 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sys-mmu-address-translation.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#8 📖</span>【マンションの管理人】で覚える「MMU（仮想アドレス→物理アドレスの変換）」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 MMU は“翻訳係”。スワップは OS、保存は キャッシュ</div>
+            <div class="ans-tag">正解: イ（CPUが指定した仮想アドレスを物理アドレスに対応させる）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/04_aki/q2.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R4秋 問2 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#theory-karnaugh-map-simplification.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#9 📖</span>カルノー図と論理式：マス目のお引っ越しで覚える「1をグループ化して共通項を取る」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 1を大きく囲え！囲みの中で“変わらない変数”だけ残して、囲み同士は＋でつなぐ！</div>
+            <div class="ans-tag">正解: エ（A・B・D ＋ B・D の形。第1項は3変数の積、第2項は2変数の積。否定の位置は復元不可）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+
+    <div class="category-header" style="background: #0369a1;">
+      <span>⚙️ ソフトウェア (1問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/27_aki/q16.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H27秋 問16 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#os-preemption-task-scheduling.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#10 📖</span>プリエンプション方式：窓口で手続き中に「超VIP顧客」が乱入して横取り！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 プリエンプションは「上のやつ」による強制横取り！ - プリエンプト（Preempt） ＝ 先取りする、横取りする</div>
+            <div class="ans-tag">正解: ア（タスクAが実行可能状態になった。）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+
+    <div class="category-header" style="background: #0d9488;">
+      <span>🗄️ データベース (15問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/04_aki/q30.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R4秋 問30 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-acid-not-include-availability.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#11 📖</span>ACID特性：含まれないのはどれ？「可用性」はCIAの仲間！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ACIDのAはAtomicity（原子性）！Availability（可用性）は部外者！</div>
+            <div class="ans-tag">正解: イ（可用性（Availability））</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/02_aki/q30.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R2秋 問30 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-acid-properties.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#12 📖</span>トランザクションのACID特性：銀行のATM送金で覚える「4大ルール」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: ア（正常に終了したトランザクションの更新結果は，障害が発生してもデータベースから消失しないこと）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/22_aki/q30.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H22秋 問30 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-distributed-two-phase-commit.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#13 📖</span>2相コミット：結婚式の誓い「全員準備OKなら一斉に誓います！」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 第1相で「全員の準備完了」を確認！第2相で「一斉コミット（またはアボート）」！</div>
+            <div class="ans-tag">正解: ア（2相コミット）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/25_haru/q28.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H25春 問28 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-er-model-foreign-key-mapping.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#14 📖</span>E-R図と外部キー：1対多のテーブル同士を「名札」で結ぶ鉄則！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 1対多のリレーションシップは「多」の側に「1の主キー」を持たせる！</div>
+            <div class="ans-tag">正解: イ（社員 (社員番号, 氏名, 部署番号) ／ 部署 (部署番号, 部署名)）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/24_aki/q26.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H24秋 問26 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-functional-dependency-derivation.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#15 📖</span>関数従属の導出：Aが決まればBが決まる「矢印のドミノ倒し」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 X→Y かつ Y→Z ならば X→Z！余分な列を足しても従属は壊れない！</div>
+            <div class="ans-tag">正解: ウ（{A, B}→{C}, {A, C}→{C}, {A}→{C}）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/29_haru/q27.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H29春 問27 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-normalization-2nd-normal-form.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#16 📖</span>第2正規形：主キーの一部にぶら下がる「居候」を別居させる！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 複合主キーの片方にだけ従属するものを追い出せば第2正規形！</div>
+            <div class="ans-tag">正解: イ（第1正規形）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/03_aki/q28.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R3秋 問28 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-normalization-partial-functional-dependency.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#17 📖</span>正規形の判定：「第1正規形だが第2正規形ではない」を見抜くツボ
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 主キーの一部だけで決まる列が残っていれば「第1正規形止まり（第2ではない）」！</div>
+            <div class="ans-tag">正解: イ（第1正規形であるが第2正規形ではない。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/06_haru/q29.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R6春 問29 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-nosql-key-value-store.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#18 📖</span>NoSQLの種類：コインロッカーで覚える「キーバリュー型データベース」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 NoSQLは4兄弟：キー・カラム・ドキュメント・グラフ！“キーに値を結ぶ”のがKVS！ 3ステップ解法：</div>
+            <div class="ans-tag">正解: ウ（様々な形式のデータを一つのキーに対応付けて管理するキーバリュー型データベース）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/28_aki/q30.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H28秋 問30 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-recovery-rollforward-rollback-checkpoint.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#19 📖</span>【ノートの清書と消しゴム】で覚える「ロールフォワード／ロールバック」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 済みは進め、途中は戻し、書かぬものは触らず</div>
+            <div class="ans-tag">正解: ア（ロールフォワード：T2，T5 ／ ロールバック：T6）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/25_aki/q31.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H25秋 問31 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-relational-algebra-difference-projection.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#20 📖</span>関係代数の演算：「差（－）」と「射影（π）」で欲しい行と列を抜き出す！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 行の引き算は「差演算（−）」！列の切り出しは「射影（π）」！</div>
+            <div class="ans-tag">正解: イ（商品 － (優良商品 ∪ 不振商品)）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/19_haru/q66.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H19春 問66 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-sql-not-exists-correlated-subquery.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#21 📖</span>NOT EXISTS相関副問合せ：複雑なSQLを「存在しないもの探し」で解く！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 NOT EXISTS は「引き算（EXCEPT/MINUS）」または「LEFT JOIN して IS NULL」！</div>
+            <div class="ans-tag">正解: ア（SELECT  FROM T1 WHERE C1 NOT IN (SELECT C1 FROM T2 WHERE C1 IS NOT NULL)）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/28_aki/q29.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H28秋 問29 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-sql-outer-join-group-by.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#22 📖</span>SQL外部結合と集約：0件のデータも消さずに「全員参加」させる集計術！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 0件のものも残したいなら LEFT OUTER JOIN！COUNT(列名)ならNULLは0カウント！</div>
+            <div class="ans-tag">正解: イ（SELECT 店舗.店舗コード, COUNT(売上.売上番号) FROM 店舗 LEFT OUTER JOIN 売上 ON 店舗.店舗コード = 売上.店舗コード GROUP </div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/18_aki/q66.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H18秋 問66 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-sql-self-join-duplicate-check.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#23 📖</span>SQL自己結合：同じ名簿同士を見比べて「重複」をあぶり出す！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 同じテーブルにS1とS2と別名をつけて結合！S1.氏名 = S2.氏名 AND S1.学籍番号 < S2.学籍番号！</div>
+            <div class="ans-tag">正解: イ（SELECT S1.学籍番号, S1.氏名 FROM 学生 S1, 学生 S2 WHERE S1.氏名 = S2.氏名 AND S1.学籍番号</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/02_aki/q29.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R2秋 問29 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-sql-union-all-duplicate.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#24 📖</span>SQLのUNIONとUNION ALL：2つの名簿を「そのままホッチキス留め」するか「ダブりを消す」か
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 UNIONは重複を消す、UNION ALLは全部残す！</div>
+            <div class="ans-tag">正解: エ（両表をそのまま統合し、C003・35の重複行も残る結果）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/31_haru/q26.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H31春 問26 / R4春 問27（※過去問道場で3回間違えた最重要問題） <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#db-three-schema-architecture.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#25 📖</span>3層スキーマ構造：3段のお重で覚える「外部・概念・内部」の役割分担
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: エ（内部スキーマ）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+
+    <div class="category-header" style="background: #2563eb;">
+      <span>🌐 ネットワーク (42問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/29_aki/q34.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H29秋 問34 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-arp-ip-to-mac.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#26 📖</span>ARP：IPアドレスからMACアドレスを調べる「校内放送」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ARPは「IP → MAC」！逆の「MAC → IP」はReverseのRARP！</div>
+            <div class="ans-tag">正解: ア（ARP）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/03_aki/q32.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R3秋 問32 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-arp-purpose-and-role.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#27 📖</span>ARPの役割：IPアドレスからMACアドレスを得るための基本プロトコル！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ARPは「IP → MAC」の通訳！LANカード同士はMACでしか喋れない！</div>
+            <div class="ans-tag">正解: ア（IPアドレスからMACアドレスを得るプロトコルである。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/23_toku/q37.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H23特別 問37 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-arp-request-broadcast-response-unicast.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#28 📖</span>ARPの要求と応答：探すときは「全員にメガホン」、返事は「コッソリ耳打ち」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ARPは「探すときは全員にメガホン（ブロードキャスト）、返事は直接耳打ち（ユニキャスト）」！</div>
+            <div class="ans-tag">正解: イ（ARP要求＝ブロードキャスト、ARP応答＝ユニキャスト）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/20_aki/q57.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H20秋 問57 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-atm-fixed-cell-low-delay.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#29 📖</span>ATM交換方式：サイズ固定（53バイト）のコンテナだから高速・低遅延！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ATMは「きっちり53バイトの固定コンテナだから、機械（ハード）でスパッと捌けて遅延ゼロ感覚」！</div>
+            <div class="ans-tag">正解: エ（データの分割単位＝固定長、網内遅延＝小さい）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/19_aki/q58.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H19秋 問58 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-bus-topology-cable.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#30 📖</span>バス型トポロジ：1本の長い大通り（同軸ケーブル）に全員が相乗り！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 バス型は「1本の道路（バス）に全員がぶら下がる」！</div>
+            <div class="ans-tag">正解: エ（同軸ケーブルなどの1本のケーブルに，全ノードが接続されている。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/07_haru/q32.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R7春 問32 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-cidr-descending-ip-allocation.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#31 📖</span>CIDRアドレス割り当て：大きいアドレス（降順）から隙間なく詰める！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 「降順」は大きい順！/28は16刻み！256から16引いたら240！</div>
+            <div class="ans-tag">正解: ウ（192.168.1.224/28）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/06_aki/q35.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R6秋 問35 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-class-d-multicast.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#32 📖</span>クラスD：特定グループ全員に一斉配信する「マルチキャスト専用アドレス」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 「A・B・Cは普通のパソコン用、Dはマルチキャスト、Eは実験用」！</div>
+            <div class="ans-tag">正解: エ（マルチキャストアドレスを割り当てる。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/02_aki/q35.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R2秋 問35 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-dhcpdiscover-source-dest-ip.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#33 📖</span>DHCPDISCOVER：名無しPCの叫び「送信元 0.0.0.0 → 宛先 255.255.255.255」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 IPを持ってないから「送信元は 0.0.0.0」、サーバの場所も知らないから「宛先は 255.255.255.255」！</div>
+            <div class="ans-tag">正解: イ（送信元: 0.0.0.0、宛先: 255.255.255.255）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/06_aki/q33.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R6秋 問33 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-dns-reverse-lookup-ptr.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#34 📖</span>DNS逆引き：IPアドレスからホスト名を調べる「電話番号からのハローページ検索」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 名前からIPを引くのが「正引き」、IPから名前を調べるのが「逆引き（PTR）」！</div>
+            <div class="ans-tag">正解: ウ（IPアドレスに対応するホスト名を調べることを逆引きという。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/18_aki/q56.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H18秋 問56 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-frame-relay-vs-packet.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#35 📖</span>フレームリレー：各駅停車のチェックをサボって爆走する「急行電車」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 フレームリレーは「途中の誤りチェックをサボって飛ばす急行電車」！</div>
+            <div class="ans-tag">正解: エ（フレームリレーは，パケット交換に比べて誤り制御処理を簡略化することによって，網内遅延の低減を図っている。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/04_haru/q34.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R4春 問34 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-host-count-prefix-28.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#36 📖</span>IPv4のホスト数計算：マンションの部屋数で覚える「16－2＝14」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ホスト数は“2のn乗 マイナス2”！ネットワーク用とブロードキャスト用は住人になれない！</div>
+            <div class="ans-tag">正解: ア（14）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/20_aki/q58.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H20秋 問58 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-ipsec-ike-key-exchange.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#37 📖</span>IPsecと鍵交換：秘密の暗号鍵を安全に手渡す「IKE」の仕組み
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 IPsecの鍵交換はIKE！暗号の鍵（Key）をExchangeする！</div>
+            <div class="ans-tag">正解: ウ（使用する暗号鍵を自動交換するプロトコルは，IKEである。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/19_aki/q59.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H19秋 問59 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-ipsec-network-layer-vpn.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#38 📖</span>IPsec：ネットワーク層（L3）を丸ごとトンネル化する頑丈なVPN！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 IPsecの「IP」はネットワーク層（第3層）のIP！IPパケットごと地下トンネルに通す！</div>
+            <div class="ans-tag">正解: ア（アプリケーション層）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/30_aki/q32.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H30秋 問32 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-l2-switch-is-bridge.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#39 📖</span>レイヤ2スイッチ：宛先MACを見て必要なポートだけに送る「進化したブリッジ」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 スイッチングハブ（L2スイッチ）の正体は「ポートがいっぱいあるマルチポート・ブリッジ」！</div>
+            <div class="ans-tag">正解: イ（ブリッジ）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/05_aki/q31.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R5秋 問31 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-lan-transmission-time-efficiency.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#40 📖</span>LAN伝送時間の計算：高速道路の「渋滞率」で覚える「ビットとバイトの8倍」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 バイトは8ビット！速度は効率を掛けてから割る！</div>
+            <div class="ans-tag">正解: ウ（0.16）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/25_aki/q33.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H25秋 問33 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-majority-voting-error-rate-calc.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#41 📖</span>多数決方式の伝送誤り率：3人中2人以上が間違える確率パズル！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 誤りは「2人ミス」＋「3人ミス」！3 × 0.1^2 × 0.9 + 0.1^3 ＝ 0.028（2.8%）！</div>
+            <div class="ans-tag">正解: イ（2.8）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/17_haru/q54.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H17春 問54 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-modem-v24-interface.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#42 📖</span>V.24：パソコンとモデムを繋ぐ「ITU-Tの直通コンセント規格」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 モデム（アナログ電話）に繋ぐ昔ながらのシリアル規格が「V.24（ブイ・ニジュウヨン）」！</div>
+            <div class="ans-tag">正解: ウ（V.24）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/28_haru/q32.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H28春 問32 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-mtu-mss-transmission-efficiency.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#43 📖</span>回線伝送効率：荷物（MSS）とダンボール箱（ヘッダ）の比率パズル
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 伝送効率＝純粋データ量 ÷ フレーム全体の総バイト数！1460 ÷ 1538 ＝ 約54%（100Mbpsなら約54Mbps）！</div>
+            <div class="ans-tag">正解: エ（54）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/20_aki/q36.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H20秋 問36 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-napt-ip-masquerade.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#44 📖</span>NAPT：1個のグローバルIPを社内全員で使い回す「代表電話＋内線番号」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 NATは「1対1（IPだけ変換）」、NAPTは「1対多（IP ＋ ポート番号で変換）」！</div>
+            <div class="ans-tag">正解: ウ（NAPT）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/23_toku/q34.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H23特別 問34 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-napt-ip-port-translation.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#45 📖</span>NAPTの役割：プライベートIP＋ポートをグローバルIP＋ポートに変換！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 NAPTは「プライベートIP＋ポート」と「グローバルIP＋ポート」の相互変換！</div>
+            <div class="ans-tag">正解: エ（プライベートIPアドレスとポート番号の組合せと，グローバルIPアドレスとポート番号の組合せとの変換を行う。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/03_aki/q33.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R3秋 問33 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-napt-packet-header-rewrite.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#46 📖</span>NAPT書き換え：社内から外へ出るとき「すり替わる」のはどれ？
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 NAPTで変わるのは「送信元のIPとポート」！宛先は変えない！</div>
+            <div class="ans-tag">正解: エ（送信元のポート番号と送信元IPアドレス）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/18_aki/q58.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H18秋 問58 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-nat-address-translation.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#47 📖</span>NAT：プライベートIPとグローバルIPを1対1で両替する「入国審査官」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 NAT（Network Address Translation）はその名の通り「アドレス変換」！内線IPを外線IPに両替！</div>
+            <div class="ans-tag">正解: エ（プライベートIPアドレスとグローバルIPアドレスを相互に変換する機能である。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/17_haru/q56.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H17春 問56 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-packet-vs-atm-cell-multiplexing.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#48 📖</span>パケット交換 vs ATM交換：自由な荷物サイズ vs 53バイト均一コンテナ
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 パケットは可変長で論理チャネル！ATMは固定長でVPI/VCI！</div>
+            <div class="ans-tag">正解: ア（パケット交換: 可変長 / 論理チャネル番号, ATM交換: 固定長 / VPI/VCI）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/07_haru/q29.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R7春 問29 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-poe-power-over-ethernet.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#49 📖</span>PoE：LANケーブル1本で「ネット通信」と「電気の給電」を同時にお届け！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 Power over Ethernet（イーサネットに乗っかる電気）＝ PoE！</div>
+            <div class="ans-tag">正解: イ（PoE）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/29_haru/q33.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H29春 問33 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-ppp-dialup-protocol.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#50 📖</span>PPP：電話線で「1対1」の直通通話！認証もエラーチェックもこなす万能プロトコル
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 Point-to-Point（1対1）で繋ぐからPPP！古いSLIPに認証とエラー処理を足した上位互換！</div>
+            <div class="ans-tag">正解: イ（PPP）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/19_haru/q54.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H19春 問54 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-private-ip-ranges.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#51 📖</span>プライベートIPアドレス：クラスCは「192.168.0.0 〜 192.168.255.255」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 「10番（クラスA）、172の16〜31（クラスB）、192.168（クラスC）」！自宅ルータはいつだって192.168！</div>
+            <div class="ans-tag">正解: エ（192.168.0.0〜192.168.255.255）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/20_aki/q59.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H20秋 問59 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-repeater-physical-layer.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#52 📖</span>リピータ：弱まった電気信号を元気に増幅する「物理層（第1層）のメガホン」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 「1階リピータ、2階ブリッジ、3階ルータ、最上階ゲートウェイ」のエレベーター暗記！</div>
+            <div class="ans-tag">正解: ウ（リピータ）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/07_aki/q31.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R7秋 問31 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-reverse-proxy-dmz-role.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#53 📖</span>リバースプロキシ：Webサーバ軍団を守る「専属の影武者・門番」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 外から来る客の相手をする影武者＝リバースプロキシ！</div>
+            <div class="ans-tag">正解: ア（インターネットなどの外部ネットワークからの，公開Webサーバに対するアクセスを中継するために利用される。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/30_haru/q35.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H30春 問35 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-route-aggregation-h30-q35.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#54 📖</span>ルート集約（CIDR）：32個の箱パズルで解くネットワーク合体法
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 変わる場所だけ2進数！お揃いの限界に線を引く！右側ゼロリセットで即完成！</div>
+            <div class="ans-tag">正解: ア（192.168.0.0/22）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/31_haru/q33.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H31春 問33 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-router-mac-hop-by-hop.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#55 📖</span>ルータ越え通信：宛先IPは「最後の目的地（ホストB）」、宛先MACは「次の関所（ルータ）」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 IPアドレスは「最終目的地（北海道の実家）」、MACアドレスは「次の乗り継ぎ駅（東京駅）」！</div>
+            <div class="ans-tag">正解: ウ（宛先MAC: MAC3、宛先IP: IP2）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/07_haru/q31.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R7春 問31 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-routing-longest-match.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#56 📖</span>ロンゲストマッチ：迷ったら「一番詳しく番地まで書かれたルート」が勝つ！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ルーティングの掟は「ロンゲストマッチ（最長一致）」！詳しく一致した奴が絶対勝つ！</div>
+            <div class="ans-tag">正解: エ（10.1.0.4）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/26_haru/q35.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H26春 問35 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-rss-web-feed-xml.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#57 📖</span>RSS：Webサイトの新着記事をXMLでまとめて通知する「チラシ配信」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ブログのオレンジのアンテナマークはRSS！「XMLで更新を配信する規格」！</div>
+            <div class="ans-tag">正解: イ（RSS）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/27_aki/q33.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H27秋 問33 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-smime-email-security.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#58 📖</span>S/MIME：メールに「実印（電子署名）」と「頑丈な金庫（暗号化）」を施す！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 S/MIMEは「SecurityなMIME」！暗号化と電子署名でメールの機密性を守る！</div>
+            <div class="ans-tag">正解: エ（S/MIME）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/26_haru/q34.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H26春 問34 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-snmp-network-management.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#59 📖</span>SNMP：ルータやスイッチの健康状態を見守る「集中管理モニタ」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 SNMP（Simple Network Management Protocol）＝ ネットワークのManager（管理者）！</div>
+            <div class="ans-tag">正解: エ（SNMP）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/26_haru/q33.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H26春 問33 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-subnet-broadcast-address-20.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#60 📖</span>ブロードキャストアドレス計算（/20）：ホスト部を全部「1」にするパズル！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 「刻み幅パズル」で解く！/20は16刻み！29がいるグループは16〜31だから末尾は31.255！</div>
+            <div class="ans-tag">正解: ウ（172.22.31.255）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/17_aki/q51.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H17秋 問51 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-tcp-connection-4tuple-identification.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#61 📖</span>TCPコネクション識別：混ざらないための「4点セット情報」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 コネクション識別は4点セット！送信元・宛先の「IP＋ポート」！</div>
+            <div class="ans-tag">正解: イ（宛先IPアドレス，宛先TCPポート番号，送信元IPアドレス，送信元TCPポート番号）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/05_haru/q32.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R5春 問32 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-transmission-time-packet-interval.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#62 📖</span>LAN送信時間の差からパケット数を逆算：宅配トラックの速度差と「毎回の休憩」は相殺される！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 両方に同じ分だけ足されるものは、差を取れば消える！バイトは×8でビットへ！</div>
+            <div class="ans-tag">正解: ウ（100）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/24_aki/q35.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H24秋 問35 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-voip-gateway-role.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#63 📖</span>VoIPゲートウェイ：電話網（アナログ音声）とIP網（パケット）を仲介する通訳者！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ゲートウェイは「世界の境界線」！電話の世界とIPの世界の境目にドカンと置く！</div>
+            <div class="ans-tag">正解: イ（②）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/29_aki/q31.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H29秋 問31 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#net-wifi-ssid-specification.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#64 📖</span>SSID：Wi-Fiの「最大32文字の看板」！アクセスポイントの識別名
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 SSIDは「最大32文字のネットワーク識別名」！48ビットはMACアドレス！</div>
+            <div class="ans-tag">正解: ウ（最大32オクテットのネットワーク識別子であり，接続するアクセスポイントの選択に用いる。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/04_haru/q31.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R4春 問31 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#network-ipv6-notation.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#65 📖</span>IPv6アドレスの省略ルール：小学生の引き算パズルでわかる「::」の秘密
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: イ（`2001:db8::3ab:ff01`）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/05_haru/q34.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R5春 問34 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#network-osi-7layers-protocols.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#66 📖</span>OSI参照モデルとプロトコル：7階建てビルで覚える「階層ごとの住人たち」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: エ（UDP）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/03_haru/q33.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R3春 問33 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#network-wifi-80211ac.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#67 📖</span>無線LAN（Wi-Fi規格）：電子レンジと壁で覚える「2.4GHz vs 5GHz」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 あっ（a）、クリア（ac）な5GHz！ `11a` と `11ac` は、家電の邪魔が入らないクリアな 「5GHz帯専用」 です！</div>
+            <div class="ans-tag">正解: エ（使用する周波数帯は5GHz帯である）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+
+    <div class="category-header" style="background: #dc2626;">
+      <span>🛡️ セキュリティ (26問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/06_haru/q35.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R6春 問35 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-3d-secure-2-risk-based.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#68 📖</span>3Dセキュア2.0：怪しいクレカ決済のときだけ追加認証する「ネット買い物のボディガード」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 3Dセキュア2.0の中身は「リスクベース認証」！怪しい取引（高リスク）の時だけ追加認証を発動！</div>
+            <div class="ans-tag">正解: イ（利用者の過去の取引履歴や決済に用いているデバイスの情報から不正利用や高リスクと判断される場合に，カード会社が追加の本人認証を行う。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/02_aki/q43.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R2秋 問43 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-botnet-cc-server-role.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#69 📖</span>ボットネットとC&Cサーバ：感染PC軍団（ゾンビ）を裏で操る「悪の司令塔」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 C&C ＝ Command & Control（命令と制御）！ゾンビPC軍団に「攻撃せよ！」と指令を出す基地！</div>
+            <div class="ans-tag">正解: エ（侵入して乗っ取ったコンピュータに対して，他のコンピュータへの攻撃などの不正な操作をするよう，外部から命令を出したり応答を受け取ったりする。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/18_aki/q79.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H18秋 問79 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-cc-common-criteria-iso15408.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#70 📖</span>CC（Common Criteria / ISO 15408）：IT製品のセキュリティ性能を測る「世界共通の通知表」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 「CC（15408）＝ モノ（IT製品）の評価基準」、「ISMS（27000）＝ 会社（組織）の管理基準」！</div>
+            <div class="ans-tag">正解: イ（情報技術に関するセキュリティの評価基準）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/24_aki/q40.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H24秋 問40 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-cia-integrity-defacement.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#71 📖</span>情報セキュリティのCIA（完全性）：Webページの改ざんは「完全性」への攻撃！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 「盗み見＝機密性(C)」「書き換え（改ざん）＝完全性(I)」「邪魔して止める＝可用性(A)」！</div>
+            <div class="ans-tag">正解: ア（Webページの改ざん）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/28_haru/q42.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H28春 問42 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-cloud-iaas-paas-saas-responsibility.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#72 📖</span>クラウド責任共有モデル：IaaSは「ゲストOS」まで自分で守る賃貸マンション！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 IaaSは「空っぽの部屋（インフラだけ借りる）」だから、OS（壁紙や内装）は自分で設定できる！</div>
+            <div class="ans-tag">正解: ウ（仮想サーバのゲストOSに係るセキュリティの設定）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/06_aki/q41.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R6秋 問41 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-cve-vulnerability-identifier.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#73 📖</span>CVE識別子：世界中のソフトの「弱点（脆弱性）」に付けられた共通マイナンバー！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 CVEのVは「Vulnerability（脆弱性）」！世界中のバグに付ける指名手配ナンバー！</div>
+            <div class="ans-tag">正解: ウ（製品に含まれる脆弱性を識別するための識別子）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/30_aki/q36.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H30秋 問36 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-cybersecurity-basic-act-nisc-nco.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#74 📖</span>サイバーセキュリティ基本法：内閣官房に設置された日本の司令塔は「NISC / NCO」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 「内閣官房」と言ったら National（国の）Cybersecurityの「NCO（旧NISC）」！</div>
+            <div class="ans-tag">正解: エ（NCO）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/06_haru/q36.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R6春 問36 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-dns-cache-poisoning-effect.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#75 📖</span>DNSキャッシュポイズニングの被害：偽の住所録を掴まされて「詐欺サイトへ強制連行」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 DNSに毒（偽のIPアドレス）を盛られたら、正しいURLを入れても「偽サイトに誘導される」（ファーミング）！</div>
+            <div class="ans-tag">正解: ウ（社内の利用者が，インターネット上の特定のWebサーバにアクセスしようとすると，本来とは異なるWebサーバに誘導される。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/30_aki/q37.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H30秋 問37 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-ecc-elliptic-curve-cryptography.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#76 📖</span>楕円曲線暗号（ECC）：短い鍵でRSA並みに超頑丈！TLSでも大活躍の「次世代公開鍵暗号」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 楕円曲線暗号は「公開鍵暗号」！短い鍵で超強力だからスマホ時代のTLSに引っ張りだこ！</div>
+            <div class="ans-tag">正解: ウ（公開鍵暗号方式であり，TLSにも利用されている。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/20_haru/q75.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H20春 問75 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-firewall-packet-filtering-first-match.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#77 📖</span>ファイアウォールのルール判定：「上から順番」に見て最初に合致した1行で即決（ファーストマッチ）！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ファイアウォールは「上から順番（番号1から）の早い者勝ち」！1行目で引っかかったら即終了！</div>
+            <div class="ans-tag">正解: ア（番号1によって，通過が禁止される。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/19_haru/q76.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H19春 問76 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-https-server-authentication.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#78 📖</span>HTTPSで実現できること：「暗号化」だけじゃない！電子証明書による「本物のサーバ証明」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 HTTPSの3大パワーは「暗号化・改ざん検知・証明書によるサーバ認証」！ウイルス検査はできない！</div>
+            <div class="ans-tag">正解: エ（電子証明書によるサーバ認証）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/25_haru/q36.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H25春 問36 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-https-ssl-tls-protocol.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#79 📖</span>HTTPSの正体：HTTPに「SSL/TLS」の鎧を着せて、暗号化とサーバ認証を実現！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 HTTP ＋ SSL/TLS ＝ HTTPS！Webの暗号化とサーバ認証はSSL/TLSの仕事！</div>
+            <div class="ans-tag">正解: ウ（SSL/TLS）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/03_aki/q43.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R3秋 問43 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-ipsec-ah-esp.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#80 📖</span>IPsec（AHとESP）：宅配便の「封蝋シール」と「頑丈な金庫」で覚える暗号化
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 AHは認証だけ、ESPは暗号もバッチリ！この2人＝IPsec！</div>
+            <div class="ans-tag">正解: ア（IPsec）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/05_aki/q40.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R5秋 問40 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-jis-q-27000-confidentiality.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#81 📖</span>JIS Q 27000の用語定義：「許可されていない者に見せない・使わせない」＝ 機密性！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 「開示しない（秘密にする）」と書いてあったら1秒で機密性！</div>
+            <div class="ans-tag">正解: ア（機密性）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/05_aki/q38.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R5秋 問38 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-open-relay-third-party-log.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#82 📖</span>メールの第三者中継（オープンリレー）：接続元も送信者も宛先も「全部よその会社」のログを探せ！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 第三者中継は「自社と1ミリも関係ないメール」！3項目すべてが社外・他社の行を選べば一発正解！</div>
+            <div class="ans-tag">正解: ウ（接続元: 社外IP、送信者: 他社ドメイン、受信者: 他社ドメイン（完全無関係な第三者中継！））</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/03_haru/q39.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R3春 問39 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-risk-based-authentication.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#83 📖</span>リスクベース認証：「いつもと違う怪しいログイン」だけ追加質問する賢い警備員！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 いつも通りならスルー、怪しい時（高リスク）だけ追加チェックするのが「リスクベース認証」！</div>
+            <div class="ans-tag">正解: ウ（普段と異なる利用条件でのアクセスと判断した場合には，追加の本人認証をすることによって，不正アクセスに対する安全性を高める。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/07_haru/q40.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R7春 問40 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-sbom-software-bill-of-materials.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#84 📖</span>SBOM（ソフトウェア部品表）：ソフトの中身を丸裸にする「食品の原材料ラベル」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 SBOM（Software Bill Of Materials）＝ ソフトの「原材料表示ラベル」！入ってる部品が分かれば脆弱性管理が爆速！</div>
+            <div class="ans-tag">正解: イ（ソフトウェアについての脆弱性管理）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/28_haru/q41.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H28春 問41 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-session-hijacking-reauth.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#85 📖</span>セッション乗っ取り対策：Amazonの購入直前でわかる「再認証の秘密」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: エ（パスワードによる利用者認証を行う。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/03_haru/q44.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R3春 問44 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-session-logout-invalidate-server.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#86 📖</span>ログアウト時のセッション対策：ブラウザだけでなく「Webサーバ側の台帳」から無効化せよ！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ログアウトしたら「サーバ側のセッションIDを無効化」！手元の通行証を捨てるだけじゃダメ、受付の台帳から抹消せよ！</div>
+            <div class="ans-tag">正解: イ（WebサーバにおいてセッションIDを無効にする。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/04_aki/q37.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R4秋 問37 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-side-channel-attack.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#87 📖</span>【金庫破りの聞き耳】で覚える「サイドチャネル攻撃」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 鍵は壊さず、音と熱と時間を盗む</div>
+            <div class="ans-tag">正解: ア（物理量やエラーメッセージから秘密情報を得る）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/26_aki/q37.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H26秋 問37 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-smtp-auth-mechanism.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#88 📖</span>SMTP-AUTH：メールを送る前に「まずIDとパスワードを見せて！」と確認する門番！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 SMTP-AUTHは「SMTP（送信）でそのままAUTH（認証）する」！受信用POPを使わない直球勝負！</div>
+            <div class="ans-tag">正解: ア（SMTPサーバは，クライアントがアクセスしてきた場合に利用者認証を行い，認証が成功したとき電子メールを受け付ける。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/17_aki/q76.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H17秋 問76 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-ssl-proxy-end-to-end.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#89 📖</span>SSL/TLSとプロキシ：途中に中継所（プロキシ）があっても、トンネルの中身は絶対に見えない！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 SSL/TLSは「ブラウザからWebサーバまで直通の暗号トンネル」！途中のプロキシにも中身は一切見えない！</div>
+            <div class="ans-tag">正解: イ（SSLを使用すれば，通信経路上にプロキシサーバが存在していても，各利用者とWebサーバとの間での参照情報が，本来の利用者以外に開示されることはない。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/03_haru/q45.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R3春 問45 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-tls-client-authentication.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#90 📖</span>TLSクライアント認証：高級クラブの名刺交換で覚える「証明書の送付順序」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: ウ（b → a → c）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/29_haru/q40.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H29春 問40 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-watering-hole-attack.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#91 📖</span>水飲み場型攻撃：獲物（標的社員）が毎日見に行く「行きつけのWebサイト」に罠を張る！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ライオンが水飲み場でシマウマを待ち伏せするように、「標的がよく行くWebサイト」に罠を仕掛けるのが水飲み場型攻撃！</div>
+            <div class="ans-tag">正解: ウ（標的組織の従業員が頻繁にアクセスするWebサイトに攻撃コードを埋め込み，標的組織の従業員がアクセスしたときだけ攻撃が行われるようにする。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/30_aki/q45.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H30秋 問45 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-wifi-wpa2-aes-ccmp-keylength.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#92 📖</span>無線LANの暗号規格：最強タッグは「WPA2 ＋ AES（CCMP）＋ 鍵長128ビット以上」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 「WEP・TKIPは古いRC4」「WPA2（CCMP）は最強のAES（128ビット）」！AESで64ビットは存在しない！</div>
+            <div class="ans-tag">正解: ウ（プロトコル: WPA2、アルゴリズム: AES、鍵長: 128ビット）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/18_aki/q76.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H18秋 問76 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#sec-xss-sanitizing-escape.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#93 📖</span>クロスサイトスクリプティング（XSS）対策：悪意あるスクリプトを無害化する「毒抜き調理」！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 XSSは「画面表示時のスクリプト発火」！対策は「表示する時にタグを無効化（サニタイジング）」！</div>
+            <div class="ans-tag">正解: イ（Webアプリケーションで，クライアントに入力データを再表示する場合，情報内のスクリプトを無効にする処理を行う。）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+
+    <div class="category-header" style="background: #7c3aed;">
+      <span>📐 システム開発技術 (3問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/19_haru/q80.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H19春 問80 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#dev-corba-omg-distributed-object.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#94 📖</span>CORBA：国連の通訳窓口で覚える「OMGが決めた分散オブジェクトの仕様」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 CORBAは OMG（オブジェクト団体）の 分散オブジェクト仕様！</div>
+            <div class="ans-tag">正解: エ（OMGが制定した分散オブジェクト技術の仕様）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/01_aki/q47.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R1秋 問47 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#dev-square-quality-characteristics.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#95 📖</span>ソフトウェア品質特性（SQuaRE）：スマホ選びで覚える「8つのチェック項目」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: エ（明示された状況下で使用するとき，明示的ニーズ及び暗黙のニーズを満足させる機能を，製品又はシステムが提供する度合い）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/03_haru/q27.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R3春 問27 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#media-svg-xml-vector-image.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#96 📖</span>画像フォーマットSVG：「設計図で描く絵」で覚える「拡大しても荒れないXML画像」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 SVG＝ベクター＋XML＋拡大しても荒れない！</div>
+            <div class="ans-tag">正解: ウ（SVG）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+
+    <div class="category-header" style="background: #9333ea;">
+      <span>📋 ソフトウェア開発管理技術 (1問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/29_aki/q49.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H29秋 問49 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#dev-cmmi-maturity-levels.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#97 📖</span>CMMI（能力成熟度モデル統合）：ピラミッドで覚える「開発組織のオトナ度」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: ア（ソフトウェア開発組織及びプロジェクトのプロセスの成熟度を評価するためのモデルである。）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+
+    <div class="category-header" style="background: #ea580c;">
+      <span>📊 プロジェクトマネジメント (2問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/01_aki/q54.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R1秋 問54 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#pm-cost-assignment-puzzle.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#98 📖</span>プロジェクト要員割り当てパズル：数学10点でも解ける「最小コストの解き方」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 期限で絞って・重い順に・パズルする！ 1. 期限で絞る: 「2か月以内に終わらない人」をまず除外する（足切り）！</div>
+            <div class="ans-tag">正解: ウ（3,600千円）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/30_haru/q54.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H30春 問54 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#pm-productivity-effort-power-formula.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#99 📖</span>開発工数の式と生産性：「べき乗」は怖くない！ほぼ1乗とみなして割るだけ
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 生産性＝できた量÷かかった工数！ほぼ1乗なら 5.2×10＝52</div>
+            <div class="ans-tag">正解: ア（0.2）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+
+    <div class="category-header" style="background: #d97706;">
+      <span>🛎️ サービスマネジメント (5問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/04_haru/q56.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R4春 問56 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#service-availability-maintainability-mtrs.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#100 📖</span>可用性管理の保守性指標：「入院から退院までの日数」で覚える「平均サービス回復時間（MTRS）」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 保守性＝直す速さ（回復時間）、信頼性＝壊れにくさ（間隔）！</div>
+            <div class="ans-tag">正解: エ（平均サービス回復時間）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/01_aki/q56.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R1秋 問56 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#service-itil-seven-step-improvement.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#101 📖</span>ITILの7ステップの改善プロセス：「家計簿の見直し」で覚える「収集→処理→分析→提示」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 集めて、処理して、分析して、見せる！ （③収集 → ④処理 → ⑤分析 → ⑥提示）</div>
+            <div class="ans-tag">正解: ウ</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/06_haru/q56.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R6春 問56 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#service-level-management-process-activity.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#102 📖</span>サービスレベル管理プロセス：お客さんと「ここまで保証します」と契約書を交わす係
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 SLA＝顧客との約束書。「合意文書」の文字が見えたらサービスレベル管理！</div>
+            <div class="ans-tag">正解: エ（提供するサービス及びサービスレベル目標を決定し，サービス提供者が顧客との間で合意文書を交わす。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/27_aki/q56.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H27秋 問56 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#service-level-management-sla.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#103 📖</span>サービスレベル管理（SLM）：ホテルの接客品質で覚える「SLAと合意文書」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: エ（提供するITサービス及びサービス目標を特定し，サービス提供者が顧客との間で合意文書を交わす。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/03_haru/q56.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R3春 問56 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#service-portfolio-itil2011.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#104 📖</span>【レストランの全メニュー台帳】で覚える「サービス・ポートフォリオ」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ポートフォリオは“全部”、カタログは“今売ってる分だけ”</div>
+            <div class="ans-tag">正解: ア（全てのサービスを含む）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+
+    <div class="category-header" style="background: #ca8a04;">
+      <span>🔍 システム監査 (3問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/03_haru/q59.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R3春 問59 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#audit-master-file-availability-cia.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#105 📖</span>システム監査の「可用性」：金庫のCIA3兄弟！「いつでも使える」を守る二重化
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 可用性は「アベイラブル（いつでも利用可能）」！ - 可用性（Availability） ＝ 使える（Available）状態を維持すること！</div>
+            <div class="ans-tag">正解: ア（マスタファイルが置かれているサーバを二重化し，耐障害性の向上を図っていること）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/04_aki/q59.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R4秋 問59 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#audit-procedure-evidence.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#106 📖</span>システム監査の「監査手続」：裁判の証拠集めで覚える「十分かつ適切な監査証拠」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 監査手続は“証拠集め”！計画は手続の前、報告書は手続の後！ 3ステップ解法：</div>
+            <div class="ans-tag">正解: ウ（監査項目について，十分かつ適切な証拠を入手するための手順）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/30_haru/q59.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H30春 問59 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#audit-system-audit-charter-approval.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#107 📖</span>システム監査の人間関係：なぜ規程の承認者は「社長（経営者）」一択なのか？
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: イ（経営者）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+
+    <div class="category-header" style="background: #16a34a;">
+      <span>💡 システム企画 (3問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/01_aki/q65.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R1秋 問65 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#plan-common-frame-requirements-definition.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#108 📖</span>共通フレーム2013の要件定義プロセス：「家づくりの聞き取り」で覚える「利害関係者の識別」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 要件定義はまず「誰が関わるか」を洗い出す！</div>
+            <div class="ans-tag">正解: エ（利害関係者の識別）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/29_aki/q61.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H29秋 問61 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#plan-ea-to-be-model.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#109 📖</span>EAのTo-Beモデル：旅行の「目的地マップ」で覚える「理想の将来像」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 理想の To-Be、現状の As-Is</div>
+            <div class="ans-tag">正解: イ（To-Beモデル）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/05_aki/q64.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R5秋 問64 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#strategy-investment-pbp-payback-period.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#110 📖</span>PBP（回収期間法）：100万円のカフェマシン代、何年で「元が取れる」？
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 ペイバック（PBP）は元を取るピリオド（年数）！ - Pay Back ＝ 元を取る（払い戻す）</div>
+            <div class="ans-tag">正解: ウ（PBP: Pay Back Period）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+
+    <div class="category-header" style="background: #059669;">
+      <span>📈 経営戦略マネジメント (5問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/28_aki/q68.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H28秋 問68 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#strategy-ansoff-growth-matrix.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#111 📖</span>アンゾフの成長マトリクス：パン屋の「4つの攻め方」で覚える「市場×製品」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 アンゾフは4つの攻め方：浸透・開発・開拓・多角化</div>
+            <div class="ans-tag">正解: イ（製品と市場の視点から，市場浸透・製品開発・市場開拓・多角化に分けて戦略を検討する）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/23_toku/q66.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H23特別 問66 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#strategy-core-competence.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#112 📖</span>コアコンピタンス：老舗うなぎ屋の「秘伝のタレ」で覚える「差別化の源泉」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 コアコンピタンス＝真似できない自社の核の力</div>
+            <div class="ans-tag">正解: エ（他社との差別化の源泉となる経営資源）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/03_haru/q67.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R3春 問67 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#strategy-ppm-matrix-axes.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#113 📖</span>PPMマトリックス：果樹園で覚える「縦軸は成長率・横軸は占有率」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 金のなる木は“成長低・占有高”、問題児は“成長高・占有低”！</div>
+            <div class="ans-tag">正解: ウ（a＝市場成長率，b＝市場占有率）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/29_haru/q67.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H29春 問67 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#strategy-scm-purpose.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#114 📖</span>SCMの目的：バケツリレーで覚える「企業をまたぐ一気通貫の情報共有」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 SCMは“鎖”（Chain）！調達から販売まで会社をまたいでつなげ、納期短縮・在庫削減！</div>
+            <div class="ans-tag">正解: エ（複数の企業や組織にまたがる調達から販売までの業務プロセス全ての情報を統合的に管理することによって，コスト低減や納期短縮などを目的とする。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/03_aki/q67.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R3秋 問67 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#strategy-value-chain-frameworks.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#115 📖</span>バリューチェーンと経営フレームワーク：パン屋さんで覚える「4大スターの見分け方」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: ア（企業活動を，五つの主活動と四つの支援活動に区分し，企業の競争優位の源泉を分析するフレームワーク）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+
+    <div class="category-header" style="background: #475569;">
+      <span>🏭 ビジネスインダストリ (3問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/06_aki/q72.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R6秋 問72 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#ind-setup-time-min-order.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#116 📖</span>【お掃除の段取り】で覚える「合計段取り時間を最小にする順序」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 一番安い矢印を数珠つなぎ、余り物は最後尾へ</div>
+            <div class="ans-tag">正解: ア（4時間）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/04_aki/q73.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R4秋 問73 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#strategy-cps-cyber-physical-system.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#117 📖</span>サイバーフィジカルシステム（CPS）：現実と仮想の「卓球ラリー」で覚える仕組み
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: ウ（現実世界のデータを収集し、仮想世界で分析・加工して、現実世界側にリアルタイムにフィードバックすることによって、付加価値を創造する仕組み）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/06_haru/q72.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R6春 問72 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#strategy-edge-computing.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#118 📖</span>エッジコンピューティング：現場の店長が即決！「本社（クラウド）待ち」をなくす仕組み
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 エッジ（端っこ・現場）の近傍で、遅延ゼロ！ - Edge（端・現場）: センサーや端末のすぐ近く（近傍）に計算用コンピュータを置く！</div>
+            <div class="ans-tag">正解: ア（演算処理のリソースをセンサー端末の近傍に置くことによって，アプリケーション処理の低遅延化や通信トラフィックの最適化を行う。）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+
+    <div class="category-header" style="background: #334155;">
+      <span>🏢 企業活動 (7問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/30_aki/q74.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H30秋 問74 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#corp-cio-role.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#119 📖</span>CIOの役割：会社の「IT担当の参謀長」で覚える「ビジネス価値を最大化するIT活用」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 I は Information の I ！ITを経営に活かす人が CIO</div>
+            <div class="ans-tag">正解: エ（ビジネス価値を最大化させるITサービス活用の促進）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/03_haru/q76.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R3春 問76 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#corp-qc-tree-diagram.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#120 📖</span>系統図法：お弁当づくりの「目的→手段」ツリーで覚える「系統図法」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 系統図は「目的→手段→さらに手段」の木。原因探しは別の図！</div>
+            <div class="ans-tag">正解: エ（目的を達成するための手段を導き出し，更にその手段を細分化していく）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/01_aki/q77.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R1秋 問77 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#strategy-breakeven-point.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#121 📖</span>損益分岐点・安全余裕率：数学10点でも絶対解ける「ラーメン屋の家賃回収パズル」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: ア（安全余裕率はB社の方が高い。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/04_aki/q75.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R4秋 問75 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#strategy-delphi-method.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#122 📖</span>デルファイ法：覆面の専門家会議で覚える「アンケートを繰り返して意見を収束」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 デルファイ＝専門家へのアンケートを繰り返して、意見を収束！</div>
+            <div class="ans-tag">正解: エ（複数の専門家へのアンケートの繰返しによる回答の収束によって将来を予測する。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/04_haru/q76.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R4春 問76 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#strategy-max-profit-price-calc.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#123 📖</span>最大利益の価格設定：屋台のたこ焼きで覚える「価格×個数−固定費−変動費×個数」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 利益は 売上 − 費用。4通りとも計算して最大を選ぶ！</div>
+            <div class="ans-tag">正解: エ（1,600）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/26_aki/q77.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H26秋 問77 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#strategy-optimal-price-max-profit.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#124 📖</span>最大利益の価格設定：高く売れば儲かる…とは限らない！「価格×個数」の山を探す
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 価格が高い＝売れ個数が減る。だから全部計算して最大を選ぶ！</div>
+            <div class="ans-tag">正解: エ（1,600）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/26_aki/q75.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H26秋 問75 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#strategy-qc7-relations-diagram.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#125 📖</span>連関図：原因と結果がクモの巣のように絡み合う「大元の犯人」を暴く！
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 絡み合う因果の糸は「連関図」で解く！ - 連関（れんかん） ＝ 互いに連なり関係し合っていること。</div>
+            <div class="ans-tag">正解: エ（連関図）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+
+    <div class="category-header" style="background: #4f46e5;">
+      <span>⚖️ 法務 (4問)</span>
+      <span style="font-size: 7.5pt; opacity: 0.9;">中央の破線で二つ折り ✂️</span>
+    </div>
+
+    <table class="flashcard-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">🔍 過去問番号(道場リンク) ／ #用語(解説リンク)</th>
+          <th style="width: 60%;">💡 脳内合言葉・正解・ひっかけ注意（答え側）</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/01_aki/q80.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R1秋 問80 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#law-giteki-mark-regulations.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#126 📖</span>技適マークと認証規格：スマホの「電波の車検シール」で覚える4大マーク
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: イ（電波を発する通信機器が，日本の電波法で定められた条件に適合していることを証明する。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/05_aki/q80.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R5秋 問80 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#law-labor-contract-dispatch-subcontract.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#127 📖</span>労働形態の三角関係：バイトと助っ人で覚える「請負・派遣・出向」の境界線
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: イ（"契約"が出向にかかわる契約で，企業Aが企業Bに労働者Cを出向させたとき，企業Bと労働者Cとの間には指揮命令関係が生じる。）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/06_haru/q80.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 R6春 問80 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#law-sensitive-personal-information.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#128 📖</span>個人情報保護法：病歴・前科で覚える「要配慮個人情報」の境界線
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 重要キーワード</div>
+            <div class="ans-tag">正解: エ（本人の病歴，犯罪の経歴など不当な差別や不利益を生じさせるおそれのある情報）</div>
+            
+          </td>
+        </tr>
+
+
+        <tr class="card-row">
+          <td class="term-col">
+            <div class="term-header">
+              <a class="q-badge-link" href="https://www.ap-siken.com/kakomon/18_aki/q78.html" target="_blank" rel="noopener" title="過去問道場でこの問題を開く" onclick="event.stopPropagation();">📌 H18秋 問78 <span class="link-icon">↗</span></a>
+              <span class="check-box">☐ ☐ ☐</span>
+            </div>
+            <a class="term-title-link" href="offline_app.html#legal-common-frame-98.md" target="_blank" title="作成した詳細解説ページを開く" onclick="event.stopPropagation();">
+              <span class="num-pill">#129 📖</span>共通フレーム98：取引の「共通の物差し」で覚える「社内取引もOK」
+            </a>
+          </td>
+          <td class="desc-col">
+            <div class="catchphrase-text">🧠 共通フレームは共通の物差し。社内取引も対象、ISOとは同一じゃない</div>
+            <div class="ans-tag">正解: イ（顧客と開発ベンダーの受注契約にかかわる取引以外に，社内の部門間取引も対象に規定している）</div>
+            
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+  </div>
+</body>
+</html>

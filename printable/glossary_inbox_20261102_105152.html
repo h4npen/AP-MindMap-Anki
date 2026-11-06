@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>AP必須単語帳（inbox）</title>
+  <style>
+    /* ========================================================
+       別冊・二つ折り暗記単語帳（左：用語＆チェック欄 ／ 右：一言定義＆日常のたとえ話）
+       ======================================================== */
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm 10mm 12mm;
+      @bottom-right {
+        content: counter(page);
+        font-size: 8.5pt;
+        color: #64748b;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans JP', sans-serif;
+      font-size: 9.2pt;
+      line-height: 1.45;
+      color: #0f172a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .screen-toolbar {
+      background: #831843;
+      color: #ffffff;
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+    }
+
+    .screen-toolbar button {
+      background: #fde047;
+      color: #0f172a;
+      border: none;
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: 800;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    @media print {
+      .screen-toolbar {
+        display: none !important;
+      }
+    }
+
+    .glossary-banner {
+      border: 2px solid #0f172a;
+      background: #fdf2f8;
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .glossary-banner h1 {
+      font-size: 12pt;
+      margin: 0 0 3px 0;
+      color: #831843;
+    }
+
+    .glossary-banner p {
+      font-size: 8.5pt;
+      margin: 0;
+      color: #334155;
+    }
+
+    .glossary-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 2px solid #0f172a;
+    }
+
+    .glossary-table th {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 6px 8px;
+      font-size: 8.8pt;
+      text-align: left;
+      border: 1px solid #0f172a;
+    }
+
+    .glossary-table tr {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .glossary-table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #cbd5e1;
+      vertical-align: top;
+    }
+
+    /* 中央の二つ折りガイド線 */
+    .col-term {
+      width: 34%;
+      background: #f8fafc;
+      border-right: 2px dashed #64748b;
+    }
+
+    .col-desc {
+      width: 66%;
+      background: #ffffff;
+    }
+
+    .term-name {
+      font-size: 10pt;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 3px;
+    }
+
+    .term-meta {
+      font-size: 7.5pt;
+      color: #475569;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .badge-main {
+      background: #fef08a;
+      color: #713f12;
+      padding: 0 4px;
+      border-radius: 3px;
+      font-weight: 800;
+      border: 1px solid #ca8a04;
+    }
+
+    .badge-sub {
+      background: #e2e8f0;
+      color: #334155;
+      padding: 0 4px;
+      border-radius: 3px;
+      font-weight: 700;
+    }
+
+    .check-boxes {
+      font-size: 7.8pt;
+      color: #64748b;
+      margin-top: 3px;
+    }
+
+    .desc-catch {
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+
+    .desc-analogy {
+      font-size: 8.5pt;
+      color: #1e40af;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-toolbar">
+    <div>
+      <strong>🗂️ AP必須単語帳（inbox）（別冊・二つ折り暗記単語帳）</strong>
+      <span style="font-size: 12px; color: #fbcfe8; margin-left: 10px;">（全 57 語収録・主役用語＋選択肢関連用語）</span>
+    </div>
+    <button onclick="window.print()">🖨️ 単語帳を印刷 / PDF保存 (Ctrl+P)</button>
+  </div>
+
+  <main>
+    <div class="glossary-banner">
+      <h1>🗂️ AP必須単語帳（inbox） （全 57 語：⭐主役用語 ＋ 🔀選択肢の関連用語）</h1>
+      <p>💡 <strong>使い方</strong>：中央の点線（または右半分を紙で隠す）で「左の用語名」だけを見て、「⚡一言定義」と「💡日常のたとえ話」を3秒で言えるかテスト！3回連続で即答できたら □ を塗りつぶしましょう。</p>
+    </div>
+
+    <table class="glossary-table">
+      <thead>
+        <tr>
+          <th class="col-term">📌 用語名 ＆ 3回チェック欄 （✂️二つ折り線）</th>
+          <th class="col-desc">⚡ 一言定義・合言葉 ／ 💡 日常のたとえ話</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td class="col-term">
+    <div class="term-name">2分木の後行順（右→左→自分）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>04_システム構成要素</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 右・左・自分で下から出す</div>
+    <div class="desc-analogy">💡 小部屋を右→左と空にしてから最後に自分の部屋の荷物を出す引っ越し</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ハッシュ表の探索時間（定数時間）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>04_システム構成要素</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ハッシュは一発！データが増えても探索時間は横ばい！</div>
+    <div class="desc-analogy">💡 ロッカー番号が分かれば何個あっても一発で開く</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">クイックソートの2回目の分割</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>04_システム構成要素</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 左端を基準に「小さい組・基準・大きい組」。順番はそのまま、組ごとに繰り返す！</div>
+    <div class="desc-analogy">💡 身長順の整列で、先頭の子を基準に低い子は左、高い子は右へ分ける</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">キャッシュのライトバック方式</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>04_システム構成要素</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ バックは「あとで」まとめて戻す。だから速いけど、ズレる！</div>
+    <div class="desc-analogy">💡 机の付箋だけ書き換えて、捨てるときに書庫の台帳へ書く</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ライトスルー</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>04_システム構成要素</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 数字が変わるたび、付箋にも書き、書庫の台帳にも走って書きに行く。確実だが往復だらけで遅い。</div>
+    <div class="desc-analogy">💡 「キャッシュのライトバック方式」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ライトバック</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>04_システム構成要素</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 変更は机の付箋だけに書く。付箋を捨てる（追い出す）ときに初めて、最終結果を台帳へ書く。同じ数字を10回書き換えても、台帳への書き込みは最後の1回で済む。</div>
+    <div class="desc-analogy">💡 「キャッシュのライトバック方式」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">M/M/1待ち行列の平均待ち時間</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>04_システム構成要素</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 待ち時間は 利用率 ÷ (1 − 利用率)。サービス時間は割り算で消える！</div>
+    <div class="desc-analogy">💡 ラーメン屋のカウンターは、忙しさが少し増えるだけで行列が急に伸びる</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">2.00（正解）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>04_システム構成要素</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ (2/3) ÷ (1/3) ＝ 2。</div>
+    <div class="desc-analogy">💡 「M/M/1待ち行列の平均待ち時間」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">CPU利用率とMIPSの計算</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>04_システム構成要素</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ MIPS＝1秒に百万命令！「分」を「秒」に直してから割る！</div>
+    <div class="desc-analogy">💡 ラーメン屋の厨房の全力（1秒あたり）に対し、注文が生む作業量で働き度合いを測る</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">MMU（仮想アドレス→物理アドレスの変換）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>04_システム構成要素</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ MMUは翻訳係。スワップはOS、保存はキャッシュ</div>
+    <div class="desc-analogy">💡 マンションの管理人が仮想の部屋番号を実際の部屋へ案内する</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">カルノー図から論理式を作る</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>04_システム構成要素</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 1を大きく囲え！囲みの中で“変わらない変数”だけ残して、囲み同士は＋でつなぐ！</div>
+    <div class="desc-analogy">💡 クラス名簿のまとめ書きのように、違いのあるマスを1行にまとめる</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">NoSQLの4タイプとKVS</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ NoSQLは4兄弟：キー・カラム・ドキュメント・グラフ！“キーに値を結ぶ”のがKVS！</div>
+    <div class="desc-analogy">💡 鍵の番号さえあれば中身は自由な駅のコインロッカー</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ロールフォワード／ロールバック</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 済みは進め、途中は戻し、書かぬものは触らず</div>
+    <div class="desc-analogy">💡 停電後、手帳のログでノートに書き足したり消しゴムで戻したりする</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ロールフォワード（前進復帰）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 清書のあとに「提出済み（コミット）」になった課題は、手帳の「更新後」の記録を使ってノートに 書き足す。</div>
+    <div class="desc-analogy">💡 「ロールフォワード／ロールバック」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ロールバック（後退復帰）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 停電時にまだ書きかけ（未コミット）だった課題は、手帳の「更新前」の記録で 消しゴムをかけて開始前に戻す。</div>
+    <div class="desc-analogy">💡 「ロールフォワード／ロールバック」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">T1</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 清書より前に提出済み。ノートに確実に載っているので何もしない。</div>
+    <div class="desc-analogy">💡 「ロールフォワード／ロールバック」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">UNION ALLと重複行</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ UNIONは重複を消す、UNION ALLは全部残す！</div>
+    <div class="desc-analogy">💡 2クラスの名簿をホッチキス留め。ダブりも消さずそのまま、UNIONなら同名を1人にまとめる</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">UNION</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「同じ名前は1人分でいいよ」と、ダブりを消してまとめる。ダブりを探す手間がかかる。</div>
+    <div class="desc-analogy">💡 「UNION ALLと重複行」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">UNION ALL</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「とにかく2枚をホッチキス留めして」と、ダブりも含めて全部くっつける。探す手間がなく速い。</div>
+    <div class="desc-analogy">💡 「UNION ALLと重複行」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">/28のホスト最大数</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ホスト数は“2のn乗 マイナス2”！ネットワーク用とブロードキャスト用は住人になれない！</div>
+    <div class="desc-analogy">💡 マンションの部屋番号のうち、名前札と館内放送室は住人になれない</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">LAN伝送時間と伝送効率</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ バイトは8ビット！速度は効率を掛けてから割る！</div>
+    <div class="desc-analogy">💡 渋滞で半分しか走れない高速道路。荷物(バイト)と道路(ビット)の単位をそろえて運ぶ時間を出す</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">LAN送信時間の差からパケット数を逆算</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 両方に同じ分だけ足されるものは、差を取れば消える！バイトは×8でビットへ！</div>
+    <div class="desc-analogy">💡 速度違いのトラックでも休憩時間は同じなので差に効かない</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">サイドチャネル攻撃</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 鍵は壊さず、音と熱と時間を盗む</div>
+    <div class="desc-analogy">💡 金庫に耳を当ててカチッという音の違いを聞き取る泥棒</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">CORBA（OMGの分散オブジェクト仕様）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>12_システム開発技術</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ CORBAは OMG（オブジェクト団体）の 分散オブジェクト仕様！</div>
+    <div class="desc-analogy">💡 国際会議の同時通訳ブースが、言語の違う人同士をつなぐ</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">画像フォーマットSVG</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>12_システム開発技術</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ SVG＝ベクター＋XML＋拡大しても荒れない！</div>
+    <div class="desc-analogy">💡 タイルの壁画(PNG)は拡大で荒れるが、「円を描け」という設計図(SVG)は何倍でもくっきり</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">開発工数式（べき乗）と生産性</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>14_プロジェクトマネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 生産性＝できた量÷かかった工数！ほぼ1乗なら 5.2×10＝52</div>
+    <div class="desc-analogy">💡 1人が1か月に書ける原稿量を求める</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">可用性管理の保守性指標（MTRS）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>15_サービスマネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 保守性＝直す速さ（回復時間）、信頼性＝壊れにくさ（間隔）！</div>
+    <div class="desc-analogy">💡 スマホの入院。壊れにくさ(間隔)は信頼性、退院までの短さが保守性</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">信頼性</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>15_サービスマネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ スマホが「どれだけ壊れずに使えるか」。壊れる間隔が長いほど良い。</div>
+    <div class="desc-analogy">💡 「可用性管理の保守性指標（MTRS）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">保守性</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>15_サービスマネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 壊れたとき「どれだけ早く修理から戻ってくるか」。ダウン時間が短いほど保守性が高い。</div>
+    <div class="desc-analogy">💡 「可用性管理の保守性指標（MTRS）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">可用性</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>15_サービスマネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「必要なときに使える状態にある割合・状況」。</div>
+    <div class="desc-analogy">💡 「可用性管理の保守性指標（MTRS）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ITILの7ステップの改善プロセス</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>15_サービスマネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 集めて、処理して、分析して、見せる！</div>
+    <div class="desc-analogy">💡 家計簿のレシートを集め→入力→傾向を読む→家族に見せて食費を改善</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">空欄a（ステップ4）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>15_サービスマネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 公式解説により「データを処理する」と対応</div>
+    <div class="desc-analogy">💡 「ITILの7ステップの改善プロセス」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">空欄b（ステップ5）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>15_サービスマネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 同じく「情報とデータを分析する」と対応</div>
+    <div class="desc-analogy">💡 「ITILの7ステップの改善プロセス」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">空欄c（ステップ6）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>15_サービスマネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 同じく「情報を提示して利用する」と対応</div>
+    <div class="desc-analogy">💡 「ITILの7ステップの改善プロセス」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">サービスレベル管理プロセスの活動</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>15_サービスマネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ SLA＝顧客との約束書。「合意文書」の文字が見えたらサービスレベル管理！</div>
+    <div class="desc-analogy">💡 ピザ店の「30分以内にお届け」保証を決めて守る係</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">✗（サービスの予算及び会計業務の活動）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>15_サービスマネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「予算」「資金」というお金のキーワード。店の経理係の仕事。</div>
+    <div class="desc-analogy">💡 「サービスレベル管理プロセスの活動」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">サービス・ポートフォリオ</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>15_サービスマネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ポートフォリオは全部、カタログは今売ってる分だけ</div>
+    <div class="desc-analogy">💡 試作中・提供中・販売終了を全部載せたレストランの経営者用メニュー台帳</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">監査手続＝監査証拠の入手</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>16_システム監査</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 監査手続は“証拠集め”！計画は手続の前、報告書は手続の後！</div>
+    <div class="desc-analogy">💡 判決を書く前に証拠を集める裁判の捜査</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">共通フレーム2013の要件定義プロセス</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>17_システム企画</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 要件定義はまず「誰が関わるか」を洗い出す！</div>
+    <div class="desc-analogy">💡 家を建てる前の聞き取り。企画の後、設計の前に家族の要望を確認する</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">EAのTo-Beモデル（理想の将来像）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>17_システム企画</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 理想の To-Be、現状の As-Is</div>
+    <div class="desc-analogy">💡 ダイエットで「今の体型」と「理想の体型」を比べて計画を立てる</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">アンゾフの成長マトリクス</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>19_経営戦略マネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ アンゾフは4つの攻め方：浸透・開発・開拓・多角化</div>
+    <div class="desc-analogy">💡 パン屋が既存/新規の製品×客層で成長作戦を4通りに整理する</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">コアコンピタンス</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>19_経営戦略マネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ コアコンピタンス＝真似できない自社の核の力</div>
+    <div class="desc-analogy">💡 老舗うなぎ屋の秘伝のタレは他店に真似できない</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">PPMマトリックスの軸</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>19_経営戦略マネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 金のなる木は“成長低・占有高”、問題児は“成長高・占有低”！</div>
+    <div class="desc-analogy">💡 成長が止まった大木は肥料いらずで実だけ取れる果樹園</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">花形</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>19_経営戦略マネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ すくすく育つ若木で、実もたくさんなる。ただし水や肥料（投資）をたっぷり与え続けないと、シェアを守れない。</div>
+    <div class="desc-analogy">💡 「PPMマトリックスの軸」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">問題児</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>19_経営戦略マネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 芽はぐんぐん伸びている（成長率高）が、まだ実が少ない（占有率低）。花形に育てるには多額の投資が必要。失敗してそのまま成長率が下がれば負け犬に…。慎重な対応が必要。</div>
+    <div class="desc-analogy">💡 「PPMマトリックスの軸」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">負け犬</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>19_経営戦略マネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 伸びもしないし実もならない。投資しても利益が見込めず、撤退を検討。</div>
+    <div class="desc-analogy">💡 「PPMマトリックスの軸」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ア・イ・エ ✕（ウ以外）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>19_経営戦略マネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 公式解説は「aが市場成長率、bが市場占有率である組合せがウ」と結論しています。したがってア・イ・エは、この組合せ（a＝成長率, b＝占有率）と異なるもの、つまり a と b を逆にしたもの、または別の語句の組合せです。※具体的な語句は復元不可。</div>
+    <div class="desc-analogy">💡 「PPMマトリックスの軸」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SCMの目的（CRM・SFA・ERPとの区別）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>19_経営戦略マネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ SCMは“鎖”（Chain）！調達から販売まで会社をまたいでつなげ、納期短縮・在庫削減！</div>
+    <div class="desc-analogy">💡 情報を共有して水を無駄なく運ぶバケツリレー</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">合計段取り時間を最小にする順序</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>21_ビジネスインダストリ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 一番安い矢印を数珠つなぎ、余り物は最後尾へ</div>
+    <div class="desc-analogy">💡 部屋掃除で道具の付け替えが最短の移動をつなぐ</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">CIOの役割</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>22_企業活動</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ I は Information の I ！ITを経営に活かす人が CIO</div>
+    <div class="desc-analogy">💡 ラーメンチェーン本部でIT投資を社長に助言する参謀</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">系統図法</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>22_企業活動</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 系統図は「目的→手段→さらに手段」の木。原因探しは別の図！</div>
+    <div class="desc-analogy">💡 「家族を喜ばせる」を手段の家系図に枝分かれさせる</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">デルファイ法</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>22_企業活動</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ デルファイ＝専門家へのアンケートを繰り返して、意見を収束！</div>
+    <div class="desc-analogy">💡 覆面の予想会議で、声の大きい人に引っ張られずに結論を出す</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">✕（シナリオプランニングの説明）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>22_企業活動</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 現状の指標の中から将来の動向を示す指標に着目するのは、公式解説ではシナリオプランニングの説明とされています。</div>
+    <div class="desc-analogy">💡 「デルファイ法」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">○（デルファイ法）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>22_企業活動</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 専門家・アンケートの繰り返し・回答の収束という3要素がそろっています。</div>
+    <div class="desc-analogy">💡 「デルファイ法」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">最大利益となる価格設定</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>22_企業活動</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 利益は 売上 − 費用。4通りとも計算して最大を選ぶ！</div>
+    <div class="desc-analogy">💡 文化祭のたこ焼き屋は、売上が大きくても利益が最大とは限らない</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">最大利益となる設定価格</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>22_企業活動</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 価格が高い＝売れ個数が減る。だから全部計算して最大を選ぶ！</div>
+    <div class="desc-analogy">💡 文化祭のたこ焼き屋で「1個の儲け×売れる数」の山を探す</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">共通フレーム98（SLCP-JCF98）の規定範囲</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>23_法務</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 共通フレームは共通の物差し。社内取引も対象、ISOとは同一じゃない</div>
+    <div class="desc-analogy">💡 引っ越し見積書の共通書式で業者を比べる</div>
+  </td>
+</tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

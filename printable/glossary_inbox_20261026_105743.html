@@ -1,0 +1,2380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>AP必須単語帳（inbox）</title>
+  <style>
+    /* ========================================================
+       別冊・二つ折り暗記単語帳（左：用語＆チェック欄 ／ 右：一言定義＆日常のたとえ話）
+       ======================================================== */
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm 10mm 12mm;
+      @bottom-right {
+        content: counter(page);
+        font-size: 8.5pt;
+        color: #64748b;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans JP', sans-serif;
+      font-size: 9.2pt;
+      line-height: 1.45;
+      color: #0f172a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .screen-toolbar {
+      background: #831843;
+      color: #ffffff;
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+    }
+
+    .screen-toolbar button {
+      background: #fde047;
+      color: #0f172a;
+      border: none;
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: 800;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    @media print {
+      .screen-toolbar {
+        display: none !important;
+      }
+    }
+
+    .glossary-banner {
+      border: 2px solid #0f172a;
+      background: #fdf2f8;
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .glossary-banner h1 {
+      font-size: 12pt;
+      margin: 0 0 3px 0;
+      color: #831843;
+    }
+
+    .glossary-banner p {
+      font-size: 8.5pt;
+      margin: 0;
+      color: #334155;
+    }
+
+    .glossary-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 2px solid #0f172a;
+    }
+
+    .glossary-table th {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 6px 8px;
+      font-size: 8.8pt;
+      text-align: left;
+      border: 1px solid #0f172a;
+    }
+
+    .glossary-table tr {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .glossary-table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #cbd5e1;
+      vertical-align: top;
+    }
+
+    /* 中央の二つ折りガイド線 */
+    .col-term {
+      width: 34%;
+      background: #f8fafc;
+      border-right: 2px dashed #64748b;
+    }
+
+    .col-desc {
+      width: 66%;
+      background: #ffffff;
+    }
+
+    .term-name {
+      font-size: 10pt;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 3px;
+    }
+
+    .term-meta {
+      font-size: 7.5pt;
+      color: #475569;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .badge-main {
+      background: #fef08a;
+      color: #713f12;
+      padding: 0 4px;
+      border-radius: 3px;
+      font-weight: 800;
+      border: 1px solid #ca8a04;
+    }
+
+    .badge-sub {
+      background: #e2e8f0;
+      color: #334155;
+      padding: 0 4px;
+      border-radius: 3px;
+      font-weight: 700;
+    }
+
+    .check-boxes {
+      font-size: 7.8pt;
+      color: #64748b;
+      margin-top: 3px;
+    }
+
+    .desc-catch {
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+
+    .desc-analogy {
+      font-size: 8.5pt;
+      color: #1e40af;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-toolbar">
+    <div>
+      <strong>🗂️ AP必須単語帳（inbox）（別冊・二つ折り暗記単語帳）</strong>
+      <span style="font-size: 12px; color: #fbcfe8; margin-left: 10px;">（全 198 語収録・主役用語＋選択肢関連用語）</span>
+    </div>
+    <button onclick="window.print()">🖨️ 単語帳を印刷 / PDF保存 (Ctrl+P)</button>
+  </div>
+
+  <main>
+    <div class="glossary-banner">
+      <h1>🗂️ AP必須単語帳（inbox） （全 198 語：⭐主役用語 ＋ 🔀選択肢の関連用語）</h1>
+      <p>💡 <strong>使い方</strong>：中央の点線（または右半分を紙で隠す）で「左の用語名」だけを見て、「⚡一言定義」と「💡日常のたとえ話」を3秒で言えるかテスト！3回連続で即答できたら □ を塗りつぶしましょう。</p>
+    </div>
+
+    <table class="glossary-table">
+      <thead>
+        <tr>
+          <th class="col-term">📌 用語名 ＆ 3回チェック欄 （✂️二つ折り線）</th>
+          <th class="col-desc">⚡ 一言定義・合言葉 ／ 💡 日常のたとえ話</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td class="col-term">
+    <div class="term-name">MTBF・MTTR・稼働率</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>04_システム構成要素</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ Bは元気・Rはリペア（修理）</div>
+    <div class="desc-analogy">💡 スマホの元気時間と入院時間。両方1.5倍になっても比率だから「変わらない」！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">プリエンプション（横取り方式）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>05_ソフトウェア</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 市役所窓口のVIP顧客</div>
+    <div class="desc-analogy">💡 一般客Bが手続き中でも、市長Aが来たら強制中断してCPUを横取り！自発的解放は待ち状態</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">実行状態（Run）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>05_ソフトウェア</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 現在CPUの権利を握ってプログラムを実行している状態。</div>
+    <div class="desc-analogy">💡 市役所の窓口の椅子に座って手続きしてもらっている状態</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">実行可能状態（Ready）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>05_ソフトウェア</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ いつでも実行できる準備が整い、CPUの順番待ち行列に並んでいる状態。</div>
+    <div class="desc-analogy">💡 書類を全部持って窓口の後ろの待機イスに並んでいる状態</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">待ち状態（Wait）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>05_ソフトウェア</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 入出力（I/O）完了などを待っており、CPUが空いてもすぐには動けない状態（自発的解放で遷移）。</div>
+    <div class="desc-analogy">💡 「住民票のコピーを取ってきます」と自分から窓口の席を外した状態</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ディスパッチャ</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>05_ソフトウェア</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 実行可能状態（Ready）のタスクの中から次に実行するタスクを選び、CPU使用権を割り当てるOS機能。</div>
+    <div class="desc-analogy">💡 窓口で「次の方どうぞ！」と席へ案内する進行係</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ACID特性</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ACIDのAはAtomicity（原子性）！Availability（可用性）は部外者！</div>
+    <div class="desc-analogy">💡 銀行ATMの送金処理に必要な4大性質。いつでも動く（可用性）はシステムの性質であってトランザクションの性質ではない</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">A（Atomicity / 原子性）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 100円送金するとき、「Aさんの残高引落」と「Bさんの残高加算」は両方成功するか、両方失敗（ロールバック）するかのどちらかしかない。</div>
+    <div class="desc-analogy">💡 「ACID特性」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">C（Consistency / 一貫性）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ データベースのルール（残高はマイナスにならない等）を常に保つ。</div>
+    <div class="desc-analogy">💡 「ACID特性」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">I（Isolation / 独立性・隔離性）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 複数の人が同時に送金しても、混ざらずに1人ずつ順番に処理したのと同じ結果になる。</div>
+    <div class="desc-analogy">💡 「ACID特性」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">D（Durability / 耐久性）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「送金完了」と出たら、直後にデータセンターが落雷で停電してもデータは絶対に消えない。</div>
+    <div class="desc-analogy">💡 「ACID特性」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">2相コミット</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 第1相で「全員の準備完了」を確認！第2相で「一斉コミット（またはアボート）」！</div>
+    <div class="desc-analogy">💡 結婚式の神父。「全員準備は良いですか？（第1相）」→全員がYESなら「では誓いなさい（第2相）」と指示する</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">チェックポイント</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ メモリ上の更新データをディスクに書き出し、障害復旧の起点にする技術。</div>
+    <div class="desc-analogy">💡 「2相コミット」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">排他制御</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ロックなどを用いてデータの同時更新を防ぐ技術。</div>
+    <div class="desc-analogy">💡 「2相コミット」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ロールフォワード</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 障害発生時にバックアップとログを用いて最新状態まで前進復帰させる技術。</div>
+    <div class="desc-analogy">💡 「2相コミット」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">E-R図と外部キー（1対多の参照制約）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 1対多のリレーションシップは「多」の側に「1の主キー」を持たせる！</div>
+    <div class="desc-analogy">💡 社員（多）と部署（1）。社員証の裏に「所属部署番号」を書けば全員迷わない</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">関数従属と推移的関数従属</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ X→Y かつ Y→Z ならば X→Z！余分な列を足しても従属は壊れない！</div>
+    <div class="desc-analogy">💡 Aが決まればBが決まり、Bが決まればCが決まるなら、Aが決まれば当然Cも決まる</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">第2正規形</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 複合主キーの片方にだけ従属するものを追い出せば第2正規形！</div>
+    <div class="desc-analogy">💡 注文番号＋商品コードで決まるはずなのに、商品コードだけで決まる「商品名」を別テーブルに独立させる</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">第1正規形・部分関数従属</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 主キーの一部だけで決まる列が残っていれば「第1正規形止まり（第2ではない）」！</div>
+    <div class="desc-analogy">💡 合体キーの一部だけで特定できる項目が混ざっているなら、まだ第1正規形の段階</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">関係代数（選択σ・射影π・直積・差）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 行の引き算は「差演算（−）」！列の切り出しは「射影（π）」！</div>
+    <div class="desc-analogy">💡 全組み合わせ（直積）から実際に売れたものを引き算して「一度も売れてない組み合わせ」を見つける</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">和（∪）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 2つのテーブルを縦に合体する（OR）。</div>
+    <div class="desc-analogy">💡 「関係代数（選択σ・射影π・直積・差）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">差（−）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 一方のテーブルから、もう一方に含まれる行を取り除く（NOT / MINUS）。</div>
+    <div class="desc-analogy">💡 「関係代数（選択σ・射影π・直積・差）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">積（∩）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 両方に共通する行だけを残す（AND）。</div>
+    <div class="desc-analogy">💡 「関係代数（選択σ・射影π・直積・差）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">射影（π）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 指定した「列（タテ）」だけを抜き出す。</div>
+    <div class="desc-analogy">💡 「関係代数（選択σ・射影π・直積・差）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">選択（σ）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 条件に合う「行（ヨコ）」だけを抜き出す。</div>
+    <div class="desc-analogy">💡 「関係代数（選択σ・射影π・直積・差）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">NOT EXISTS（相関副問合せ）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ NOT EXISTS は「引き算（EXCEPT/MINUS）」または「LEFT JOIN して IS NULL」！</div>
+    <div class="desc-analogy">💡 全校生徒名簿から、提出済みボックスに名前が「存在しない（NOT EXISTS）」人だけを呼び出す</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">LEFT OUTER JOIN（外部結合）と COUNT関数</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 0件のものも残したいなら LEFT OUTER JOIN！COUNT(列名)ならNULLは0カウント！</div>
+    <div class="desc-analogy">💡 スタンプラリー。スタンプを1個も押していない人も、外部結合なら「0個」として全員表に載せられる</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SQL自己結合</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 同じテーブルにS1とS2と別名をつけて結合！S1.氏名 = S2.氏名 AND S1.学籍番号 <> S2.学籍番号！</div>
+    <div class="desc-analogy">💡 同じ名簿のコピーを2枚並べて、名前が同じなのに学籍番号が違う行を探す</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">3層スキーマ（外部・概念・内部スキーマ）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 3段のお重イメージ</div>
+    <div class="desc-analogy">💡 上段:外部（画面）、中段:概念（テーブル設計）、下段:内部（記録媒体・インデックス）</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">物理的データ独立性（内部 ⇄ 概念）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「古いハードディスクを最新の超高速SSDに買い替えた！」としても、テーブル設計（概念）は1文字も書き直す必要がありません。物理的な機械を変えても独立している から「物理的データ独立性」。</div>
+    <div class="desc-analogy">💡 「3層スキーマ（外部・概念・内部スキーマ）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">論理的データ独立性（概念 ⇄ 外部）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>09_データベース</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「テーブルの設計を少し手直しした！」としても、アプリ側の見せ方（ビュー）でうまく吸収すれば、ユーザーのスマホ画面（外部）は壊れません。設計を手直しても画面は独立している から「論理的データ独立性」。</div>
+    <div class="desc-analogy">💡 「3層スキーマ（外部・概念・内部スキーマ）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ARP</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ARPは「IP → MAC」！逆の「MAC → IP」はReverseのRARP！</div>
+    <div class="desc-analogy">💡 座席表の番号（IP）から、実際に座っている人のマイナンバー（MAC）を呼び出すこと</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">DHCP</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ PCに自動的にIPアドレスを割り振るプロトコルです。</div>
+    <div class="desc-analogy">💡 「ARP」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ICMP</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ pingやエラー通知で使われるプロトコルです。</div>
+    <div class="desc-analogy">💡 「ARP」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">RARP</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ MACアドレスからIPアドレスを取得する逆のプロトコルです。</div>
+    <div class="desc-analogy">💡 「ARP」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ARP要求（ブロードキャスト）とARP応答（ユニキャスト）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ARPは「探すときは全員にメガホン（ブロードキャスト）、返事は直接耳打ち（ユニキャスト）」！</div>
+    <div class="desc-analogy">💡 教室での落とし物探し。「このハンカチ誰のー？（全体放送）」→「あ、僕のです！（直接返しに行く）」</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ATM交換方式</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ATMは「きっちり53バイトの固定コンテナだから、機械（ハード）でスパッと捌けて遅延ゼロ感覚」！</div>
+    <div class="desc-analogy">💡 宅配便のダンボール。サイズが全部同じ規格（固定長）ならベルトコンベアの機械で超高速に流せる！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">バス型トポロジ</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ バス型は「1本の道路（バス）に全員がぶら下がる」！</div>
+    <div class="desc-analogy">💡 電車の路線。1本のレールにすべての駅（端末）がぶら下がっている形</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">スター型</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 中央のハブを中心に、星のように放射状に配線する形（現在のLANの主流）。</div>
+    <div class="desc-analogy">💡 「バス型トポロジ」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">リング型</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ケーブルを輪っか（環状）にしてグルグル回す形（トークンリングなど）。</div>
+    <div class="desc-analogy">💡 「バス型トポロジ」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ツリー型（木構造）トポロジ</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 中央のノードに幾つかのノードが接続され、更に別のノードが（ツリー型（木構造）トポロジの説明です。）</div>
+    <div class="desc-analogy">💡 「バス型トポロジ」の過去問選択肢で登場する重要対比用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">CIDR（クラスレスアドレッシング / サブネット分割）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「降順」は大きい順！/28は16刻み！256から16引いたら240！</div>
+    <div class="desc-analogy">💡 劇場の座席指定。一番後ろの列（大きい席番号）から団体席を16席ずつ予約していく感覚</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">マルチキャストアドレス（クラスD）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「A・B・Cは普通のパソコン用、Dはマルチキャスト、Eは実験用」！</div>
+    <div class="desc-analogy">💡 テレビやラジオのチャンネル。特定の周波数（クラスD）に合わせている人たち全員に映像や音声を同時配信する！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">クラスA</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 超巨大企業用（1600万台）</div>
+    <div class="desc-analogy">💡 「マルチキャストアドレス（クラスD）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">クラスB</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 中規模企業用（約6.5万台）</div>
+    <div class="desc-analogy">💡 「マルチキャストアドレス（クラスD）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">クラスC</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 小規模・家庭用（約254台）</div>
+    <div class="desc-analogy">💡 「マルチキャストアドレス（クラスD）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">DHCPDISCOVER</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ IPを持ってないから「送信元は 0.0.0.0」、サーバの場所も知らないから「宛先は 255.255.255.255」！</div>
+    <div class="desc-analogy">💡 身分証なしで役所の総合受付に飛び込む人。「名無しの権兵衛（0.0.0.0）ですが、誰か番号札（IP）をください！（全館放送 255.255.255.255）」</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">DNS逆引き（PTRレコード）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 名前からIPを引くのが「正引き」、IPから名前を調べるのが「逆引き（PTR）」！</div>
+    <div class="desc-analogy">💡 電話帳。人名から電話番号を調べるのが正引き、電話番号から誰の番号か調べるのが逆引き！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">リゾルバ</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 問合せを行うのは「リゾルバ」です。</div>
+    <div class="desc-analogy">💡 「DNS逆引き（PTRレコード）」の過去問選択肢で登場する重要対比用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">CNAMEレコード</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 別名は「CNAMEレコード」です。NSはDNSサーバ自身を指定します。</div>
+    <div class="desc-analogy">💡 「DNS逆引き（PTRレコード）」の過去問選択肢で登場する重要対比用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">フレームリレー</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ フレームリレーは「途中の誤りチェックをサボって飛ばす急行電車」！</div>
+    <div class="desc-analogy">💡 荷物の検問。昔は各都道府県の関所ごとに荷物を全部開けて検査していたが、道路が良くなったので「最後の受取人がまとめて確認すればOK」にした！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">IKE（Internet Key Exchange / IPsec鍵交換）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ IPsecの鍵交換はIKE！暗号の鍵（Key）をExchangeする！</div>
+    <div class="desc-analogy">💡 手紙を暗号化して送る前に、合鍵の受け渡し方法を安全に決める事前交渉</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">トランスポートモード</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ エンドノード間（PC同士など）。IPヘッダはそのまま残し、「データ部（中身）」だけを暗号化 する。</div>
+    <div class="desc-analogy">💡 「IKE（Internet Key Exchange / IPsec鍵交換）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">トンネルモード</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 拠点間VPNルータ同士。「元のIPパケット全体（ヘッダ＋データ）」を暗号化 し、外側に新しいIPヘッダをかぶせる。</div>
+    <div class="desc-analogy">💡 「IKE（Internet Key Exchange / IPsec鍵交換）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">IPsec</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ IPsecの「IP」はネットワーク層（第3層）のIP！IPパケットごと地下トンネルに通す！</div>
+    <div class="desc-analogy">💡 高速道路の地下トンネル。トラックの荷物（アプリ）が何であれ、道路（IP）ごと頑丈に守る！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">アプリケーション層</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ S/MIMEやHTTPS、SSHなどが該当します。</div>
+    <div class="desc-analogy">💡 「IPsec」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">セッション層</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 第5層です。IPsecの動作層ではありません。</div>
+    <div class="desc-analogy">💡 「IPsec」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">データリンク層</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ PPTPやL2TP、MACsecなどが該当します。</div>
+    <div class="desc-analogy">💡 「IPsec」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ネットワーク層</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ IPsecはネットワーク層（IP層）で動作するセキュリティ規格です。</div>
+    <div class="desc-analogy">💡 「IPsec」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">レイヤ2スイッチ</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ スイッチングハブ（L2スイッチ）の正体は「ポートがいっぱいあるマルチポート・ブリッジ」！</div>
+    <div class="desc-analogy">💡 郵便局の仕分け係。宛先住所（MACアドレス）を見て、該当する配達員のカバンにだけ荷物を入れる！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ゲートウェイ</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ トランスポート層〜アプリケーション層（4〜7層）の中継装置です。</div>
+    <div class="desc-analogy">💡 「レイヤ2スイッチ」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ブリッジ</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ L2スイッチと同じデータリンク層（第2層）でMACアドレスを中継する装置です。</div>
+    <div class="desc-analogy">💡 「レイヤ2スイッチ」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">リピータ</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 物理層（第1層）で電気信号をそのまま全ポートに垂れ流す装置です。</div>
+    <div class="desc-analogy">💡 「レイヤ2スイッチ」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ルータ</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ネットワーク層（第3層）でIPアドレスを見て中継する装置です。</div>
+    <div class="desc-analogy">💡 「レイヤ2スイッチ」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">多数決方式（FEC：前方誤り訂正）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 誤りは「2人ミス」＋「3人ミス」！3 × 0.1^2 × 0.9 + 0.1^3 ＝ 0.028（2.8%）！</div>
+    <div class="desc-analogy">💡 3人に同じ伝言を伝えたとき、2人または3人全員が聞き間違えたら全体の判断が狂う</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">V.24</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ モデム（アナログ電話）に繋ぐ昔ながらのシリアル規格が「V.24（ブイ・ニジュウヨン）」！</div>
+    <div class="desc-analogy">💡 テレビとビデオデッキを繋ぐ3色ケーブル（赤白黄）。機器同士を繋ぐための端子規格！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">IEEE 488</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 電子計測機器を接続するためのGPIBバス規格です。</div>
+    <div class="desc-analogy">💡 「V.24」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">IEEE 802.3</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 有線LAN（イーサネット）の規格です。</div>
+    <div class="desc-analogy">💡 「V.24」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">X.25</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ パケット交換網と端末を接続するプロトコル規格です。</div>
+    <div class="desc-analogy">💡 「V.24」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">MTU・MSSと回線伝送効率</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 伝送効率＝純粋データ量 ÷ フレーム全体の総バイト数！1460 ÷ 1538 ＝ 約54%（100Mbpsなら約54Mbps）！</div>
+    <div class="desc-analogy">💡 トラックで運ぶとき、荷物そのもの（MSS）と段ボール箱＋緩衝材（ヘッダ・プリアンブル）を足した総重量で効率を割る</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">NAPT</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ NATは「1対1（IPだけ変換）」、NAPTは「1対多（IP ＋ ポート番号で変換）」！</div>
+    <div class="desc-analogy">💡 会社の代表電話番号。外からは代表番号1つに見えるが、内線番号（ポート番号）で各社員のデスクに繋がる！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">IPマルチキャスト</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 特定のグループに一斉配信する技術です。</div>
+    <div class="desc-analogy">💡 「NAPT」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">VPN</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 公衆網上に暗号化トンネルを構築する仮想専用網です。</div>
+    <div class="desc-analogy">💡 「NAPT」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">NAT（静的NAT）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ IPアドレスを 1対1 で変換する。グローバルIPが1個しかなければ、同時に1台しかネットに出られない！</div>
+    <div class="desc-analogy">💡 「NAPT（IPマスカレード）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">NAPTのヘッダ変換（送信元IP＋ポート）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ NAPTで変わるのは「送信元のIPとポート」！宛先は変えない！</div>
+    <div class="desc-analogy">💡 手紙を出すとき、差出人欄を会社の代表住所・内線番号に書き換えて投函するイメージ</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">プロキシサーバ（キャッシュサーバ）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ キャッシュして高速表示（プロキシサーバ（キャッシュサーバ）の説明です。）</div>
+    <div class="desc-analogy">💡 「NAT」の過去問選択肢で登場する重要対比用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">パケットフィルタリング（ファイアウォール）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 特定のパケットだけを通過（パケットフィルタリング（ファイアウォール）の説明です。）</div>
+    <div class="desc-analogy">💡 「NAT」の過去問選択肢で登場する重要対比用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">パケット交換（X.25など）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ データに応じて大きさを変えられる 「可変長」 です。1本の回線に複数の通信を相乗り（多重化）させるため、「論理チャネル番号（Logical Channel Number）」 で誰宛てのパケットかを識別します。</div>
+    <div class="desc-analogy">💡 「ATM交換方式（固定長53バイトセル）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">PoE</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ Power over Ethernet（イーサネットに乗っかる電気）＝ PoE！</div>
+    <div class="desc-analogy">💡 新幹線の座席。背もたれのコンセントからスマホを充電しながら車内Wi-Fiを使う感覚</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">PLC</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 電力線（普通の電気のコンセント線）を使って通信する技術です。逆です。</div>
+    <div class="desc-analogy">💡 「PoE」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">UPS</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 停電時にバッテリーから給電する無停電電源装置です。</div>
+    <div class="desc-analogy">💡 「PoE」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">USB</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ パソコン周辺機器を繋ぐシリアルバス規格です。</div>
+    <div class="desc-analogy">💡 「PoE」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">PPP</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ Point-to-Point（1対1）で繋ぐからPPP！古いSLIPに認証とエラー処理を足した上位互換！</div>
+    <div class="desc-analogy">💡 直通の糸電話。相手が誰か確認（認証）してから会話をスタート！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">FTP</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ファイルを転送するためのアプリケーション層プロトコルです。</div>
+    <div class="desc-analogy">💡 「PPP」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SLIP</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ PPPの先代。エラー処理や認証機能を持たない古いプロトコルです。</div>
+    <div class="desc-analogy">💡 「PPP」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">UDP</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ トランスポート層のコネクションレス型プロトコルです。</div>
+    <div class="desc-analogy">💡 「PPP」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">プライベートIPアドレス</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「10番（クラスA）、172の16〜31（クラスB）、192.168（クラスC）」！自宅ルータはいつだって192.168！</div>
+    <div class="desc-analogy">💡 社内の内線電話番号。内線番号だから社外（インターネット）には直接通じない！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">リバースプロキシ</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 外から来る客の相手をする影武者＝リバースプロキシ！</div>
+    <div class="desc-analogy">💡 ホテルのフロント係。客（ネット利用者）を奥の厨房（実Webサーバ）に入らせず、窓口で料理を取り次ぐ</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">MTA（Mail Transfer Agent）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ メール受信・振り分け（MTA（Mail Transfer Agent）の説明です。）</div>
+    <div class="desc-analogy">💡 「リバースプロキシ」の過去問選択肢で登場する重要対比用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">DNSサーバ</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ドメイン名とIPの名前解決（DNSサーバの説明です。）</div>
+    <div class="desc-analogy">💡 「リバースプロキシ」の過去問選択肢で登場する重要対比用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ルート集約（スーパーネット化 / CIDR）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 変わる場所だけ2進数！お揃いの限界に線を引く！右側ゼロリセットで即完成！</div>
+    <div class="desc-analogy">💡 郵便番号の集約。32個の箱パズルで解くネットワーク合体法</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">デフォルトゲートウェイ（ルータ越えのIP/MAC変化）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ IPアドレスは「最終目的地（北海道の実家）」、MACアドレスは「次の乗り継ぎ駅（東京駅）」！</div>
+    <div class="desc-analogy">💡 旅行のチケット。目的地はずっと「北海道」だが、乗る電車は「まず東京駅行き、次は新函館北斗行き」と乗り継ぐ！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">IPアドレス（ネットワーク層）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「最終的に誰に届けたいか？」という最終ゴールを示します。</div>
+    <div class="desc-analogy">💡 「デフォルトゲートウェイ（ルータ越えのIP/MAC変化）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">MACアドレス（データリンク層）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「LANケーブルの中で、次の一歩（次のホップ）として誰に渡すか？」を示します。</div>
+    <div class="desc-analogy">💡 「デフォルトゲートウェイ（ルータ越えのIP/MAC変化）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ロンゲストマッチ</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ルーティングの掟は「ロンゲストマッチ（最長一致）」！詳しく一致した奴が絶対勝つ！</div>
+    <div class="desc-analogy">💡 郵便配達。「日本宛て（大雑把）」より「東京都宛て」、「東京都宛て」より「千代田区1-1（超詳細）」の指示に従う！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">RSS</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ブログのオレンジのアンテナマークはRSS！「XMLで更新を配信する規格」！</div>
+    <div class="desc-analogy">💡 新聞の朝刊の「1面見出し一覧」。見出しと要約だけを毎朝ポストに投函してくれる！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">BPEL</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 複数のWebサービスを連携実行させるためのビジネスプロセス記述言語です。</div>
+    <div class="desc-analogy">💡 「RSS」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SOAP</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ Webサービス間でXMLメッセージをやり取りするためのプロトコルです。</div>
+    <div class="desc-analogy">💡 「RSS」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">WSDL</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ Webサービスが提供する機能やインターフェースをXMLで記述した仕様書です。</div>
+    <div class="desc-analogy">💡 「RSS」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">S/MIME</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ S/MIMEは「SecurityなMIME」！暗号化と電子署名でメールの機密性を守る！</div>
+    <div class="desc-analogy">💡 手紙を封蝋（シーリングワックス）で閉じて頑丈なアタッシュケースに入れて送るイメージ</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">IMAP4</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ メールサーバ上のメールを受信・管理するプロトコルです。</div>
+    <div class="desc-analogy">💡 「S/MIME」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">POP3</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ メールサーバから端末にメールをダウンロードするプロトコルです。</div>
+    <div class="desc-analogy">💡 「S/MIME」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SMTP</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ メールを送信・転送するためのプロトコル（平文）です。</div>
+    <div class="desc-analogy">💡 「S/MIME」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SNMP</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ SNMP（Simple Network Management Protocol）＝ ネットワークのManager（管理者）！</div>
+    <div class="desc-analogy">💡 ビルの防災センター。各部屋の火災報知器（エージェント）の異常信号を集中モニタ（マネージャ）で監視する！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SNMPマネージャ</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 監視サーバ。「おいルータ、CPU使用率を教えろ」と定期的に問い合わせます。</div>
+    <div class="desc-analogy">💡 「SNMP」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SNMPエージェント</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ルータやスイッチ。「異常なしです」と答えたり、故障した瞬間に「助けて！（Trap: トラップ）」と自発的に警報を飛ばします。</div>
+    <div class="desc-analogy">💡 「SNMP」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">NNTP</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ネットニュース（Usenet）を転送する古いプロトコルです。</div>
+    <div class="desc-analogy">💡 「SNMP」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">NTP</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ネットワーク経由でコンピュータの時計を合わせるプロトコルです。</div>
+    <div class="desc-analogy">💡 「SNMP」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ブロードキャストアドレスとプレフィックス長（/20）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「刻み幅パズル」で解く！/20は16刻み！29がいるグループは16〜31だから末尾は31.255！</div>
+    <div class="desc-analogy">💡 16部屋区切りのアパート。29号室がある棟の最後の部屋（全館放送）は31号室！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">TCPコネクション識別（4タプル）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ コネクション識別は4点セット！送信元・宛先の「IP＋ポート」！</div>
+    <div class="desc-analogy">💡 電話番号（IP）＋内線番号（ポート）を相手と自分の両方揃えることで混線を防ぐ</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">VoIPゲートウェイ</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ゲートウェイは「世界の境界線」！電話の世界とIPの世界の境目にドカンと置く！</div>
+    <div class="desc-analogy">💡 海外旅行の入国審査・通訳ブース。日本語しか話せない人と英語しか話せない人の間に立って通訳する！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">IPネットワーク</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ データを「デジタルパケット（0と1の塊）」で送ります。</div>
+    <div class="desc-analogy">💡 「VoIPゲートウェイ」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SSID</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ SSIDは「最大32文字のネットワーク識別名」！48ビットはMACアドレス！</div>
+    <div class="desc-analogy">💡 カフェのWi-Fi一覧に出る「店舗の名前（看板）」。好きな看板を選んでタップして繋ぐ！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ネットワーク識別子</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ どのアクセスポイント（ネットワーク）に接続するかを選ぶための「ネットワーク識別子」です。</div>
+    <div class="desc-analogy">💡 「SSID」の過去問選択肢で登場する重要対比用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">IPv6アドレス表記（ゼロ圧縮 :: ルール）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 小学生の引き算パズル</div>
+    <div class="desc-analogy">💡 「::」は1回だけ！2回あると引き算が壊れて復元不能。ドット混入は即消去</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">OSI参照モデル（7階層と各層プロトコル）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 7階建てマンションの住人</div>
+    <div class="desc-analogy">💡 4階（トランスポート層）の住人は「TCP」と「UDP」だけ！HTTPは7階、IPは3階</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">HTTP</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ Webサイトを見るためのもの → 7階（アプリケーション層）</div>
+    <div class="desc-analogy">💡 「OSI参照モデル（7階層と各層プロトコル）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">IEEE 802.11ac（Wi-Fi 5GHz帯規格）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ あっ（a）、クリア（ac）な5GHz！</div>
+    <div class="desc-analogy">💡 電子レンジの邪魔が入らない5GHz専用。無線は衝突回避（CA）なのでCDは即消去</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">有線LAN（CSMA/CD）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ケーブルの中は見えないので、「とりあえず送ってみて、ぶつかったら（Collision Detection: 衝突検出）やり直す」 方式。</div>
+    <div class="desc-analogy">💡 「IEEE 802.11ac（Wi-Fi 5GHz帯規格）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">無線LAN（CSMA/CA）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>10_ネットワーク</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 電波は誰かが使っている最中に送ると即死するので、「誰もしゃべっていないことを確認してから、少し待って衝突を回避して（Collision Avoidance: 衝突回避）から送る」 方式。</div>
+    <div class="desc-analogy">💡 「IEEE 802.11ac（Wi-Fi 5GHz帯規格）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">3Dセキュア2.0</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 3Dセキュア2.0の中身は「リスクベース認証」！怪しい取引（高リスク）の時だけ追加認証を発動！</div>
+    <div class="desc-analogy">💡 百貨店の外商カード。常連客が普段通りハンカチを買うときはサイン不要で通し、いきなり換金性の高い金塊を1000万円分買おうとしたときだけ本人確認の電話を入れる！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ボットネットとC&Cサーバ</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ C&C ＝ Command & Control（命令と制御）！ゾンビPC軍団に「攻撃せよ！」と指令を出す基地！</div>
+    <div class="desc-analogy">💡 映画の悪の組織の司令室。洗脳したロボット兵（ボット）に無線機（C&Cサーバ）で「総攻撃せよ！」と命令を送る！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">認証サーバ（RADIUS等）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ CHAPなどのプロトコルを中継し盗聴を防止（認証サーバ（RADIUS等）の説明です。）</div>
+    <div class="desc-analogy">💡 「ボットネットとC&Cサーバ」の過去問選択肢で登場する重要対比用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">トークンサーバ（OTPサーバ）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ワンタイムパスワードを発行（トークンサーバ（OTPサーバ）の説明です。）</div>
+    <div class="desc-analogy">💡 「ボットネットとC&Cサーバ」の過去問選択肢で登場する重要対比用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">CC（Common Criteria / ISO 15408）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「CC（15408）＝ モノ（IT製品）の評価基準」、「ISMS（27000）＝ 会社（組織）の管理基準」！</div>
+    <div class="desc-analogy">💡 自動車の「衝突安全性能テスト（★5つ）」がCC。タクシー会社の「安全運行管理マニュアル」がISMS！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">完全性（Integrity / 改ざん防止）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「盗み見＝機密性(C)」「書き換え（改ざん）＝完全性(I)」「邪魔して止める＝可用性(A)」！</div>
+    <div class="desc-analogy">💡 お店のメニュー表。勝手に値段を0円に書き換えられる（改ざん）のが「完全性」の侵害！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">責任共有モデル（IaaS・PaaS・SaaS）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ IaaSは「空っぽの部屋（インフラだけ借りる）」だから、OS（壁紙や内装）は自分で設定できる！</div>
+    <div class="desc-analogy">💡 住宅の借り方。SaaS＝ホテル、PaaS＝家具付きマンスリー、IaaS＝スケルトン賃貸（内装・OSは自分持ち）！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SaaS</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 家具もベッドも全部揃っていて、掃除もホテル側がやってくれます。利用者は自分の荷物（データとID管理）だけ管理します。</div>
+    <div class="desc-analogy">💡 「責任共有モデル（IaaS・PaaS・SaaS）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">PaaS</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ エアコンや冷蔵庫（OSやミドルウェア）までは大家さんが管理してくれます。利用者は自分の料理（自作アプリ）に集中します。</div>
+    <div class="desc-analogy">💡 「責任共有モデル（IaaS・PaaS・SaaS）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">IaaS</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 柱と床（仮想マシンと回線）だけ貸してくれます。「どんなOS（WindowsやLinux）を入れて、どうセキュリティ設定するか」は借りた自分（利用企業）の自由であり責任 です！</div>
+    <div class="desc-analogy">💡 「責任共有モデル（IaaS・PaaS・SaaS）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">CVE識別子</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ CVEのVは「Vulnerability（脆弱性）」！世界中のバグに付ける指名手配ナンバー！</div>
+    <div class="desc-analogy">💡 指名手配犯の全国共通手配番号。A警察署でもB警察署でも同じ番号で犯人（脆弱性）を特定できる！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">CVE</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 脆弱性の番号（Vulnerability ＝ 脆弱性）</div>
+    <div class="desc-analogy">💡 「CVE識別子」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">CCE</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ セキュリティ設定項目の番号（Configuration ＝ 設定）</div>
+    <div class="desc-analogy">💡 「CVE識別子」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">CPE</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 製品名の番号（Platform ＝ 製品）</div>
+    <div class="desc-analogy">💡 「CVE識別子」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">CVSS</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 脆弱性の深刻度スコア（Scoring System ＝ 点数）</div>
+    <div class="desc-analogy">💡 「CVE識別子」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">NCO / 旧NISC（内閣サイバーセキュリティセンター）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「内閣官房」と言ったら **N**ational（国の）**C**ybersecurityの「NCO（旧NISC）」！</div>
+    <div class="desc-analogy">💡 国の防衛組織。内閣直属の総合司令部（NCO/NISC）、資格試験や啓発を行う経産省の機関（IPA）、救急救命窓口（JPCERT/CC）！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">IPA</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 経済産業省所管の独立行政法人（情報処理推進機構）です。</div>
+    <div class="desc-analogy">💡 「NCO / 旧NISC（内閣サイバーセキュリティセンター）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">JIPDEC</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ プライバシーマーク制度などを運営する一般財団法人です。</div>
+    <div class="desc-analogy">💡 「NCO / 旧NISC（内閣サイバーセキュリティセンター）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">JPCERT/CC</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ インシデント対応支援を行う一般社団法人です。</div>
+    <div class="desc-analogy">💡 「NCO / 旧NISC（内閣サイバーセキュリティセンター）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">DNSキャッシュポイズニング（ファーミング誘導）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ DNSに毒（偽のIPアドレス）を盛られたら、正しいURLを入れても「偽サイトに誘導される」（ファーミング）！</div>
+    <div class="desc-analogy">💡 カーナビの地図データを書き換えるイタズラ。「東京銀行」を選んだのに、泥棒のアジトへ案内されてしまう！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">楕円曲線暗号（ECC）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 楕円曲線暗号は「公開鍵暗号」！短い鍵で超強力だからスマホ時代のTLSに引っ張りだこ！</div>
+    <div class="desc-analogy">💡 最新のチタン合金ロック。昔の巨大な鉄の鎖（RSA）と同じ強度を、わずか1/10の軽さ・小ささ（短い鍵長）で実現！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">公開鍵暗号方式</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 共通鍵暗号ではなく「公開鍵暗号方式」です。</div>
+    <div class="desc-analogy">💡 「楕円曲線暗号（ECC）」の過去問選択肢で登場する重要対比用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">HTTPS（暗号化・改ざん検知・サーバ認証）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ HTTPSの3大パワーは「暗号化・改ざん検知・証明書によるサーバ認証」！ウイルス検査はできない！</div>
+    <div class="desc-analogy">💡 銀行窓口の身分証提示。声をひそめて話す（暗号化）だけでなく、相手が本物の銀行員か名札（電子証明書）を確かめる！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ウイルス対策ソフト（EDR/アンチウイルス）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ クライアント上のウイルス検査（ウイルス対策ソフト（EDR/アンチウイルス）の役割です。）</div>
+    <div class="desc-analogy">💡 「HTTPS（暗号化・改ざん検知・サーバ認証）」の過去問選択肢で登場する重要対比用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SSL/TLS（HTTPSの暗号化プロトコル）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ HTTP ＋ SSL/TLS ＝ HTTPS！Webの暗号化とサーバ認証はSSL/TLSの仕事！</div>
+    <div class="desc-analogy">💡 現金（HTTP）をそのまま送るのではなく、現金輸送車（SSL/TLS）に乗せて安全に運ぶのがHTTPS！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">Cookie</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ブラウザに状態やセッションIDを保存する仕組みであり、暗号化機能はありません。</div>
+    <div class="desc-analogy">💡 「SSL/TLS（HTTPSの暗号化プロトコル）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ダイジェスト認証</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ パスワードだけをハッシュ化して送るHTTP認証方式であり、通信全体の暗号化やサーバ証明書の認証は行いません。</div>
+    <div class="desc-analogy">💡 「SSL/TLS（HTTPSの暗号化プロトコル）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">AH（Authentication Header）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ IPsecにおいてデータの「完全性（改ざん検知）」と「送信元認証」のみを行い、暗号化は行わないプロトコル。</div>
+    <div class="desc-analogy">💡 中身が透けて見える透明ケースに「改ざん防止の封蝋スタンプ」だけ押した宅配便</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ESP（Encapsulating Security Payload）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ IPsecにおいて「暗号化（機密性）」と「認証・改ざん検知（完全性）」の両方を提供するプロトコル。</div>
+    <div class="desc-analogy">💡 外から中身が見えない頑丈な黒い金庫に封蝋も付けた万能宅配便</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SSH</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ リモートログイン用（トランスポート層〜アプリケーション層）。</div>
+    <div class="desc-analogy">💡 「IPsec（AHとESP）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">XML暗号</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ XMLデータの一部または全体を暗号化する技術（アプリケーション層）。</div>
+    <div class="desc-analogy">💡 「IPsec（AHとESP）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">機密性（Confidentiality / JIS Q 27000）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 認可されていない個人・エンティティに情報を使用させず、開示しない特性 ＝ 機密性！</div>
+    <div class="desc-analogy">💡 社外秘の封筒。「関係者以外、開封・閲覧厳禁（認可されていない者に開示しない）」というハンコが機密性！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">真正性</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ エンティティ（人やシステム）が「主張どおりの本物である」という特性。</div>
+    <div class="desc-analogy">💡 「機密性（Confidentiality / JIS Q 27000）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">認証</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ その真正性が正しいかどうかを「確かめる手続き」。</div>
+    <div class="desc-analogy">💡 「機密性（Confidentiality / JIS Q 27000）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">オープンリレー（メール不正第三者中継）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 接続元IP・送信者ドメイン・受信者ドメインの3つすべてが「社外（他社）」になっている行が第三者中継！</div>
+    <div class="desc-analogy">💡 自分の家のポストを、見知らぬ他人Aが見知らぬ他人Bへの手紙の中継ボックスとして勝手に使っている状態！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">リスクベース認証</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ いつも通りならスルー、怪しい時（高リスク）だけ追加チェックするのが「リスクベース認証」！</div>
+    <div class="desc-analogy">💡 マンションのベテラン管理人。毎日見る住人は挨拶だけで通し、深夜にサングラスで裏口から来た人には身分証を求める！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SBOM（ソフトウェア部品表）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ SBOM（Software Bill Of Materials）＝ ソフトの「原材料表示ラベル」！入ってる部品が分かれば脆弱性管理が爆速！</div>
+    <div class="desc-analogy">💡 お菓子の裏の「原材料名ラベル（卵・小麦・乳）」。アレルギー情報（脆弱性）が出たとき、その成分が入っているかすぐ分かる！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">セッションハイジャック対策（重要処理前の再認証）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ホテルのカードキーと貴重品金庫</div>
+    <div class="desc-analogy">💡 部屋の鍵を盗まれても、最後の金庫（個人情報）を開ける直前のパスワード再入力で防ぐ</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">セッションIDのサーバ側無効化（ログアウト処理）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ログアウトしたら「サーバ側のセッションIDを無効化」！手元の通行証を捨てるだけじゃダメ、受付の台帳から抹消せよ！</div>
+    <div class="desc-analogy">💡 ホテルのチェックアウト。客がカードキーをゴミ箱に捨てるだけでなく、フロントのパソコン側で「そのカードキーではドアが開かないように無効化」するのが絶対条件！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SMTP-AUTH</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ SMTP-AUTHは「SMTP（送信）でそのままAUTH（認証）する」！受信用POPを使わない直球勝負！</div>
+    <div class="desc-analogy">💡 会員制の宅配便受付。荷物を預かる窓口（SMTPサーバ）で、直接「会員証と暗証番号」をチェックしてから荷物を受け取る！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">TLSクライアント認証</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ クライアント証明書の妥当性を確認する（TLSクライアント認証の説明です。）</div>
+    <div class="desc-analogy">💡 「SMTP-AUTH」の過去問選択肢で登場する重要対比用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">POP before SMTP</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 受信した際に認証成功したIPアドレスを一定時間だけ送信許可する（POP before SMTPの説明です。）</div>
+    <div class="desc-analogy">💡 「SMTP-AUTH」の過去問選択肢で登場する重要対比用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">水飲み場型攻撃</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ライオンが水飲み場でシマウマを待ち伏せするように、「標的がよく行くWebサイト」に罠を仕掛けるのが水飲み場型攻撃！</div>
+    <div class="desc-analogy">💡 サバンナの狩り。警戒心の強いシマウマを追いかけ回すのではなく、シマウマが必ず水を飲みに来るオアシス（よく見るサイト）で待ち伏せする！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">WPA2-AES（CCMP / 128ビット共通鍵暗号）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「WEP・TKIPは古いRC4」「WPA2（CCMP）は最強のAES（128ビット）」！AESで64ビットは存在しない！</div>
+    <div class="desc-analogy">💡 家の鍵の進化。針金で開く古い南京錠（WEP/RC4）から、ピッキング不可能なディンプルキー（WPA2/AES 128ビット）へ！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">クロスサイトスクリプティング（XSS）とサニタイジング</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>11_セキュリティ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ XSSは「画面表示時のスクリプト発火」！対策は「表示する時にタグを無効化（サニタイジング）」！</div>
+    <div class="desc-analogy">💡 フグの毒抜き調理。お客さんのテーブル（ブラウザ）に出す直前に、毒（スクリプトタグ）を無害な文字に取り除く！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SQuaRE（ISO/IEC 25010 ソフトウェア品質8特性）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>12_システム開発技術</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ スマホ選びの8大チェック項目</div>
+    <div class="desc-analogy">💡 機能適合性＝明示的＆暗黙の「ニーズを満足させる」機能があるかどうか</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">CMMI（能力成熟度モデル統合）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>13_ソフトウェア開発管理技術</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 開発組織のオトナ度ピラミッド</div>
+    <div class="desc-analogy">💡 M＝Maturity（成熟度）。共通フレームは作業基準、CMMIは組織の通信簿</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">アサインメント問題（要員割当とコスト最小化）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>14_プロジェクトマネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 期限で絞って・重い順に・パズルする！</div>
+    <div class="desc-analogy">💡 遅いCさんは4キロの仕事を2か月で終わらせられない（足切り脱落）から解く</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SLA（サービスレベル合意書）と SLM</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>15_サービスマネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ ホテルの宿泊プラン契約</div>
+    <div class="desc-analogy">💡 顧客とサービス目標を「合意文書（SLA）」として交わし、定期的にPDCAを回す</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">可用性（Availability / システム二重化）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>16_システム監査</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 金庫のCIA3兄弟</div>
+    <div class="desc-analogy">💡 機密＝見せない、完全＝壊させない、可用＝いつでも使える予備キー（サーバ二重化）！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">システム監査規程（最高経営者による承認・独立性）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>16_システム監査</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 警察と裁判所と社長</div>
+    <div class="desc-analogy">💡 現場にルールを決めさせたら不正が隠せる（自己監査の禁止）。承認は社長一択！</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">PBP（回収期間法 / Payback Period）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>17_システム企画</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ カフェの100万エスプレッソマシン</div>
+    <div class="desc-analogy">💡 何年で元が取れる？Period（期間）＝PBP。利益率はROI、現在価値はNPV</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ROI（投資利益率）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>17_システム企画</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ Return On Investment。投資額に対してどれだけ利益が出たかの「割合（％）」を測る指標（利益÷投資額）。</div>
+    <div class="desc-analogy">💡 100万円のマシンで年間25万円儲かるなら「利回り25%！」と見る指標</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">NPV（正味現在価値法）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>17_システム企画</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ Net Present Value。将来得られる現金を現在の価値に割り引いて、投資額を引いたプラス額を測る手法。</div>
+    <div class="desc-analogy">💡 将来の100万円を今の価値に換算して「結局いくら得するの？」を計算する方法</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">IRR（内部収益率法）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>17_システム企画</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ Internal Rate of Return。投資の正味現在価値（NPV）がゼロになる割引率を求め、資本コストと比較する手法。</div>
+    <div class="desc-analogy">💡 この投資プロジェクト自体の「実質年利は何％に相当するか」を算出する指標</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">バリューチェーン（主活動5つ・支援活動4つ）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>19_経営戦略マネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ パン屋さんのバトンリレー</div>
+    <div class="desc-analogy">💡 「5つの主活動と4つの支援活動」＝バリューチェーン。SWOT・BSCとの見分け方</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">SWOT分析</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>19_経営戦略マネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 自社の内部環境（強みStrengths・弱みWeaknesses）と外部環境（機会Opportunities・脅威Threats）を4象限で整理する手法。</div>
+    <div class="desc-analogy">💡 自分の体力（内部）と今日の天気（外部）を4つの箱に書き出して作戦を立てるシート</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">BSC（バランススコアカード）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>19_経営戦略マネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「財務・顧客・内部ビジネスプロセス・学習と成長」の4つの視点から戦略目標とKPIを設定・評価する経営管理手法。</div>
+    <div class="desc-analogy">💡 売上だけでなく「客の笑顔・店の仕組み・店員の成長」の4科目でつける通知表</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ファイブフォース分析（5つの力）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>19_経営戦略マネジメント</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ マイケル・ポーターが提唱した、業界の収益性を決める「5つの競争要因（新規参入・代替品・買い手・売り手・既存競合）」の分析手法。</div>
+    <div class="desc-analogy">💡 自分の店を取り囲む「5方向のプレッシャー（ライバルや客の強さ）」を測るレーダー</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">サイバーフィジカルシステム (CPS)</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>21_ビジネスインダストリ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 現実と仮想の卓球ラリー</div>
+    <div class="desc-analogy">💡 畑のデータを測る（現実） → AIで分析（仮想） → 自動散水（現実にフィードバック）</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">エッジコンピューティング</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>21_ビジネスインダストリ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 現場の店長が即決！</div>
+    <div class="desc-analogy">💡 本社（クラウド）のお伺い待ちをなくし、端末の近傍で超低遅延処理＆回線負荷軽減</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">ウェアラブル端末</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>21_ビジネスインダストリ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ Apple Watchなどのスマートウォッチ（人体に装着して脈拍等を計測）。</div>
+    <div class="desc-analogy">💡 「エッジコンピューティング」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">グリッドコンピューティング / クラスタ</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>21_ビジネスインダストリ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 複数のPCを繋いで1台のスーパーマシンにする仕組み。</div>
+    <div class="desc-analogy">💡 「エッジコンピューティング」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">エネルギーハーベスティング（環境発電）</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>21_ビジネスインダストリ</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 振動や室内の光、熱などの微小な環境エネルギーから電気を作る技術。</div>
+    <div class="desc-analogy">💡 「エッジコンピューティング」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">損益分岐点・安全余裕率</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>22_企業活動</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 粗利（あらり） を・ こそげて ・ 安心（あんしん）</div>
+    <div class="desc-analogy">💡 ラーメン屋の家賃回収パズル。小数を10倍して消す途中式を全記載</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">連関図（新QC七つ道具・因果関係の解明）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>22_企業活動</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 太った原因の悪循環ループ！</div>
+    <div class="desc-analogy">💡 複雑に絡み合った因果関係を矢印で解きほぐし、根本原因（矢印が出る元凶）を暴く</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">アローダイアグラム</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>22_企業活動</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「作業日程・工程管理」 の図です。丸（イベント）と矢印（作業）で工事や開発のスケジュールを表し、「一番時間のかかるルート（クリティカルパス）」を計算するときに使います。「因果関係」ではありません。</div>
+    <div class="desc-analogy">💡 「連関図（新QC七つ道具・因果関係の解明）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">パレート図</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>22_企業活動</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「重点分析（ABC分析）」 の図です。不具合件数などを大きい順に並べた「棒グラフ」と、その累積比率を表す「折れ線グラフ」を組み合わせ、「全体の8割を占める重要な不具合はどれか」を見つけるときに使います。</div>
+    <div class="desc-analogy">💡 「連関図（新QC七つ道具・因果関係の解明）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">マトリックス図</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>22_企業活動</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 「行（縦軸）と列（横軸）」 の格子状の表です。例えば「顧客の要望（縦）」と「製品の機能（横）」を交差させ、その交差点に◎や◯をつけて関係の深さを整理します。</div>
+    <div class="desc-analogy">💡 「連関図（新QC七つ道具・因果関係の解明）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">技適マーク（技術基準適合証明）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>23_法務</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ スマホの電波の車検シール</div>
+    <div class="desc-analogy">💡 日本の電波法に適合している証明。EUはCE、米はFCC、家電安全はPSE</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">CEマーク</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>23_法務</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ EU加盟国（欧州）の安全基準！</div>
+    <div class="desc-analogy">💡 「技適マーク（技術基準適合証明）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">PSEマーク</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>23_法務</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 日本国内の 電気用品安全法（Product Safety Electrical appliance）！</div>
+    <div class="desc-analogy">💡 「技適マーク（技術基準適合証明）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">FCCマーク</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>23_法務</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 米国（Federal Communications Commission）の通信規格！</div>
+    <div class="desc-analogy">💡 「技適マーク（技術基準適合証明）」とセットで比較・区別して覚える重要用語</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">請負・派遣・出向と偽装請負（指揮命令権）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>23_法務</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 労働形態の三角関係</div>
+    <div class="desc-analogy">💡 請負で客先が指示したら「偽装請負」！出向は出向先と指揮命令関係が生じる</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">偽装請負</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>23_法務</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 契約上は「請負（成果物の完成責任）」であるにもかかわらず、発注者（客先）が労働者に直接「指揮命令」を行ってしまう違法状態。</div>
+    <div class="desc-analogy">💡 外注のパン職人に、発注元の店長が厨房に入って「その粉を混ぜろ」と直接命令してしまうルール違反</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">要配慮個人情報（個人情報保護法）</div>
+    <div class="term-meta"><span class="badge-main">⭐主役</span> <span>23_法務</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 個人情報のデリケート度3段階</div>
+    <div class="desc-analogy">💡 要配慮＝差別の防止！病歴、前科、信条など知られたら不当な不利益が生じる情報</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">匿名加工情報</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>23_法務</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 特定の個人を識別できないように加工し、かつ「元の個人情報に復元できない」ようにした情報（本人の同意なく第三者提供可能）。</div>
+    <div class="desc-analogy">💡 モザイクを完全に焼き付けて、二度と元の顔に戻せないようにした統計データ</div>
+  </td>
+</tr>
+<tr>
+  <td class="col-term">
+    <div class="term-name">仮名加工情報</div>
+    <div class="term-meta"><span class="badge-sub">🔀関連</span> <span>23_法務</span></div>
+    <div class="check-boxes">定着チェック: □1回目 ・ □2回目 ・ □瞬殺</div>
+  </td>
+  <td class="col-desc">
+    <div class="desc-catch">⚡ 氏名などを削除して単体では個人を特定できないように加工した情報（社内でのAI分析・統計分析に利用しやすい）。</div>
+    <div class="desc-analogy">💡 社内カルテの名前を「患者ID: 001」に置き換えて、社内研究に使いやすくしたデータ</div>
+  </td>
+</tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>
